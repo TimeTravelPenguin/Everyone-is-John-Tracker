@@ -1,0 +1,157 @@
+﻿<Window x:Class="EveryoneIsJohnTracker.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EveryoneIsJohnTracker"
+        xmlns:viewmodels="clr-namespace:EveryoneIsJohnTracker.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+
+    <Window.DataContext>
+        <viewmodels:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+
+        <!-- Menu -->
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <!-- File -->
+                <MenuItem Header="_File" />
+
+                <!-- Rules -->
+                <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
+            </Menu>
+        </DockPanel>
+
+        <!-- Left Side -->
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- DataGrid -->
+            <DataGrid ItemsSource="{Binding VoiceCollectionView}"
+                      Grid.Row="0"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Willpower" Binding="{Binding Willpower}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Player Info / Add -->
+            <TabControl Grid.Row="1" Margin="0,5,0,0">
+
+                <!-- Add Voice -->
+                <TabItem Header="Add Voice">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="5" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Voice Name:"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right" />
+
+                        <TextBox Text="{Binding EditableVoiceModel.Name}"
+                                 Grid.Row="1"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <TextBlock Text="Initial Willpower:"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right" />
+
+                        <TextBox Text="{Binding EditableVoiceModel.Willpower}"
+                                 Grid.Row="3"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <TextBlock Text="Obsession:"
+                                   Grid.Row="5"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right" />
+
+                        <TextBox Text="{Binding EditableVoiceModel.Obsession.Name}" Grid.Row="5"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <ComboBox Text="Select Level"
+                                  Grid.Row="5"
+                                  Grid.Column="3"
+                                  Width="100"
+                                  SelectedIndex="0">
+                            <ComboBoxItem Content="Level 1" />
+                            <ComboBoxItem Content="Level 2" />
+                            <ComboBoxItem Content="Level 3" />
+                        </ComboBox>
+
+                        <TextBlock Text="Skill Name:"
+                                   Grid.Row="7"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right" />
+
+                        <TextBox Text="{Binding EditableSkillModel.SkillName}" Grid.Row="7" Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <Button Command="{Binding CommandAddVoice}"
+                                Content="Add Skill"
+                                Grid.Row="7"
+                                Grid.Column="3"
+                                Width="100" />
+
+                        <DataGrid Grid.Row="9"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="3"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Skill Name" Binding="{Binding null}" />
+                                <DataGridTextColumn Header="Skill Description" Binding="{Binding null}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Voice Info -->
+                <TabItem Header="Voice Info" />
+            </TabControl>
+        </Grid>
+
+    </Grid>
+</Window>
