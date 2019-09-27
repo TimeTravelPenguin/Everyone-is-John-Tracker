@@ -106,6 +106,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\die1.png" />
+    <Resource Include="Images\die2.png" />
+    <Resource Include="Images\die3.png" />
+    <Resource Include="Images\die4.png" />
+    <Resource Include="Images\die5.png" />
+    <Resource Include="Images\die6.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

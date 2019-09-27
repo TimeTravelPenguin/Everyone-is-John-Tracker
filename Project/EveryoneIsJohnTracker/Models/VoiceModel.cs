@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace EveryoneIsJohnTracker.Models
 {
@@ -26,6 +27,8 @@ namespace EveryoneIsJohnTracker.Models
             get => _skills;
             set => SetValue(ref _skills, value);
         }
+
+        public string SkillsAsString => string.Join(", ", Skills.Select(x => x.Name).ToArray());
 
         public ObsessionModel Obsession
         {

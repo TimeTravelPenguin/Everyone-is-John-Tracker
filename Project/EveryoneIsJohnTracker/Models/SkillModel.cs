@@ -4,12 +4,12 @@ namespace EveryoneIsJohnTracker.Models
 {
     internal class SkillModel : PropertyChangedBase
     {
-        private string _skillName;
+        private string _name;
 
-        public string SkillName
+        public string Name
         {
-            get => _skillName;
-            set => SetValue(ref _skillName, value);
+            get => _name;
+            set => SetValue(ref _name, value);
         }
     }
 }
