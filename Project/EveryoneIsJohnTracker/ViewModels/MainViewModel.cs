@@ -172,7 +172,7 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddItem = new ActionCommand(AddItem);
 
-            Logger = LogManager.GetCurrentClassLogger();
+            Logger = LogManager.GetLogger("RichLogger");
             Logger.Info("This is a test");
         }
 
@@ -188,6 +188,7 @@ namespace EveryoneIsJohnTracker.ViewModels
             Inventory.Add(item);
 
             OutputLogger.LogAddItem(item);
+
             Logger.Info(item.Name);
 
             EditableItemName = "";

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EveryoneIsJohnTracker"
         xmlns:viewmodels="clr-namespace:EveryoneIsJohnTracker.ViewModels"
         mc:Ignorable="d"
-        Title="Everyone is John Tracker" Name="MWindow" Height="600" Width="800" ResizeMode="NoResize">
+        Title="Everyone is John Tracker" x:Name="MWindow" Height="600" Width="800" ResizeMode="NoResize">
 
     <Window.DataContext>
         <viewmodels:MainViewModel />
@@ -345,10 +345,10 @@
 
             <GroupBox Header="Adventure Log"
                       Grid.Row="5">
-                
-                <RichTextBox x:Name="LoggerOutput"
-                         Margin="5"
-                         IsReadOnly="False" />
+
+                <RichTextBox x:Name="RichTextLogOutput"
+                             Margin="5"
+                             IsReadOnly="False" />
             </GroupBox>
         </Grid>
     </Grid>
