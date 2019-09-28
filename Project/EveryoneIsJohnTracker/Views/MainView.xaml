@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EveryoneIsJohnTracker"
         xmlns:viewmodels="clr-namespace:EveryoneIsJohnTracker.ViewModels"
-        xmlns:helper="clr-namespace:EveryoneIsJohnTracker.Helpers"
         xmlns:helpers="clr-namespace:EveryoneIsJohnTracker.Helpers"
         mc:Ignorable="d"
         Title="Everyone is John Tracker" Height="600" Width="800" ResizeMode="NoResize">
@@ -347,9 +346,6 @@
 
             <GroupBox Header="Adventure Log"
                       Grid.Row="5">
-                <!--<TextBox x:Name="LogOutput"
-                         Margin="5"
-                         IsReadOnly="False" />-->
                 <ScrollViewer Margin="5"
                               helpers:AutoScrollHelper.AutoScroll="True">
                     <ItemsControl ItemsSource="{Binding OutputLogger.LogHistory}">

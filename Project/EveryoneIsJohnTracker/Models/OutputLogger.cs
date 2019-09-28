@@ -14,8 +14,8 @@ namespace EveryoneIsJohnTracker.Models
 
         public OutputLogger()
         {
-            LogHistory.Add("Initializing application...");
-            LogHistory.Add("Done!");
+            LogHistory.Add("This application is ready...");
+            LogHistory.Add("This log will track all actions you take...");
         }
 
         public void LogAddItem(ItemModel item)
