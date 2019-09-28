@@ -351,8 +351,22 @@
                     <ItemsControl ItemsSource="{Binding OutputLogger.LogHistory}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding Path=.}" 
-                                         IsReadOnly="True"/>
+                                <DataTemplate.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.2" 
+                                                                 From="0.0" 
+                                                                 To="1.0"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 Storyboard.TargetName="logField" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </DataTemplate.Triggers>
+                                <TextBox Name="logField"
+                                         Text="{Binding Path=., NotifyOnTargetUpdated=True}"
+                                         IsReadOnly="True" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
