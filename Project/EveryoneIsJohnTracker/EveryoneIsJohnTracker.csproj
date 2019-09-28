@@ -89,11 +89,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\DoubleExtension.cs" />
+    <Compile Include="Extensions\GameMasterExtension.cs" />
     <Compile Include="Helpers\AutoScrollHelper.cs" />
+    <Compile Include="Models\GameMasterModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ObsessionModel.cs" />
-    <Compile Include="Models\OutputLogger.cs" />
-    <Compile Include="Models\PropertyChangedBase.cs" />
+    <Compile Include="Models\OutputLoggers\IOutputLogger.cs" />
+    <Compile Include="Models\OutputLoggers\OutputLogger.cs" />
+    <Compile Include="Models\OutputLoggers\OutputNullLogger.cs" />
+    <Compile Include="Base\PropertyChangedBase.cs" />
     <Compile Include="Models\SkillModel.cs" />
     <Compile Include="Models\VoiceModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

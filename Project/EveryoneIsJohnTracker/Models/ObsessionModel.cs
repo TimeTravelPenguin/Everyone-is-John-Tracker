@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Models.OutputLoggers;
 
 namespace EveryoneIsJohnTracker.Models
 {
@@ -7,29 +9,69 @@ namespace EveryoneIsJohnTracker.Models
         private int _level;
         private string _name;
         private int _points;
+        private string _voiceName;
+        public IOutputLogger Logger { get; set; }
+
+        public string VoiceName
+        {
+            get => _voiceName;
+            set => SetValue(ref _voiceName, value);
+        }
 
         public int Level
         {
             get => _level;
             set
             {
+                var oldValue = Level;
                 CheckLevelValue(ref value);
                 SetValue(ref _level, value);
+
+                if (oldValue != value)
+                {
+                    Logger.LogObsessionLevelChanged(VoiceName, Name, oldValue, value);
+                }
             }
         }
 
         public string Name
         {
             get => _name;
-            set => SetValue(ref _name, value);
+            set
+            {
+                var oldValue = Name;
+                SetValue(ref _name, value);
+
+                if (oldValue != value)
+                {
+                    Logger.LogObsessionNameChanged(VoiceName, oldValue, value);
+                }
+            }
         }
 
         public int Points
         {
             get => _points;
-            set => SetValue(ref _points, value);
+            set
+            {
+                var oldValue = Points;
+                SetValue(ref _points, value);
+
+                if (oldValue != value)
+                {
+                    Logger.LogObsessionPointsChanged(VoiceName, oldValue, value);
+                }
+            }
         }
 
+        public ObsessionModel(IOutputLogger logger)
+        {
+            Logger = logger;
+        }
+
+        public ObsessionModel()
+        {
+        }
 
         internal void CheckLevelValue(ref int level)
         {

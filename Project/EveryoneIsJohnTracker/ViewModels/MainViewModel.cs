@@ -2,7 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Data;
+using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
+using EveryoneIsJohnTracker.Models.OutputLoggers;
 using Microsoft.Expression.Interactivity.Core;
 
 namespace EveryoneIsJohnTracker.ViewModels
@@ -11,77 +14,12 @@ namespace EveryoneIsJohnTracker.ViewModels
     {
         private int _comboboxLevelBinding;
         private string _editableItemName;
-        private SkillModel _editableSkillModel = new SkillModel();
-        private VoiceModel _editableVoiceModel = new VoiceModel();
-        private ObservableCollection<ItemModel> _inventory = new ObservableCollection<ItemModel>();
+        private SkillModel _editableSkillModel = new SkillModel(); // Used to bind to view
+        private VoiceModel _editableVoiceModel = new VoiceModel(OutputNullLogger); // Used to add to Voices Collection
+
+
         private int _listViewSelectedIndex;
-
-        private OutputLogger _outputLogger = new OutputLogger();
         private ICollectionView _voiceCollectionView;
-
-        private ObservableCollection<VoiceModel> _voices = new ObservableCollection<VoiceModel>
-        {
-            new VoiceModel
-            {
-                Name = "TimeTravelPenguin",
-                Willpower = 7,
-                Obsession = new ObsessionModel
-                {
-                    Name = "To become a Penguin",
-                    Level = 3,
-                    Points = 0
-                },
-
-                Skills = new ObservableCollection<SkillModel>
-                {
-                    new SkillModel
-                    {
-                        Name = "Dancing"
-                    },
-                    new SkillModel
-                    {
-                        Name = "Cooking"
-                    },
-                    new SkillModel
-                    {
-                        Name = "Performing the dark arts"
-                    }
-                }
-            },
-            new VoiceModel
-            {
-                Name = "Caitlin",
-                Willpower = 7,
-                Obsession = new ObsessionModel
-                {
-                    Name = "To make new friends",
-                    Level = 2,
-                    Points = 0
-                },
-
-                Skills = new ObservableCollection<SkillModel>
-                {
-                    new SkillModel
-                    {
-                        Name = "Talking"
-                    },
-                    new SkillModel
-                    {
-                        Name = "Eating"
-                    },
-                    new SkillModel
-                    {
-                        Name = "Hugging"
-                    }
-                }
-            }
-        };
-
-        public ObservableCollection<VoiceModel> Voices
-        {
-            get => _voices;
-            set => SetValue(ref _voices, value);
-        }
 
         public ICollectionView VoiceCollectionView
         {
@@ -99,12 +37,6 @@ namespace EveryoneIsJohnTracker.ViewModels
         {
             get => _editableSkillModel;
             set => SetValue(ref _editableSkillModel, value);
-        }
-
-        public ObservableCollection<ItemModel> Inventory
-        {
-            get => _inventory;
-            set => SetValue(ref _inventory, value);
         }
 
         public string EditableItemName
@@ -137,15 +69,16 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _listViewSelectedIndex, value);
         }
 
-        public OutputLogger OutputLogger
-        {
-            get => _outputLogger;
-            set => SetValue(ref _outputLogger, value);
-        }
+        // GameMaster holds all the collections stored for the game
+        public static GameMasterModel GameMaster { get; set; }
+
+        public static OutputLogger OutputLogger { get; } = new OutputLogger();
+        private static readonly OutputNullLogger OutputNullLogger = new OutputNullLogger();
 
         public MainViewModel()
         {
-            VoiceCollectionView = CollectionViewSource.GetDefaultView(Voices);
+            GameMaster = new GameMasterModel(OutputLogger);
+            VoiceCollectionView = CollectionViewSource.GetDefaultView(GameMaster.Voices);
 
             CommandOpenRules =
                 new ActionCommand(() => Process.Start(@"https://rulebook.io/games/everyone-is-john/rules"));
@@ -154,100 +87,96 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddVoice = new ActionCommand(AddVoice);
 
-            CommandAddWillpower = new ActionCommand(() => AddWillPower(ListViewSelectedIndex));
+            CommandAddWillpower = new ActionCommand(() => GameMaster.AddWillpower(ListViewSelectedIndex, 1));
 
-            CommandSubtractWillpower = new ActionCommand(() => SubtractWillPower(ListViewSelectedIndex));
+            CommandSubtractWillpower = new ActionCommand(() => GameMaster.AddWillpower(ListViewSelectedIndex, -1));
 
-            CommandAddWillpowerAll = new ActionCommand(AddWillPowerAll);
+            CommandAddWillpowerAll = new ActionCommand(() => GameMaster.AddWillpowerAll(1));
 
-            CommandSubtractWillpowerAll = new ActionCommand(SubtractWillPowerAll);
+            CommandSubtractWillpowerAll = new ActionCommand(() => GameMaster.AddWillpowerAll(-1));
 
-            CommandRemoveVoice = new ActionCommand(() => RemoveVoice(ListViewSelectedIndex));
+            CommandRemoveVoice = new ActionCommand(RemoveVoice);
 
-            CommandAddObsessionPoint = new ActionCommand(() => AddObsessionPoint(ListViewSelectedIndex));
+            CommandAddObsessionPoint = new ActionCommand(() => GameMaster.AddObsessionPoint(ListViewSelectedIndex, 1));
 
-            CommandRemoveObsessionPoint = new ActionCommand(() => RemoveObsessionPoint(ListViewSelectedIndex));
+            CommandRemoveObsessionPoint =
+                new ActionCommand(() => GameMaster.AddObsessionPoint(ListViewSelectedIndex, -1));
 
             CommandAddItem = new ActionCommand(AddItem);
 
+            AddDemoData();
+        }
+
+        // This is strictly for debugging
+        private void AddDemoData()
+        {
+            GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
+                {
+                    Name = "TimeTravelPenguin",
+                    Willpower = 7,
+
+                    Skills = new ObservableCollection<SkillModel>
+                    {
+                        new SkillModel
+                        {
+                            Name = "Dancing"
+                        },
+                        new SkillModel
+                        {
+                            Name = "Cooking"
+                        },
+                        new SkillModel
+                        {
+                            Name = "Performing the dark arts"
+                        }
+                    }
+                },
+                new ObsessionModel(OutputNullLogger)
+                {
+                    Name = "To become a Penguin",
+                    Level = 3,
+                    Points = 0
+                }, OutputLogger);
+
+            GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
+                {
+                    Name = "Caitlin",
+                    Willpower = 7,
+
+                    Skills = new ObservableCollection<SkillModel>
+                    {
+                        new SkillModel
+                        {
+                            Name = "Talking"
+                        },
+                        new SkillModel
+                        {
+                            Name = "Eating"
+                        },
+                        new SkillModel
+                        {
+                            Name = "Hugging"
+                        }
+                    }
+                },
+                new ObsessionModel(OutputNullLogger)
+                {
+                    Name = "To make new friends",
+                    Level = 2,
+                    Points = 0
+                }, OutputLogger);
         }
 
         private void AddItem()
         {
-            var item = new ItemModel
+            GameMaster.AddItem(new ItemModel(OutputNullLogger)
             {
                 Name = EditableItemName,
                 Count = 1,
                 Description = ""
-            };
-
-            Inventory.Add(item);
-
-            OutputLogger.LogAddItem(item);
+            }, OutputLogger);
 
             EditableItemName = "";
-        }
-
-        private void RemoveObsessionPoint(int index)
-        {
-            if (Voices[index].Obsession.Points > 0)
-            {
-                Voices[index].Obsession.Points--;
-                OutputLogger.LogRemoveObsessionPoint(Voices[index]);
-            }
-        }
-
-        private void AddObsessionPoint(int index)
-        {
-            Voices[index].Obsession.Points++;
-            OutputLogger.LogAddObsessionPoint(Voices[index]);
-        }
-
-        private void AddWillPower(int index)
-        {
-            Voices[index].Willpower++;
-            OutputLogger.LogAddWillpower(Voices[index]);
-        }
-
-        private void AddWillPowerAll()
-        {
-            foreach (var voiceModel in Voices)
-            {
-                voiceModel.Willpower++;
-                OutputLogger.LogAddWillpower(voiceModel);
-            }
-        }
-
-        private void SubtractWillPower(int index)
-        {
-            if (Voices[index].Willpower > 0)
-            {
-                Voices[index].Willpower--;
-                OutputLogger.LogSubtractWillpower(Voices[index]);
-            }
-        }
-
-        private void SubtractWillPowerAll()
-        {
-            foreach (var voiceModel in Voices)
-            {
-                if (voiceModel.Willpower > 0)
-                {
-                    voiceModel.Willpower--;
-                    OutputLogger.LogSubtractWillpower(voiceModel);
-                }
-            }
-        }
-
-        private void RemoveVoice(int index)
-        {
-            if (Voices.Count > 0 && index >= 0 && index < Voices.Count)
-            {
-                OutputLogger.LogRemoveVoice(Voices[index]);
-                Voices.RemoveAt(index);
-            }
-
-            ListViewSelectedIndex = 0;
         }
 
         private void AddSkill()
@@ -260,29 +189,29 @@ namespace EveryoneIsJohnTracker.ViewModels
             EditableSkillModel.Name = "";
         }
 
-
         private void AddVoice()
         {
-            var voice = new VoiceModel
+            GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
             {
                 Name = EditableVoiceModel.Name,
                 Willpower = EditableVoiceModel.Willpower,
 
-                Obsession = new ObsessionModel
-                {
-                    Name = EditableVoiceModel.Obsession.Name,
-                    Level = ComboboxLevelBinding + 1
-                },
-
                 Skills = new ObservableCollection<SkillModel>(EditableVoiceModel.Skills)
-            };
-
-            Voices.Add(voice);
-            OutputLogger.LogAddVoice(voice);
+            }, new ObsessionModel
+            {
+                Name = EditableVoiceModel.Obsession.Name,
+                Level = ComboboxLevelBinding + 1
+            }, OutputLogger);
 
             EditableVoiceModel.Clear();
             EditableSkillModel.Name = "";
             ComboboxLevelBinding = 0;
+        }
+
+        private void RemoveVoice()
+        {
+            GameMaster.RemoveVoiceAt(ListViewSelectedIndex);
+            ListViewSelectedIndex = 0;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EveryoneIsJohnTracker.Models
+namespace EveryoneIsJohnTracker.Base
 {
     public abstract class PropertyChangedBase : INotifyPropertyChanged
     {

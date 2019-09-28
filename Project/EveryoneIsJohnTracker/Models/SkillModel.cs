@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Models.OutputLoggers;
 
 namespace EveryoneIsJohnTracker.Models
 {

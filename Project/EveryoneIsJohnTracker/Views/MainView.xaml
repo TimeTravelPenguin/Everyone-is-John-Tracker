@@ -49,7 +49,7 @@
 
             <!-- Voices -->
             <ListView Grid.Row="0"
-                      ItemsSource="{Binding Voices}"
+                      ItemsSource="{Binding GameMaster.Voices}"
                       SelectedIndex="{Binding ListViewSelectedIndex}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -301,7 +301,7 @@
                        VerticalAlignment="Center"
                        Margin="5,0,0,0" />
 
-            <DataGrid ItemsSource="{Binding Inventory}"
+            <DataGrid ItemsSource="{Binding GameMaster.Inventory}"
                       Grid.Row="1"
                       CanUserAddRows="False"
                       CanUserDeleteRows="True"
@@ -366,7 +366,8 @@
                                 </DataTemplate.Triggers>
                                 <TextBox Name="logField"
                                          Text="{Binding Path=., NotifyOnTargetUpdated=True}"
-                                         IsReadOnly="True" />
+                                         IsReadOnly="True" 
+                                         TextWrapping="WrapWithOverflow"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
