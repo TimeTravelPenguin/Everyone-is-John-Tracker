@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EveryoneIsJohnTracker"
         xmlns:viewmodels="clr-namespace:EveryoneIsJohnTracker.ViewModels"
+        xmlns:helper="clr-namespace:EveryoneIsJohnTracker.Helpers"
+        xmlns:helpers="clr-namespace:EveryoneIsJohnTracker.Helpers"
         mc:Ignorable="d"
-        Title="Everyone is John Tracker" x:Name="MWindow" Height="600" Width="800" ResizeMode="NoResize">
+        Title="Everyone is John Tracker" Height="600" Width="800" ResizeMode="NoResize">
 
     <Window.DataContext>
         <viewmodels:MainViewModel />
@@ -345,10 +347,20 @@
 
             <GroupBox Header="Adventure Log"
                       Grid.Row="5">
-
-                <RichTextBox x:Name="RichTextLogOutput"
-                             Margin="5"
-                             IsReadOnly="False" />
+                <!--<TextBox x:Name="LogOutput"
+                         Margin="5"
+                         IsReadOnly="False" />-->
+                <ScrollViewer Margin="5"
+                              helpers:AutoScrollHelper.AutoScroll="True">
+                    <ItemsControl ItemsSource="{Binding OutputLogger.LogHistory}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=.}" 
+                                         IsReadOnly="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </GroupBox>
         </Grid>
     </Grid>

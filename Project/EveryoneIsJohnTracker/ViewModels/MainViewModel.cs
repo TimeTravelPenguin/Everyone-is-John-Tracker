@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Windows.Data;
 using EveryoneIsJohnTracker.Models;
 using Microsoft.Expression.Interactivity.Core;
-using NLog;
 
 namespace EveryoneIsJohnTracker.ViewModels
 {
@@ -16,6 +15,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         private VoiceModel _editableVoiceModel = new VoiceModel();
         private ObservableCollection<ItemModel> _inventory = new ObservableCollection<ItemModel>();
         private int _listViewSelectedIndex;
+
         private OutputLogger _outputLogger = new OutputLogger();
         private ICollectionView _voiceCollectionView;
 
@@ -143,8 +143,6 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _outputLogger, value);
         }
 
-        public static Logger Logger;
-
         public MainViewModel()
         {
             VoiceCollectionView = CollectionViewSource.GetDefaultView(Voices);
@@ -172,8 +170,6 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddItem = new ActionCommand(AddItem);
 
-            Logger = LogManager.GetLogger("RichLogger");
-            Logger.Info("This is a test");
         }
 
         private void AddItem()
@@ -189,8 +185,6 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             OutputLogger.LogAddItem(item);
 
-            Logger.Info(item.Name);
-
             EditableItemName = "";
         }
 
@@ -199,17 +193,20 @@ namespace EveryoneIsJohnTracker.ViewModels
             if (Voices[index].Obsession.Points > 0)
             {
                 Voices[index].Obsession.Points--;
+                OutputLogger.LogRemoveObsessionPoint(Voices[index]);
             }
         }
 
         private void AddObsessionPoint(int index)
         {
             Voices[index].Obsession.Points++;
+            OutputLogger.LogAddObsessionPoint(Voices[index]);
         }
 
         private void AddWillPower(int index)
         {
             Voices[index].Willpower++;
+            OutputLogger.LogAddWillpower(Voices[index]);
         }
 
         private void AddWillPowerAll()
@@ -217,6 +214,7 @@ namespace EveryoneIsJohnTracker.ViewModels
             foreach (var voiceModel in Voices)
             {
                 voiceModel.Willpower++;
+                OutputLogger.LogAddWillpower(voiceModel);
             }
         }
 
@@ -225,6 +223,7 @@ namespace EveryoneIsJohnTracker.ViewModels
             if (Voices[index].Willpower > 0)
             {
                 Voices[index].Willpower--;
+                OutputLogger.LogSubtractWillpower(Voices[index]);
             }
         }
 
@@ -235,14 +234,16 @@ namespace EveryoneIsJohnTracker.ViewModels
                 if (voiceModel.Willpower > 0)
                 {
                     voiceModel.Willpower--;
+                    OutputLogger.LogSubtractWillpower(voiceModel);
                 }
             }
         }
 
         private void RemoveVoice(int index)
         {
-            if (Voices.Count > 0)
+            if (Voices.Count > 0 && index >= 0 && index < Voices.Count)
             {
+                OutputLogger.LogRemoveVoice(Voices[index]);
                 Voices.RemoveAt(index);
             }
 
@@ -262,7 +263,7 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void AddVoice()
         {
-            Voices.Add(new VoiceModel
+            var voice = new VoiceModel
             {
                 Name = EditableVoiceModel.Name,
                 Willpower = EditableVoiceModel.Willpower,
@@ -274,7 +275,10 @@ namespace EveryoneIsJohnTracker.ViewModels
                 },
 
                 Skills = new ObservableCollection<SkillModel>(EditableVoiceModel.Skills)
-            });
+            };
+
+            Voices.Add(voice);
+            OutputLogger.LogAddVoice(voice);
 
             EditableVoiceModel.Clear();
             EditableSkillModel.Name = "";
