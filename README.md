@@ -1,6 +1,18 @@
 # Everyone is John
  A tracking tool for the "Everyone is John" roleplaying game
 
+## Game rules
+For an extensive list of game rules, [check them out here](https://rulebook.io/games/everyone-is-john/rules/)
+
+You play a man named John. On player is the Game Master and all else are voices in John's head.
+Each tern you bet "Willpoints" to take control. Each voice has multiple skills and one obsession.
+The aim is to complete your obsession as many times as you can. The harder your obsession, the higher its level (Level 1 to 3).
+Each time you achieve your obsession, you earn points equal to the level.
+
+As you play, you can use your skills to aid in the narrative of your actions. Skills may include being a smooth-talker, or someone who can cook a delicious meal. Your skills will aid you in achieving your goal.
+
+The game is played with a single die. You may use Willpoints to increase the odds in your favour, should you need to.
+
 ## Features
 - Can track Voices (Players) with the ability to track Willpower, Skills, and Obsession Points
 - Can track Inventory to track items players may obtain throughout the campaign
