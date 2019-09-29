@@ -11,17 +11,9 @@ namespace EveryoneIsJohnTracker.Extensions
             gameMaster.Inventory.Add(item);
         }
 
-        public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ObsessionModel obsession, IOutputLogger logger)
+        public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, IOutputLogger logger)
         {
-            voice.Logger = logger;
-            voice.Obsession.Logger = logger;
-
-            voice.Obsession.Name = obsession.Name;
-            voice.Obsession.Level = obsession.Level;
-            voice.Obsession.Points = obsession.Points;
-            voice.Obsession.VoiceName = voice.Name;
-            
-            gameMaster.Voices.Add(voice);
+            gameMaster.Voices.Add(new VoiceModel(voice) {Logger = logger});
         }
 
         public static void RemoveVoiceAt(this GameMasterModel gameMaster, int index)

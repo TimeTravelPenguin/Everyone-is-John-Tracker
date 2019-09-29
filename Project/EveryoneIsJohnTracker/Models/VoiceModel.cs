@@ -11,7 +11,6 @@ namespace EveryoneIsJohnTracker.Models
         private string _name;
         private ObsessionModel _obsession = new ObsessionModel();
         private ObservableCollection<SkillModel> _skills = new ObservableCollection<SkillModel>();
-        private string _skillsAsString;
         private int _willpower;
         public IOutputLogger Logger { get; set; }
 
@@ -29,7 +28,6 @@ namespace EveryoneIsJohnTracker.Models
                 }
 
                 Obsession.VoiceName = Name;
-                
             }
         }
 
@@ -51,14 +49,10 @@ namespace EveryoneIsJohnTracker.Models
         public ObservableCollection<SkillModel> Skills
         {
             get => _skills;
-            set
-            {
-                SetValue(ref _skills, value);
-                SetValue(ref _skillsAsString, string.Join(", ", Skills.Select(x => x.Name).ToArray()));
-            }
+            set => SetValue(ref _skills, value);
         }
 
-        public string SkillsAsString => _skillsAsString;
+        public string SkillsAsString => string.Join(", ", Skills.Select(x => x.Name).ToArray());
 
         public ObsessionModel Obsession
         {
@@ -72,6 +66,32 @@ namespace EveryoneIsJohnTracker.Models
             Obsession.Logger = logger;
             Willpower = 7;
             Skills.CollectionChanged += SkillsCollectionChanged;
+        }
+
+        public VoiceModel(VoiceModel voice)
+        {
+            Logger = new OutputNullLogger();
+            Obsession.Logger = new OutputNullLogger();
+
+            Obsession.Name = voice.Obsession.Name;
+            Obsession.Level = voice.Obsession.Level;
+            Obsession.Points = voice.Obsession.Points;
+            Obsession.VoiceName = voice.Name;
+
+            Name = voice.Name;
+            Willpower = voice.Willpower;
+
+            Skills.Clear();
+            foreach (var skill in voice.Skills)
+            {
+                Skills.Add(new SkillModel
+                {
+                    Name = skill.Name
+                });
+            }
+
+            Logger = voice.Logger;
+            Obsession.Logger = voice.Logger;
         }
 
         private void SkillsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

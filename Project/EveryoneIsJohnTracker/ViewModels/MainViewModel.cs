@@ -104,7 +104,7 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddItem = new ActionCommand(AddItem);
 
-            AddDemoData();
+            //AddDemoData();
         }
 
         // This is strictly for debugging
@@ -115,6 +115,12 @@ namespace EveryoneIsJohnTracker.ViewModels
                     Name = "TimeTravelPenguin",
                     Willpower = 7,
 
+                    Obsession = new ObsessionModel(OutputNullLogger)
+                    {
+                        Name = "To become a Penguin",
+                        Level = 3,
+                        Points = 0
+                    },
                     Skills = new ObservableCollection<SkillModel>
                     {
                         new SkillModel
@@ -131,17 +137,19 @@ namespace EveryoneIsJohnTracker.ViewModels
                         }
                     }
                 },
-                new ObsessionModel(OutputNullLogger)
-                {
-                    Name = "To become a Penguin",
-                    Level = 3,
-                    Points = 0
-                }, OutputLogger);
+                OutputLogger);
 
             GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
                 {
                     Name = "Caitlin",
                     Willpower = 7,
+
+                    Obsession = new ObsessionModel(OutputNullLogger)
+                    {
+                        Name = "To make new friends",
+                        Level = 2,
+                        Points = 0
+                    },
 
                     Skills = new ObservableCollection<SkillModel>
                     {
@@ -159,12 +167,7 @@ namespace EveryoneIsJohnTracker.ViewModels
                         }
                     }
                 },
-                new ObsessionModel(OutputNullLogger)
-                {
-                    Name = "To make new friends",
-                    Level = 2,
-                    Points = 0
-                }, OutputLogger);
+                OutputLogger);
         }
 
         private void AddItem()
@@ -191,17 +194,9 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void AddVoice()
         {
-            GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
-            {
-                Name = EditableVoiceModel.Name,
-                Willpower = EditableVoiceModel.Willpower,
+            EditableVoiceModel.Obsession.Level = ComboboxLevelBinding + 1;
 
-                Skills = new ObservableCollection<SkillModel>(EditableVoiceModel.Skills)
-            }, new ObsessionModel
-            {
-                Name = EditableVoiceModel.Obsession.Name,
-                Level = ComboboxLevelBinding + 1
-            }, OutputLogger);
+            GameMaster.AddVoice(EditableVoiceModel, OutputLogger);
 
             EditableVoiceModel.Clear();
             EditableSkillModel.Name = "";

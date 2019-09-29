@@ -278,7 +278,8 @@
                               CanUserAddRows="False"
                               CanUserDeleteRows="True">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Skill Name" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Skill Name"
+                                                Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -308,13 +309,13 @@
                       AutoGenerateColumns="False">
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Binding="{Binding Name}"
+                    <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=LostFocus}"
                                         Header="Item Name" />
 
-                    <DataGridTextColumn Binding="{Binding Count}"
+                    <DataGridTextColumn Binding="{Binding Count, UpdateSourceTrigger=LostFocus}"
                                         Header="Item Count" />
 
-                    <DataGridTextColumn Binding="{Binding Description}"
+                    <DataGridTextColumn Binding="{Binding Description, UpdateSourceTrigger=LostFocus}"
                                         Header="Item Description" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -355,8 +356,8 @@
                                     <EventTrigger RoutedEvent="Binding.TargetUpdated">
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.2" 
-                                                                 From="0.0" 
+                                                <DoubleAnimation Duration="0:0:0.2"
+                                                                 From="0.0"
                                                                  To="1.0"
                                                                  Storyboard.TargetProperty="Opacity"
                                                                  Storyboard.TargetName="logField" />
@@ -366,8 +367,8 @@
                                 </DataTemplate.Triggers>
                                 <TextBox Name="logField"
                                          Text="{Binding Path=., NotifyOnTargetUpdated=True}"
-                                         IsReadOnly="True" 
-                                         TextWrapping="WrapWithOverflow"/>
+                                         IsReadOnly="True"
+                                         TextWrapping="WrapWithOverflow" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
