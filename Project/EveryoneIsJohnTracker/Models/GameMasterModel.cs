@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
+using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
 {
@@ -24,7 +25,8 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _inventory, value);
         }
 
-        private static IOutputLogger Logger;
+        [JsonIgnore]
+        internal static IOutputLogger Logger { get; set; }
 
         public GameMasterModel(IOutputLogger logger)
         {
@@ -34,10 +36,12 @@ namespace EveryoneIsJohnTracker.Models
             Inventory.CollectionChanged += InventoryCollectionChanged;
         }
 
+        internal void SetLogger(IOutputLogger logger) => Logger = logger;
+
         /// <summary>
         ///     Events on modification of the Inventory collection
         /// </summary>
-        private void InventoryCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private static void InventoryCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -79,7 +83,7 @@ namespace EveryoneIsJohnTracker.Models
         /// <summary>
         ///     Events on modification of the Voice collection
         /// </summary>
-        private void VoiceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private static void VoiceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {

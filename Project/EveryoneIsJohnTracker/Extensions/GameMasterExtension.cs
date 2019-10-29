@@ -1,4 +1,5 @@
-﻿using EveryoneIsJohnTracker.Models;
+﻿using System;
+using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
 
 namespace EveryoneIsJohnTracker.Extensions
@@ -44,12 +45,54 @@ namespace EveryoneIsJohnTracker.Extensions
             }
         }
 
-        public static void AddObsessionPoint(this GameMasterModel gameMaster, int index, int value)
+        internal static void AddObsessionPoint(this GameMasterModel gameMaster, int index, int value)
         {
             if (gameMaster.Voices.Count > 0 && gameMaster.Voices[index].Obsession.Points + value >= 0)
             {
                 gameMaster.Voices[index].Obsession.Points += value;
             }
+        }
+
+        internal static void LoadGameData(this GameMasterModel gameMaster, GameMasterModel data, IOutputLogger logger)
+        {
+            // Overwrite gameMaster data with new game data
+            gameMaster.SetLogger(new OutputNullLogger());
+
+            var errorFlag = false;
+            
+            gameMaster.Inventory.Clear();
+            foreach (var item in data.Inventory)
+            {
+                try
+                {
+                    item.Logger = logger;
+
+                    gameMaster.Inventory.Add(item);
+                }
+                catch (Exception ex)
+                {
+                    errorFlag = true;
+                }
+            }
+
+            gameMaster.Voices.Clear();
+            foreach (var voice in data.Voices)
+            {
+                try
+                {
+                    voice.Logger = logger;
+                    voice.Obsession.Logger = logger;
+
+                    gameMaster.Voices.Add(voice);
+                }
+                catch (Exception e)
+                {
+                    errorFlag = true;
+                }
+            }
+
+            gameMaster.SetLogger(logger);
+            logger.LogDataLoad(errorFlag);
         }
     }
 }

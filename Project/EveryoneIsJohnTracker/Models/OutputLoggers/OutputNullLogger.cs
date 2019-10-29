@@ -57,5 +57,13 @@
         public void LogItemDescriptionChanged(string name)
         {
         }
+
+        public void LogDataLoad(bool errorFlag)
+        {
+        }
+
+        public void LogDataSave(string fileName, bool errorFlag)
+        {
+        }
     }
 }

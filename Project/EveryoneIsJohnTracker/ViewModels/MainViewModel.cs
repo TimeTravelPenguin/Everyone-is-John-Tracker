@@ -56,6 +56,8 @@ namespace EveryoneIsJohnTracker.ViewModels
         public ActionCommand CommandAddObsessionPoint { get; set; }
         public ActionCommand CommandRemoveObsessionPoint { get; set; }
         public ActionCommand CommandAddItem { get; set; }
+        public ActionCommand CommandLoadGame { get; set; }
+        public ActionCommand CommandSaveGame { get; set; }
 
         public int ComboboxLevelBinding
         {
@@ -104,7 +106,11 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddItem = new ActionCommand(AddItem);
 
-            //AddDemoData();
+            CommandLoadGame = new ActionCommand(() => GameMaster.FileInput(OutputLogger));
+
+            CommandSaveGame = new ActionCommand(() => GameMaster.FileOutput(OutputLogger));
+
+            // AddDemoData();
         }
 
         // This is strictly for debugging
@@ -172,6 +178,7 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void AddItem()
         {
+            // Instantiate with NullLogger to prevent logging, and then pass set variable values
             GameMaster.AddItem(new ItemModel(OutputNullLogger)
             {
                 Name = EditableItemName,

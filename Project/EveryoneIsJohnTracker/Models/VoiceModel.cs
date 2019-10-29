@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
+using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
 {
@@ -12,6 +13,8 @@ namespace EveryoneIsJohnTracker.Models
         private ObsessionModel _obsession = new ObsessionModel();
         private ObservableCollection<SkillModel> _skills = new ObservableCollection<SkillModel>();
         private int _willpower;
+
+        [JsonIgnore]
         public IOutputLogger Logger { get; set; }
 
         public string Name
@@ -60,6 +63,12 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _obsession, value);
         }
 
+        public VoiceModel()
+        {
+            Logger = new OutputNullLogger();
+            Obsession.Logger = new OutputNullLogger();
+        }
+
         public VoiceModel(IOutputLogger logger)
         {
             Logger = logger;
@@ -94,7 +103,8 @@ namespace EveryoneIsJohnTracker.Models
             Obsession.Logger = voice.Logger;
         }
 
-        private void SkillsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        // TODO
+        private static void SkillsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //throw new NotImplementedException();
         }

@@ -89,6 +89,20 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
             LogHistory.Add($"Item {name}'s description has been changed");
         }
 
+        public void LogDataLoad(bool errorFlag)
+        {
+            LogHistory.Add(errorFlag
+                ? "File has been loaded. There were issues loading some data"
+                : "File has been successfully loaded");
+        }
+
+        public void LogDataSave(string fileName, bool errorFlag)
+        {
+            LogHistory.Add(errorFlag
+                ? "There was an error saving the file. File was not saved..."
+                : $"File {fileName} has been successfully saved");
+        }
+
         private ObservableCollection<string> _logHistory = new ObservableCollection<string>();
 
         public ObservableCollection<string> LogHistory

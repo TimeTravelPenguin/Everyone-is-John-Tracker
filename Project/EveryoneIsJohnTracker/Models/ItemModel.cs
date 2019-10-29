@@ -1,5 +1,6 @@
 ﻿using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
+using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
 {
@@ -8,6 +9,8 @@ namespace EveryoneIsJohnTracker.Models
         private int _count;
         private string _description;
         private string _name;
+
+        [JsonIgnore]
         public IOutputLogger Logger { get; set; }
 
         public string Name
@@ -53,6 +56,11 @@ namespace EveryoneIsJohnTracker.Models
                     Logger.LogItemDescriptionChanged(Name);
                 }
             }
+        }
+
+        public ItemModel()
+        {
+            Logger = new OutputNullLogger();
         }
 
         public ItemModel(IOutputLogger logger)

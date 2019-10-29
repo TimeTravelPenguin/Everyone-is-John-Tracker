@@ -16,5 +16,7 @@
         void LogItemCountChanged(string name, int oldValue, int value);
         void LogObsessionPointsChanged(string voiceName, int oldValue, int value);
         void LogItemDescriptionChanged(string name);
+        void LogDataLoad( bool errorFlag);
+        void LogDataSave(string fileName, bool errorFlag);
     }
 }

@@ -32,7 +32,10 @@
         <DockPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <!-- File -->
-                <MenuItem Header="_File" />
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Load" Command="{Binding CommandLoadGame}"/>
+                    <MenuItem Header="_Save" Command="{Binding CommandSaveGame}"/>
+                </MenuItem>
 
                 <!-- Rules -->
                 <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
