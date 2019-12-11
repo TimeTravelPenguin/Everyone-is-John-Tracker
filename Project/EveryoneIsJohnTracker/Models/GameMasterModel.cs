@@ -1,4 +1,20 @@
-﻿using System;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: GameMasterModel.cs
+// 
+// Current Data:
+// 2019-12-11 7:14 PM
+// 
+// Creation Date:
+// 2019-09-28 9:40 PM
+
+#endregion
+
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using EveryoneIsJohnTracker.Base;
@@ -25,10 +41,9 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _inventory, value);
         }
 
-        [JsonIgnore]
-        internal static IOutputLogger Logger { get; set; }
+        [JsonIgnore] public static ILogger Logger { get; set; }
 
-        public GameMasterModel(IOutputLogger logger)
+        public GameMasterModel(ILogger logger)
         {
             Logger = logger;
 
@@ -36,7 +51,6 @@ namespace EveryoneIsJohnTracker.Models
             Inventory.CollectionChanged += InventoryCollectionChanged;
         }
 
-        internal void SetLogger(IOutputLogger logger) => Logger = logger;
 
         /// <summary>
         ///     Events on modification of the Inventory collection
@@ -76,7 +90,7 @@ namespace EveryoneIsJohnTracker.Models
                 }
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(e));
             }
         }
 
@@ -124,7 +138,7 @@ namespace EveryoneIsJohnTracker.Models
                 }
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(e));
             }
         }
     }

@@ -1,7 +1,26 @@
-﻿namespace EveryoneIsJohnTracker.Models.OutputLoggers
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: ILogger.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-28 10:29 PM
+
+#endregion
+
+using System.Collections.ObjectModel;
+
+namespace EveryoneIsJohnTracker.Models.OutputLoggers
 {
-    internal interface IOutputLogger
+    internal interface ILogger
     {
+        ObservableCollection<Log> LogHistory { get; set; }
         void LogAddItem(ItemModel item);
         void LogAddVoice(VoiceModel voice);
         void LogRemoveVoice(VoiceModel voice);
@@ -16,7 +35,7 @@
         void LogItemCountChanged(string name, int oldValue, int value);
         void LogObsessionPointsChanged(string voiceName, int oldValue, int value);
         void LogItemDescriptionChanged(string name);
-        void LogDataLoad( bool errorFlag);
+        void LogDataLoad(bool errorFlag);
         void LogDataSave(string fileName, bool errorFlag);
     }
 }

@@ -1,4 +1,20 @@
-﻿using System.Windows;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: ObsessionModel.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-27 9:13 AM
+
+#endregion
+
+using System.Windows;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
 
@@ -10,7 +26,7 @@ namespace EveryoneIsJohnTracker.Models
         private string _name;
         private int _points;
         private string _voiceName;
-        public IOutputLogger Logger { get; set; }
+        public ILogger Logger { get; set; }
 
         public string VoiceName
         {
@@ -23,7 +39,7 @@ namespace EveryoneIsJohnTracker.Models
             get => _level;
             set
             {
-                var oldValue = Level;
+                var oldValue = _level;
                 CheckLevelValue(ref value);
                 SetValue(ref _level, value);
 
@@ -39,7 +55,7 @@ namespace EveryoneIsJohnTracker.Models
             get => _name;
             set
             {
-                var oldValue = Name;
+                var oldValue = _name;
                 SetValue(ref _name, value);
 
                 if (oldValue != value)
@@ -54,7 +70,7 @@ namespace EveryoneIsJohnTracker.Models
             get => _points;
             set
             {
-                var oldValue = Points;
+                var oldValue = _points;
                 SetValue(ref _points, value);
 
                 if (oldValue != value)
@@ -64,7 +80,7 @@ namespace EveryoneIsJohnTracker.Models
             }
         }
 
-        public ObsessionModel(IOutputLogger logger)
+        public ObsessionModel(ILogger logger)
         {
             Logger = logger;
         }
@@ -73,7 +89,7 @@ namespace EveryoneIsJohnTracker.Models
         {
         }
 
-        internal void CheckLevelValue(ref int level)
+        private static void CheckLevelValue(ref int level)
         {
             if (level >= 1 && level <= 3)
             {

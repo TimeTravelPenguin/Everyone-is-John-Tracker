@@ -1,6 +1,22 @@
-﻿namespace EveryoneIsJohnTracker.Models.OutputLoggers
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: NullLogger.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-28 10:29 PM
+
+#endregion
+
+namespace EveryoneIsJohnTracker.Models.OutputLoggers
 {
-    internal class OutputNullLogger : IOutputLogger
+    internal class NullLogger : LoggerBase, ILogger
     {
         public void LogAddItem(ItemModel item)
         {

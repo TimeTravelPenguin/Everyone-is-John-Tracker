@@ -1,4 +1,20 @@
-﻿using System.Collections.ObjectModel;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: VoiceModel.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-27 9:09 AM
+
+#endregion
+
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using EveryoneIsJohnTracker.Base;
@@ -9,13 +25,22 @@ namespace EveryoneIsJohnTracker.Models
 {
     internal class VoiceModel : PropertyChangedBase
     {
+        private ILogger _logger;
         private string _name;
         private ObsessionModel _obsession = new ObsessionModel();
         private ObservableCollection<SkillModel> _skills = new ObservableCollection<SkillModel>();
         private int _willpower;
 
         [JsonIgnore]
-        public IOutputLogger Logger { get; set; }
+        public ILogger Logger
+        {
+            get => _logger;
+            set
+            {
+                SetValue(ref _logger, value);
+                _obsession.Logger = value;
+            }
+        }
 
         public string Name
         {
@@ -65,11 +90,11 @@ namespace EveryoneIsJohnTracker.Models
 
         public VoiceModel()
         {
-            Logger = new OutputNullLogger();
-            Obsession.Logger = new OutputNullLogger();
+            Logger = LogFactory.NewLogger(LoggerType.NullLogger);
+            Obsession.Logger = LogFactory.NewLogger(LoggerType.NullLogger);
         }
 
-        public VoiceModel(IOutputLogger logger)
+        public VoiceModel(ILogger logger)
         {
             Logger = logger;
             Obsession.Logger = logger;
@@ -79,8 +104,8 @@ namespace EveryoneIsJohnTracker.Models
 
         public VoiceModel(VoiceModel voice)
         {
-            Logger = new OutputNullLogger();
-            Obsession.Logger = new OutputNullLogger();
+            Logger = LogFactory.NewLogger(LoggerType.NullLogger);
+            Obsession.Logger = LogFactory.NewLogger(LoggerType.NullLogger);
 
             Obsession.Name = voice.Obsession.Name;
             Obsession.Level = voice.Obsession.Level;

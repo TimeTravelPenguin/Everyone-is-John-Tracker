@@ -1,4 +1,20 @@
-﻿using System;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: PropertyChangedBase.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-28 11:57 PM
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

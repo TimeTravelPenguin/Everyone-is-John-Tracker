@@ -1,4 +1,20 @@
-﻿using EveryoneIsJohnTracker.Base;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: ItemModel.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-27 3:04 PM
+
+#endregion
+
+using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
 using Newtonsoft.Json;
 
@@ -10,8 +26,7 @@ namespace EveryoneIsJohnTracker.Models
         private string _description;
         private string _name;
 
-        [JsonIgnore]
-        public IOutputLogger Logger { get; set; }
+        [JsonIgnore] public ILogger Logger { get; set; }
 
         public string Name
         {
@@ -60,10 +75,10 @@ namespace EveryoneIsJohnTracker.Models
 
         public ItemModel()
         {
-            Logger = new OutputNullLogger();
+            Logger = LogFactory.NewLogger(LoggerType.NullLogger);
         }
 
-        public ItemModel(IOutputLogger logger)
+        public ItemModel(ILogger logger)
         {
             Logger = logger;
         }

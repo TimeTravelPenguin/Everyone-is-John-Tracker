@@ -1,4 +1,20 @@
-﻿using System.Windows;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: AutoScrollHelper.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-28 4:07 PM
+
+#endregion
+
+using System.Windows;
 using System.Windows.Controls;
 using EveryoneIsJohnTracker.Extensions;
 

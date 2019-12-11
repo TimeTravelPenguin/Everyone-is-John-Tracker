@@ -1,4 +1,20 @@
-﻿using System;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: FileIOExtension.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-10-29 2:05 PM
+
+#endregion
+
+using System;
 using System.IO;
 using System.Windows;
 using EveryoneIsJohnTracker.Models;
@@ -10,7 +26,7 @@ namespace EveryoneIsJohnTracker.Extensions
 {
     internal static class FileIOExtension
     {
-        internal static void FileOutput(this GameMasterModel gameMasterModel, IOutputLogger logger)
+        internal static void FileOutput(this GameMasterModel gameMasterModel, ILogger logger)
         {
             var serializedData = JsonConvert.SerializeObject(gameMasterModel);
 
@@ -39,7 +55,7 @@ namespace EveryoneIsJohnTracker.Extensions
             }
         }
 
-        internal static void FileInput(this GameMasterModel gameMasterModel, IOutputLogger logger)
+        internal static void FileInput(this GameMasterModel gameMasterModel, ILogger logger)
         {
             var ofd = new OpenFileDialog
             {

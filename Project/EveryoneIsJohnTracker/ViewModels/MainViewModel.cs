@@ -1,4 +1,20 @@
-﻿using System.Collections.ObjectModel;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: MainViewModel.cs
+// 
+// Current Data:
+// 2019-12-11 7:06 PM
+// 
+// Creation Date:
+// 2019-09-27 8:49 AM
+
+#endregion
+
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Data;
@@ -15,7 +31,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         private int _comboboxLevelBinding;
         private string _editableItemName;
         private SkillModel _editableSkillModel = new SkillModel(); // Used to bind to view
-        private VoiceModel _editableVoiceModel = new VoiceModel(OutputNullLogger); // Used to add to Voices Collection
+        private VoiceModel _editableVoiceModel = new VoiceModel(NullLogger); // Used to add to Voices Collection
 
 
         private int _listViewSelectedIndex;
@@ -74,8 +90,8 @@ namespace EveryoneIsJohnTracker.ViewModels
         // GameMaster holds all the collections stored for the game
         public static GameMasterModel GameMaster { get; set; }
 
-        public static OutputLogger OutputLogger { get; } = new OutputLogger();
-        private static readonly OutputNullLogger OutputNullLogger = new OutputNullLogger();
+        public static ILogger OutputLogger { get; } = LogFactory.NewLogger(LoggerType.OutputLogger);
+        private static ILogger NullLogger { get; } = LogFactory.NewLogger(LoggerType.NullLogger);
 
         public MainViewModel()
         {
@@ -116,12 +132,12 @@ namespace EveryoneIsJohnTracker.ViewModels
         // This is strictly for debugging
         private void AddDemoData()
         {
-            GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
+            GameMaster.AddVoice(new VoiceModel(NullLogger)
                 {
                     Name = "TimeTravelPenguin",
                     Willpower = 7,
 
-                    Obsession = new ObsessionModel(OutputNullLogger)
+                    Obsession = new ObsessionModel(NullLogger)
                     {
                         Name = "To become a Penguin",
                         Level = 3,
@@ -145,12 +161,12 @@ namespace EveryoneIsJohnTracker.ViewModels
                 },
                 OutputLogger);
 
-            GameMaster.AddVoice(new VoiceModel(OutputNullLogger)
+            GameMaster.AddVoice(new VoiceModel(NullLogger)
                 {
                     Name = "Caitlin",
                     Willpower = 7,
 
-                    Obsession = new ObsessionModel(OutputNullLogger)
+                    Obsession = new ObsessionModel(NullLogger)
                     {
                         Name = "To make new friends",
                         Level = 2,
@@ -178,36 +194,45 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void AddItem()
         {
-            // Instantiate with NullLogger to prevent logging, and then pass set variable values
-            GameMaster.AddItem(new ItemModel(OutputNullLogger)
+            if (!string.IsNullOrEmpty(EditableItemName))
             {
-                Name = EditableItemName,
-                Count = 1,
-                Description = ""
-            }, OutputLogger);
+                // Instantiate with NullLogger to prevent logging, and then pass set variable values
+                GameMaster.AddItem(new ItemModel(NullLogger)
+                {
+                    Name = EditableItemName,
+                    Count = 1,
+                    Description = ""
+                }, OutputLogger);
 
-            EditableItemName = "";
+                EditableItemName = "";
+            }
         }
 
         private void AddSkill()
         {
-            EditableVoiceModel.Skills.Add(new SkillModel
+            if (!string.IsNullOrEmpty(EditableSkillModel.Name))
             {
-                Name = EditableSkillModel.Name
-            });
+                EditableVoiceModel.Skills.Add(new SkillModel
+                {
+                    Name = EditableSkillModel.Name
+                });
 
-            EditableSkillModel.Name = "";
+                EditableSkillModel.Name = "";
+            }
         }
 
         private void AddVoice()
         {
-            EditableVoiceModel.Obsession.Level = ComboboxLevelBinding + 1;
+            if (!string.IsNullOrEmpty(EditableVoiceModel.Name))
+            {
+                EditableVoiceModel.Obsession.Level = ComboboxLevelBinding + 1;
 
-            GameMaster.AddVoice(EditableVoiceModel, OutputLogger);
+                GameMaster.AddVoice(EditableVoiceModel, OutputLogger);
 
-            EditableVoiceModel.Clear();
-            EditableSkillModel.Name = "";
-            ComboboxLevelBinding = 0;
+                EditableVoiceModel.Clear();
+                EditableSkillModel.Name = "";
+                ComboboxLevelBinding = 0;
+            }
         }
 
         private void RemoveVoice()

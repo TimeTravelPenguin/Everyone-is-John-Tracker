@@ -1,4 +1,19 @@
-﻿using System;
+﻿#region Title Header
+
+// Name: Phillip Smith
+// 
+// Solution: EveryoneIsJohnTracker
+// Project: EveryoneIsJohnTracker
+// File Name: GameMasterExtension.cs
+// 
+// Current Data:
+// 2019-12-11 7:02 PM
+// 
+// Creation Date:
+// 2019-09-28 9:56 PM
+
+#endregion
+
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
 
@@ -6,13 +21,13 @@ namespace EveryoneIsJohnTracker.Extensions
 {
     internal static class GameMasterExtension
     {
-        public static void AddItem(this GameMasterModel gameMaster, ItemModel item, IOutputLogger logger)
+        public static void AddItem(this GameMasterModel gameMaster, ItemModel item, ILogger logger)
         {
             item.Logger = logger;
             gameMaster.Inventory.Add(item);
         }
 
-        public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, IOutputLogger logger)
+        public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ILogger logger)
         {
             gameMaster.Voices.Add(new VoiceModel(voice) {Logger = logger});
         }
@@ -53,13 +68,13 @@ namespace EveryoneIsJohnTracker.Extensions
             }
         }
 
-        internal static void LoadGameData(this GameMasterModel gameMaster, GameMasterModel data, IOutputLogger logger)
+        internal static void LoadGameData(this GameMasterModel gameMaster, GameMasterModel data, ILogger logger)
         {
             // Overwrite gameMaster data with new game data
-            gameMaster.SetLogger(new OutputNullLogger());
+            GameMasterModel.Logger = LogFactory.NewLogger(LoggerType.NullLogger);
 
             var errorFlag = false;
-            
+
             gameMaster.Inventory.Clear();
             foreach (var item in data.Inventory)
             {
@@ -69,7 +84,7 @@ namespace EveryoneIsJohnTracker.Extensions
 
                     gameMaster.Inventory.Add(item);
                 }
-                catch (Exception ex)
+                catch
                 {
                     errorFlag = true;
                 }
@@ -85,13 +100,13 @@ namespace EveryoneIsJohnTracker.Extensions
 
                     gameMaster.Voices.Add(voice);
                 }
-                catch (Exception e)
+                catch
                 {
                     errorFlag = true;
                 }
             }
 
-            gameMaster.SetLogger(logger);
+            GameMasterModel.Logger = logger;
             logger.LogDataLoad(errorFlag);
         }
     }
