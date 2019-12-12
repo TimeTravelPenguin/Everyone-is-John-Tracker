@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:EveryoneIsJohnTracker"
         xmlns:viewmodels="clr-namespace:EveryoneIsJohnTracker.ViewModels"
         xmlns:helpers="clr-namespace:EveryoneIsJohnTracker.Helpers"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="Everyone is John Tracker" Height="600" Width="800" ResizeMode="NoResize">
 
@@ -309,7 +310,8 @@
                       Grid.Row="1"
                       CanUserAddRows="False"
                       CanUserDeleteRows="True"
-                      AutoGenerateColumns="False">
+                      AutoGenerateColumns="False"
+                      ColumnWidth="*">
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=LostFocus}"
@@ -319,7 +321,13 @@
                                         Header="Item Count" />
 
                     <DataGridTextColumn Binding="{Binding Description, UpdateSourceTrigger=LostFocus}"
-                                        Header="Item Description" />
+                                        Header="Item Description">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -348,58 +356,77 @@
 
             </Grid>
 
-            <GroupBox Header="Adventure Log"
-                      Grid.Row="5">
-                <ScrollViewer helpers:AutoScrollHelper.AutoScroll="True"
-                              BorderBrush="LightGray"
-                              BorderThickness="1">
-                    <ItemsControl ItemsSource="{Binding OutputLogger.LogHistory}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+            <TabControl Grid.Row="5">
+                <TabItem Header="Adventure Log">
+                    <ScrollViewer helpers:AutoScrollHelper.AutoScroll="True"
+                                  BorderBrush="LightGray"
+                                  BorderThickness="1">
+                        <ItemsControl ItemsSource="{Binding OutputLogger.LogHistory}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
 
-                                <DataTemplate.Triggers>
-                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3"
-                                                                 From="0.0"
-                                                                 To="1.0"
-                                                                 Storyboard.TargetProperty="Opacity"
-                                                                 Storyboard.TargetName="logField" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </DataTemplate.Triggers>
+                                    <DataTemplate.Triggers>
+                                        <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                     From="0.0"
+                                                                     To="1.0"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     Storyboard.TargetName="logField" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </DataTemplate.Triggers>
 
-                                <Grid Name="logField">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="3" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid Name="logField">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="3" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <TextBlock
-                                        Text="{Binding TimeStamp, 
+                                        <TextBlock
+                                            Text="{Binding TimeStamp, 
                                     StringFormat=ddd HH:mm, 
                                     NotifyOnTargetUpdated=True,
                                     Mode=OneWay}"
-                                        Grid.Column="1" />
+                                            Grid.Column="1" />
 
-                                    <TextBlock
-                                        Text="{Binding Message, 
+                                        <TextBlock
+                                            Text="{Binding Message, 
                                     NotifyOnTargetUpdated=True,
                                     Mode=OneWay}"
-                                        TextWrapping="WrapWithOverflow"
-                                        Grid.Column="3" />
-                                </Grid>
+                                            TextWrapping="WrapWithOverflow"
+                                            Grid.Column="3" />
+                                    </Grid>
 
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </GroupBox>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Live Chart">
+                    <lvc:CartesianChart
+                        DataContext="{Binding GameMaster.ChartModel}"
+                        Series="{Binding PlayerSeriesCollection}"
+                        LegendLocation="Top">
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Obsession Points"
+                                      MinValue="0"
+                                      IsMerged="False" />
+                        </lvc:CartesianChart.AxisY>
+
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Voices"
+                                      IsMerged="False" />
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+                </TabItem>
+            </TabControl>
         </Grid>
     </Grid>
 </Window>

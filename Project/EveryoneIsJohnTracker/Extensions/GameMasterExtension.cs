@@ -7,7 +7,7 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-13 1:44 AM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
@@ -30,6 +30,7 @@ namespace EveryoneIsJohnTracker.Extensions
         public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ILogger logger)
         {
             gameMaster.Voices.Add(new VoiceModel(voice) {Logger = logger});
+            gameMaster.UpdateChart();
         }
 
         public static void RemoveVoiceAt(this GameMasterModel gameMaster, int index)
@@ -37,9 +38,9 @@ namespace EveryoneIsJohnTracker.Extensions
             if (gameMaster.Voices.Count > 0 && index >= 0 && index < gameMaster.Voices.Count)
             {
                 gameMaster.Voices.RemoveAt(index);
+                gameMaster.UpdateChart();
             }
         }
-
 
         public static void AddWillpower(this GameMasterModel gameMaster, int index, int value)
         {
@@ -51,12 +52,19 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void AddWillpowerAll(this GameMasterModel gameMaster, int value)
         {
+            var change = false;
             foreach (var voiceModel in gameMaster.Voices)
             {
                 if (voiceModel.Willpower + value >= 0)
                 {
                     voiceModel.Willpower += value;
+                    change = true;
                 }
+            }
+
+            if (change)
+            {
+                gameMaster.IncrementHistory();
             }
         }
 
@@ -65,6 +73,9 @@ namespace EveryoneIsJohnTracker.Extensions
             if (gameMaster.Voices.Count > 0 && gameMaster.Voices[index].Obsession.Points + value >= 0)
             {
                 gameMaster.Voices[index].Obsession.Points += value;
+
+                gameMaster.IncrementHistory();
+                gameMaster.UpdateChart();
             }
         }
 
@@ -105,6 +116,8 @@ namespace EveryoneIsJohnTracker.Extensions
                     errorFlag = true;
                 }
             }
+
+            gameMaster.Turn = data.Turn;
 
             GameMasterModel.Logger = logger;
             logger.LogDataLoad(errorFlag);

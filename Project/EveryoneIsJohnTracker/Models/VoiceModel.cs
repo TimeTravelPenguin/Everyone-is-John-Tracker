@@ -7,7 +7,7 @@
 // File Name: VoiceModel.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-12 11:49 PM
 // 
 // Creation Date:
 // 2019-09-27 9:09 AM
@@ -28,8 +28,15 @@ namespace EveryoneIsJohnTracker.Models
         private ILogger _logger;
         private string _name;
         private ObsessionModel _obsession = new ObsessionModel();
+        private ObservableCollection<(int, int)> _scoreHistory = new ObservableCollection<(int, int)> {(0, 0)};
         private ObservableCollection<SkillModel> _skills = new ObservableCollection<SkillModel>();
         private int _willpower;
+
+        public ObservableCollection<(int, int)> ScoreHistory
+        {
+            get => _scoreHistory;
+            set => SetValue(ref _scoreHistory, value);
+        }
 
         [JsonIgnore]
         public ILogger Logger

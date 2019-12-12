@@ -7,7 +7,7 @@
 // File Name: GameMasterModel.cs
 // 
 // Current Data:
-// 2019-12-11 7:14 PM
+// 2019-12-13 1:34 AM
 // 
 // Creation Date:
 // 2019-09-28 9:40 PM
@@ -25,14 +25,27 @@ namespace EveryoneIsJohnTracker.Models
 {
     internal class GameMasterModel : PropertyChangedBase
     {
+        private ChartModel _chartModel;
         private ObservableCollection<ItemModel> _inventory = new ObservableCollection<ItemModel>();
-
         private ObservableCollection<VoiceModel> _voices = new ObservableCollection<VoiceModel>();
+
+        [JsonIgnore]
+        public ChartModel ChartModel
+        {
+            get => _chartModel;
+            set => SetValue(ref _chartModel, value);
+        }
+
+        public int Turn { get; set; } = 1;
 
         public ObservableCollection<VoiceModel> Voices
         {
             get => _voices;
-            set => SetValue(ref _voices, value);
+            set
+            {
+                SetValue(ref _voices, value);
+                UpdateChart();
+            }
         }
 
         public ObservableCollection<ItemModel> Inventory
@@ -45,12 +58,20 @@ namespace EveryoneIsJohnTracker.Models
 
         public GameMasterModel(ILogger logger)
         {
+            ChartModel = new ChartModel(Voices);
+
             Logger = logger;
 
             Voices.CollectionChanged += VoiceCollectionChanged;
             Inventory.CollectionChanged += InventoryCollectionChanged;
         }
 
+        public void UpdateChart()
+        {
+            ChartModel.UpdateValues(_voices);
+            OnPropertyChanged(nameof(ChartModel));
+
+        }
 
         /// <summary>
         ///     Events on modification of the Inventory collection
@@ -92,6 +113,16 @@ namespace EveryoneIsJohnTracker.Models
                 default:
                     throw new ArgumentOutOfRangeException(nameof(e));
             }
+        }
+
+        public void IncrementHistory()
+        {
+            foreach (var voiceModel in Voices)
+            {
+                voiceModel.ScoreHistory.Add((Turn, voiceModel.Obsession.Points));
+            }
+
+            Turn++;
         }
 
         /// <summary>

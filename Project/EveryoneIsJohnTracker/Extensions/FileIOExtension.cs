@@ -53,6 +53,8 @@ namespace EveryoneIsJohnTracker.Extensions
                     MessageBox.Show("There was an error saving the file" + Environment.NewLine + ex.Message, "Error");
                 }
             }
+
+            gameMasterModel.UpdateChart();
         }
 
         internal static void FileInput(this GameMasterModel gameMasterModel, ILogger logger)
