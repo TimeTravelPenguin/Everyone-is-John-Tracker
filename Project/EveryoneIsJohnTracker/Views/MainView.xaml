@@ -32,9 +32,16 @@
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <!-- Menu -->
+        <!--Region Menu bar -->
         <DockPanel Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
+
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel HorizontalAlignment="Stretch" />
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+
                 <!-- File -->
                 <MenuItem Header="_File">
                     <MenuItem Header="_Load" Command="{Binding CommandLoadGame}" />
@@ -43,10 +50,19 @@
 
                 <!-- Rules -->
                 <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
+
+                <!-- Turn Buttons -->
+                <MenuItem Header="_Previous Turn" HorizontalAlignment="Right"
+                          Command="{Binding CommandPreviousTurn}" />
+
+                <MenuItem Header="_Next Turn" HorizontalAlignment="Right"
+                          Command="{Binding CommandNextTurn}" />
+
             </Menu>
         </DockPanel>
+        <!--EndRegion-->
 
-        <!-- Left Side -->
+        <!--Region Left Side -->
         <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -54,7 +70,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Voices -->
+            <!--Region Voices ListView -->
             <ListView Grid.Row="0"
                       ItemsSource="{Binding GameMaster.Voices}"
                       SelectedIndex="{Binding ListViewSelectedIndex}">
@@ -108,7 +124,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--EndRegion-->
 
+            <!--Region Voice Controls Buttons -->
             <GroupBox Header="Voice Controls" Grid.Row="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -187,8 +205,9 @@
                             Width="100" />
                 </Grid>
             </GroupBox>
+            <!--EndRegion-->
 
-            <!-- Player Info / Add -->
+            <!--Region Add New Voice -->
             <GroupBox Header="Add Voice" Grid.Row="2">
 
                 <!-- Add Voice -->
@@ -291,9 +310,12 @@
                     </DataGrid>
                 </Grid>
             </GroupBox>
-        </Grid>
+            <!--EndRegion-->
 
-        <!-- Right Side -->
+        </Grid>
+        <!--EndRegion-->
+
+        <!--Region Right Side -->
         <Grid Grid.Row="2" Grid.Column="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -304,6 +326,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!--Region Inventory DataGrid-->
             <TextBlock Text="Inventory:"
                        Grid.Row="0"
                        VerticalAlignment="Center"
@@ -333,7 +356,9 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <!--EndRegion-->
 
+            <!--Region Add new item to inventory section -->
             <Grid Grid.Row="3" Margin="5,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -358,8 +383,11 @@
                         Width="100" />
 
             </Grid>
+            <!--EndRegion-->
 
+            <!--Region Tab Control-->
             <TabControl Grid.Row="5">
+                <!--Region Adventure Log-->
                 <TabItem Header="Adventure Log">
                     <ScrollViewer helpers:AutoScrollHelper.AutoScroll="True"
                                   BorderBrush="LightGray"
@@ -411,7 +439,9 @@
                         </ItemsControl>
                     </ScrollViewer>
                 </TabItem>
+                <!--EndRegion-->
 
+                <!--Region Live Chart-->
                 <TabItem Header="Live Chart">
                     <lvc:CartesianChart
                         DataContext="{Binding GameMaster.ChartModel}"
@@ -430,7 +460,13 @@
                         </lvc:CartesianChart.AxisX>
                     </lvc:CartesianChart>
                 </TabItem>
+                <!--EndRegion-->
+
             </TabControl>
+            <!--EndRegion-->
+
         </Grid>
+        <!--EndRegion-->
+
     </Grid>
 </Window>
