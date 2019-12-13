@@ -37,6 +37,7 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _chartModel, value);
         }
 
+
         public int Turn { get; set; } = 1;
 
         public ObservableCollection<VoiceModel> Voices
