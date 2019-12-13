@@ -76,7 +76,6 @@ namespace EveryoneIsJohnTracker.Extensions
                 gameMaster.Voices[index].Obsession.Points += value;
 
                 gameMaster.IncrementHistory();
-                //gameMaster.UpdateChart();
             }
         }
 
