@@ -422,7 +422,8 @@
                         </lvc:CartesianChart.AxisY>
 
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Title="Voices"
+                            <lvc:Axis Title="Turn"
+                                      MinValue="0"
                                       IsMerged="False" />
                         </lvc:CartesianChart.AxisX>
                     </lvc:CartesianChart>
