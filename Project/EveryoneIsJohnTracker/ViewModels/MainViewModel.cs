@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-13 12:32 AM
+// 2019-12-13 2:53 PM
 // 
 // Creation Date:
 // 2019-09-27 8:49 AM
@@ -17,6 +17,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Extensions;
@@ -194,6 +196,12 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void AddItem()
         {
+            if (GameMaster.Inventory.Any(item => EditableItemName == item.Name))
+            {
+                MessageBox.Show("This item already exists");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(EditableItemName))
             {
                 // Instantiate with NullLogger to prevent logging, and then pass set variable values
@@ -223,6 +231,12 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void AddVoice()
         {
+            if (GameMaster.Voices.Any(voice => EditableVoiceModel.Name == voice.Name))
+            {
+                MessageBox.Show("This name already exists");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(EditableVoiceModel.Name))
             {
                 EditableVoiceModel.Obsession.Level = ComboboxLevelBinding + 1;
