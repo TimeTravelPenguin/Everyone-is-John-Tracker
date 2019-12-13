@@ -7,7 +7,7 @@
 // File Name: ChartModel.cs
 // 
 // Current Data:
-// 2019-12-13 1:53 AM
+// 2019-12-13 2:34 PM
 // 
 // Creation Date:
 // 2019-12-12 10:48 PM
@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using EveryoneIsJohnTracker.Base;
 using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
 namespace EveryoneIsJohnTracker.Models
@@ -28,6 +28,7 @@ namespace EveryoneIsJohnTracker.Models
     {
         private SeriesCollection _playerSeriesCollection = new SeriesCollection();
         private Func<int, string> _yFormatter;
+        public IEnumerable<VoiceModel> PlayerData;
 
         public SeriesCollection PlayerSeriesCollection
         {
@@ -43,32 +44,37 @@ namespace EveryoneIsJohnTracker.Models
 
         public ChartModel(IEnumerable<VoiceModel> voices)
         {
+            PlayerData = voices;
             YFormatter = i => i.ToString(CultureInfo.InvariantCulture) + " pts";
-            UpdateValues(voices);
+            UpdateChartValues();
         }
 
-        public void UpdateValues(IEnumerable<VoiceModel> voices)
+        public void UpdateChartValues()
         {
-            PlayerSeriesCollection.Clear();
-
-            foreach (var voiceModel in voices)
+            // Check _playerData for voice.Name that aren't previously added to _playerSeriesCollection and add
+            foreach (var voiceModel in PlayerData)
             {
-                var lineSeries = new LineSeries
+                if (_playerSeriesCollection.All(series => series.Title != voiceModel.Name))
                 {
-                    Title = voiceModel.Name,
-                    Values = new ChartValues<ObservablePoint>(),
-                    LineSmoothness = 0.5
-                };
+                    var lineSeries = new LineSeries
+                    {
+                        Title = voiceModel.Name,
+                        Values = voiceModel.ScoreHistory,
+                        LineSmoothness = 0.5
+                    };
 
-                foreach (var (turn, score) in voiceModel.ScoreHistory)
-                {
-                    lineSeries.Values.Add(new ObservablePoint(turn, score));
+                    PlayerSeriesCollection.Add(lineSeries);
                 }
-
-                PlayerSeriesCollection.Add(lineSeries);
             }
 
-            OnPropertyChanged(nameof(PlayerSeriesCollection));
+            // Check PlayerSeriesCollection for names that aren't in _playerData and remove
+            foreach (var series in _playerSeriesCollection)
+            {
+                if (PlayerData.All(player => player.Name != series.Title))
+                {
+                    PlayerSeriesCollection.Remove(series);
+                }
+            }
         }
     }
 }

@@ -7,7 +7,7 @@
 // File Name: FileIOExtension.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-13 2:34 PM
 // 
 // Creation Date:
 // 2019-10-29 2:05 PM
@@ -53,8 +53,6 @@ namespace EveryoneIsJohnTracker.Extensions
                     MessageBox.Show("There was an error saving the file" + Environment.NewLine + ex.Message, "Error");
                 }
             }
-
-            gameMasterModel.UpdateChart();
         }
 
         internal static void FileInput(this GameMasterModel gameMasterModel, ILogger logger)
@@ -76,6 +74,10 @@ namespace EveryoneIsJohnTracker.Extensions
                         var fileData = File.ReadAllText(filePath);
                         var data = JsonConvert.DeserializeObject<GameMasterModel>(fileData);
                         gameMasterModel.LoadGameData(data, logger);
+
+
+                        gameMasterModel.ChartModel.PlayerData = gameMasterModel.Voices;
+                        gameMasterModel.ChartModel.UpdateChartValues();
                     }
                     else
                     {

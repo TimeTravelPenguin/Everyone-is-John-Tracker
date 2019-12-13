@@ -30,7 +30,7 @@ namespace EveryoneIsJohnTracker.Extensions
         public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ILogger logger)
         {
             gameMaster.Voices.Add(new VoiceModel(voice) {Logger = logger});
-            gameMaster.UpdateChart();
+            gameMaster.ChartModel.UpdateChartValues();
         }
 
         public static void RemoveVoiceAt(this GameMasterModel gameMaster, int index)
@@ -38,7 +38,7 @@ namespace EveryoneIsJohnTracker.Extensions
             if (gameMaster.Voices.Count > 0 && index >= 0 && index < gameMaster.Voices.Count)
             {
                 gameMaster.Voices.RemoveAt(index);
-                gameMaster.UpdateChart();
+                gameMaster.ChartModel.UpdateChartValues();
             }
         }
 
@@ -75,7 +75,7 @@ namespace EveryoneIsJohnTracker.Extensions
                 gameMaster.Voices[index].Obsession.Points += value;
 
                 gameMaster.IncrementHistory();
-                gameMaster.UpdateChart();
+                //gameMaster.UpdateChart();
             }
         }
 

@@ -7,7 +7,7 @@
 // File Name: GameMasterModel.cs
 // 
 // Current Data:
-// 2019-12-13 1:34 AM
+// 2019-12-13 2:13 PM
 // 
 // Creation Date:
 // 2019-09-28 9:40 PM
@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
+using LiveCharts.Defaults;
 using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
@@ -41,11 +42,7 @@ namespace EveryoneIsJohnTracker.Models
         public ObservableCollection<VoiceModel> Voices
         {
             get => _voices;
-            set
-            {
-                SetValue(ref _voices, value);
-                UpdateChart();
-            }
+            set => SetValue(ref _voices, value);
         }
 
         public ObservableCollection<ItemModel> Inventory
@@ -64,13 +61,6 @@ namespace EveryoneIsJohnTracker.Models
 
             Voices.CollectionChanged += VoiceCollectionChanged;
             Inventory.CollectionChanged += InventoryCollectionChanged;
-        }
-
-        public void UpdateChart()
-        {
-            ChartModel.UpdateValues(_voices);
-            OnPropertyChanged(nameof(ChartModel));
-
         }
 
         /// <summary>
@@ -119,7 +109,7 @@ namespace EveryoneIsJohnTracker.Models
         {
             foreach (var voiceModel in Voices)
             {
-                voiceModel.ScoreHistory.Add((Turn, voiceModel.Obsession.Points));
+                voiceModel.ScoreHistory.Add(new ObservablePoint(Turn, voiceModel.Obsession.Points));
             }
 
             Turn++;
