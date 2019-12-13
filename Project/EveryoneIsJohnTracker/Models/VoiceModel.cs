@@ -7,17 +7,19 @@
 // File Name: VoiceModel.cs
 // 
 // Current Data:
-// 2019-12-13 12:55 PM
+// 2019-12-13 4:56 PM
 // 
 // Creation Date:
 // 2019-09-27 9:09 AM
 
 #endregion
 
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -138,6 +140,20 @@ namespace EveryoneIsJohnTracker.Models
 
             Logger = voice.Logger;
             Obsession.Logger = voice.Logger;
+        }
+
+        public void AddObsessionPoint(int turn, int points)
+        {
+            for (var i = 0; i < _scoreHistory.Count; i++)
+            {
+                if (ScoreHistory[i].X.IsEqualTo(turn))
+                {
+                    ScoreHistory[i].Y += points;
+                    return;
+                }
+            }
+
+            ScoreHistory.Add(new ObservablePoint(turn, points));
         }
 
         // TODO
