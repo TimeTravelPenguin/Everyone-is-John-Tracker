@@ -9,7 +9,8 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:EveryoneIsJohnTracker.Models"
         mc:Ignorable="d"
-        Title="Everyone is John Tracker" Height="600" Width="800" ResizeMode="NoResize">
+        Title="Everyone is John Tracker" Height="600" Width="800" ResizeMode="NoResize"
+        Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico">
 
     <Window.DataContext>
         <viewmodels:MainViewModel />
@@ -18,9 +19,10 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="295*" />
+            <ColumnDefinition Width="94*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="390*" />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -31,7 +33,7 @@
         </Grid.RowDefinitions>
 
         <!-- Menu -->
-        <DockPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0">
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <!-- File -->
                 <MenuItem Header="_File">
@@ -45,7 +47,7 @@
         </DockPanel>
 
         <!-- Left Side -->
-        <Grid Grid.Row="2" Grid.Column="1">
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="0.35*" />
@@ -292,7 +294,7 @@
         </Grid>
 
         <!-- Right Side -->
-        <Grid Grid.Row="2" Grid.Column="3">
+        <Grid Grid.Row="2" Grid.Column="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
                 <RowDefinition Height="1.25*" />
