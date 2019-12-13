@@ -14,6 +14,7 @@
 
 #endregion
 
+using System;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
 
