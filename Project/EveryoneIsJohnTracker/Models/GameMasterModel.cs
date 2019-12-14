@@ -7,7 +7,7 @@
 // File Name: GameMasterModel.cs
 // 
 // Current Data:
-// 2019-12-14 10:49 AM
+// 2019-12-14 12:05 PM
 // 
 // Creation Date:
 // 2019-09-28 9:40 PM
@@ -41,17 +41,7 @@ namespace EveryoneIsJohnTracker.Models
         public int Turn
         {
             get => _turn;
-            set
-            {
-                Logger.LogTurnChange(value, _turn);
-                SetValue(ref _turn, value);
-
-                // Ensure each player has an ObservablePoint in their PointHistory
-                foreach (var voiceModel in Voices)
-                {
-                    voiceModel.UpdateScoreHistoryForNewTurn(_turn);
-                }
-            }
+            set => SetValue(ref _turn, value);
         }
 
         public ObservableCollection<VoiceModel> Voices
@@ -76,6 +66,22 @@ namespace EveryoneIsJohnTracker.Models
 
             Voices.CollectionChanged += VoiceCollectionChanged;
             Inventory.CollectionChanged += InventoryCollectionChanged;
+        }
+
+        public void IncrementTurn(int turn)
+        {
+            var previousTurn = _turn;
+
+            Turn += turn;
+
+
+            // Ensure each player has an ObservablePoint in their PointHistory
+            foreach (var voiceModel in Voices)
+            {
+                voiceModel.UpdateScoreHistoryForNewTurn(_turn);
+            }
+
+            Logger.LogTurnChange(_turn, previousTurn);
         }
 
         /// <summary>

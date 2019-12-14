@@ -7,7 +7,7 @@
 // File Name: ObsessionModel.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-14 11:54 AM
 // 
 // Creation Date:
 // 2019-09-27 9:13 AM
@@ -17,16 +17,24 @@
 using System.Windows;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
+using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
 {
     internal class ObsessionModel : PropertyChangedBase
     {
         private int _level;
+        private ILogger _logger;
         private string _name;
         private int _points;
         private string _voiceName;
-        public ILogger Logger { get; set; }
+
+        [JsonIgnore]
+        public ILogger Logger
+        {
+            get => _logger;
+            set => SetValue(ref _logger, value);
+        }
 
         public string VoiceName
         {

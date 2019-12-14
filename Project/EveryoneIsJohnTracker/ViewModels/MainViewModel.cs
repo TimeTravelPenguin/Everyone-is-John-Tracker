@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-14 11:12 AM
+// 2019-12-14 12:00 PM
 // 
 // Creation Date:
 // 2019-12-13 3:01 PM
@@ -129,7 +129,7 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandSaveGame = new ActionCommand(() => GameMaster.FileOutput(OutputLogger));
 
-            CommandNextTurn = new ActionCommand(() => GameMaster.Turn++);
+            CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
 
             // AddDemoData();
         }

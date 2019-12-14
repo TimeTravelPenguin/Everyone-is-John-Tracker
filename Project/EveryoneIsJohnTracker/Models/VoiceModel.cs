@@ -7,7 +7,7 @@
 // File Name: VoiceModel.cs
 // 
 // Current Data:
-// 2019-12-14 11:08 AM
+// 2019-12-14 11:48 AM
 // 
 // Creation Date:
 // 2019-09-27 9:09 AM
@@ -48,7 +48,12 @@ namespace EveryoneIsJohnTracker.Models
             set
             {
                 SetValue(ref _logger, value);
-                _obsession.Logger = value;
+                
+                Obsession.Logger = value;
+                foreach (var skillModel in Skills)
+                {
+                    skillModel.Logger = value;
+                }
             }
         }
 
@@ -112,11 +117,8 @@ namespace EveryoneIsJohnTracker.Models
             Skills.CollectionChanged += SkillsCollectionChanged;
         }
 
-        public VoiceModel(VoiceModel voice)
+        public VoiceModel(VoiceModel voice) : this()
         {
-            Logger = LogFactory.NewLogger(LoggerType.NullLogger);
-            Obsession.Logger = LogFactory.NewLogger(LoggerType.NullLogger);
-
             Obsession.Name = voice.Obsession.Name;
             Obsession.Level = voice.Obsession.Level;
             Obsession.Points = voice.Obsession.Points;
