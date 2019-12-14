@@ -7,16 +7,17 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-13 1:44 AM
+// 2019-12-14 11:06 AM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
 
 #endregion
 
-using System;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.OutputLoggers;
+using LiveCharts;
+using LiveCharts.Defaults;
 
 namespace EveryoneIsJohnTracker.Extensions
 {
@@ -30,7 +31,11 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ILogger logger)
         {
-            gameMaster.Voices.Add(new VoiceModel(voice) {Logger = logger});
+            gameMaster.Voices.Add(new VoiceModel(voice)
+            {
+                Logger = logger,
+                ScoreHistory = new ChartValues<ObservablePoint> {new ObservablePoint(gameMaster.Turn, 0)}
+            });
             gameMaster.ChartModel.UpdateChartValues();
         }
 
@@ -53,29 +58,21 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void AddWillpowerAll(this GameMasterModel gameMaster, int value)
         {
-            var change = false;
             foreach (var voiceModel in gameMaster.Voices)
             {
                 if (voiceModel.Willpower + value >= 0)
                 {
                     voiceModel.Willpower += value;
-                    change = true;
                 }
-            }
-
-            if (change)
-            {
-                gameMaster.IncrementHistory();
             }
         }
 
         internal static void AddObsessionPoint(this GameMasterModel gameMaster, int index, int value)
         {
-            if (gameMaster.Voices.Count > 0 && gameMaster.Voices[index].Obsession.Points + value >= 0)
+            if (gameMaster.Voices.Count > 0 &&
+                gameMaster.Voices[index].ScoreHistory[gameMaster.Turn - 1].Y + value >= 0)
             {
-                gameMaster.Voices[index].Obsession.Points += value;
-
-                gameMaster.IncrementHistory();
+                gameMaster.Voices[index].AddObsessionPoint(gameMaster.Turn, value);
             }
         }
 

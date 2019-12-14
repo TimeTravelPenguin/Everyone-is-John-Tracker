@@ -7,10 +7,10 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-13 2:53 PM
+// 2019-12-14 11:12 AM
 // 
 // Creation Date:
-// 2019-09-27 8:49 AM
+// 2019-12-13 3:01 PM
 
 #endregion
 
@@ -76,6 +76,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         public ActionCommand CommandAddItem { get; set; }
         public ActionCommand CommandLoadGame { get; set; }
         public ActionCommand CommandSaveGame { get; set; }
+        public ActionCommand CommandNextTurn { get; set; }
 
         public int ComboboxLevelBinding
         {
@@ -127,6 +128,8 @@ namespace EveryoneIsJohnTracker.ViewModels
             CommandLoadGame = new ActionCommand(() => GameMaster.FileInput(OutputLogger));
 
             CommandSaveGame = new ActionCommand(() => GameMaster.FileOutput(OutputLogger));
+
+            CommandNextTurn = new ActionCommand(() => GameMaster.Turn++);
 
             // AddDemoData();
         }
@@ -233,7 +236,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         {
             if (GameMaster.Voices.Any(voice => EditableVoiceModel.Name == voice.Name))
             {
-                MessageBox.Show("This name already exists");
+                MessageBox.Show("This voice already exists");
                 return;
             }
 

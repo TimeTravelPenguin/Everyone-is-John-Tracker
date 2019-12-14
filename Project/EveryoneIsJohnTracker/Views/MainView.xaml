@@ -51,10 +51,7 @@
                 <!-- Rules -->
                 <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
 
-                <!-- Turn Buttons -->
-                <MenuItem Header="_Previous Turn" HorizontalAlignment="Right"
-                          Command="{Binding CommandPreviousTurn}" />
-
+                <!-- Turn Button -->
                 <MenuItem Header="_Next Turn" HorizontalAlignment="Right"
                           Command="{Binding CommandNextTurn}" />
 
@@ -305,6 +302,7 @@
                               CanUserDeleteRows="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Skill Name"
+                                                Width="*"
                                                 Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -455,7 +453,7 @@
 
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Title="Turn"
-                                      MinValue="0"
+                                      MinValue="1"
                                       IsMerged="False" />
                         </lvc:CartesianChart.AxisX>
                     </lvc:CartesianChart>

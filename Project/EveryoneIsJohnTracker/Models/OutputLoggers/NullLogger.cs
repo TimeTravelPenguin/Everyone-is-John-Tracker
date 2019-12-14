@@ -14,6 +14,8 @@
 
 #endregion
 
+using System;
+
 namespace EveryoneIsJohnTracker.Models.OutputLoggers
 {
     internal class NullLogger : LoggerBase, ILogger
@@ -24,6 +26,11 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
 
         public void LogAddVoice(VoiceModel voice)
         {
+        }
+
+        public void LogTurnChange(int newTurn, int previousTurn)
+        {
+            throw new NotImplementedException();
         }
 
         public void LogRemoveVoice(VoiceModel voice)

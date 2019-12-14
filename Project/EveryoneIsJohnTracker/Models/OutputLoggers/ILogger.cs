@@ -7,7 +7,7 @@
 // File Name: ILogger.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-14 10:15 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
@@ -23,6 +23,7 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
         ObservableCollection<Log> LogHistory { get; set; }
         void LogAddItem(ItemModel item);
         void LogAddVoice(VoiceModel voice);
+        void LogTurnChange(int newTurn, int previousTurn);
         void LogRemoveVoice(VoiceModel voice);
         void LogClearedVoiceCollection();
         void LogRemoveInventoryItem(ItemModel item);

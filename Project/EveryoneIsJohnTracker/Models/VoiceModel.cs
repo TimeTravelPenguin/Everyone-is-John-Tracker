@@ -7,14 +7,13 @@
 // File Name: VoiceModel.cs
 // 
 // Current Data:
-// 2019-12-13 4:56 PM
+// 2019-12-14 11:08 AM
 // 
 // Creation Date:
 // 2019-09-27 9:09 AM
 
 #endregion
 
-using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -32,10 +31,7 @@ namespace EveryoneIsJohnTracker.Models
         private ILogger _logger;
         private string _name;
         private ObsessionModel _obsession = new ObsessionModel();
-
-        private ChartValues<ObservablePoint> _scoreHistory = new ChartValues<ObservablePoint>
-            {new ObservablePoint(0, 0)};
-
+        private ChartValues<ObservablePoint> _scoreHistory = new ChartValues<ObservablePoint>();
         private ObservableCollection<SkillModel> _skills = new ObservableCollection<SkillModel>();
         private int _willpower;
 
@@ -142,13 +138,23 @@ namespace EveryoneIsJohnTracker.Models
             Obsession.Logger = voice.Logger;
         }
 
+        public void UpdateScoreHistoryForNewTurn(int turn)
+        {
+            if (_scoreHistory.All(score => score.X.NotEqual(turn)))
+            {
+                ScoreHistory.Add(new ObservablePoint(turn, Obsession.Points));
+            }
+        }
+
         public void AddObsessionPoint(int turn, int points)
         {
             for (var i = 0; i < _scoreHistory.Count; i++)
             {
-                if (ScoreHistory[i].X.IsEqualTo(turn))
+                if (ScoreHistory[i].X.IsEqualTo(turn) && ScoreHistory[i].Y + points >= 0)
                 {
                     ScoreHistory[i].Y += points;
+                    Obsession.Points += points;
+
                     return;
                 }
             }

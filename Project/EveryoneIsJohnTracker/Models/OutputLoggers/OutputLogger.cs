@@ -7,7 +7,7 @@
 // File Name: OutputLogger.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-14 10:14 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
@@ -26,6 +26,18 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
         public void LogAddVoice(VoiceModel voice)
         {
             LogHistory.Add(new Log($"{voice.Name} has been added to the game"));
+        }
+
+        public void LogTurnChange(int newTurn, int previousTurn)
+        {
+            if (newTurn > previousTurn)
+            {
+                LogHistory.Add(new Log($"Incremented to turn {newTurn}"));
+            }
+            else if (newTurn < previousTurn)
+            {
+                LogHistory.Add(new Log($"Decremented to turn {newTurn}"));
+            }
         }
 
         public void LogRemoveVoice(VoiceModel voice)
