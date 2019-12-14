@@ -9,7 +9,8 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:EveryoneIsJohnTracker.Models"
         mc:Ignorable="d"
-        Title="Everyone is John Tracker" Height="600" Width="800" ResizeMode="NoResize"
+        Title="{Binding GameMaster.Turn, StringFormat=Everyone is John Tracker (Turn: {0})}"
+        Height="600" Width="800" ResizeMode="NoResize"
         Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico">
 
     <Window.DataContext>
