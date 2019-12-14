@@ -7,7 +7,7 @@
 // File Name: ObsessionModel.cs
 // 
 // Current Data:
-// 2019-12-14 11:54 AM
+// 2019-12-14 9:21 PM
 // 
 // Creation Date:
 // 2019-09-27 9:13 AM
@@ -42,6 +42,16 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _voiceName, value);
         }
 
+        public int LevelIndex
+        {
+            get => _level - 1;
+            set
+            {
+                SetValue(ref _level, value + 1);
+                OnPropertyChanged(nameof(Level));
+            }
+        }
+
         public int Level
         {
             get => _level;
@@ -50,6 +60,7 @@ namespace EveryoneIsJohnTracker.Models
                 var oldValue = _level;
                 CheckLevelValue(ref value);
                 SetValue(ref _level, value);
+                OnPropertyChanged(nameof(LevelIndex));
 
                 if (oldValue != value)
                 {

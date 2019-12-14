@@ -197,15 +197,6 @@
                             VerticalAlignment="Center"
                             Width="48"
                             Margin="52,0,0,0" />
-
-                    <!-- Remove -->
-                    <Button Content="Remove Voice"
-                            Command="{Binding CommandRemoveVoice}"
-                            Grid.Row="2"
-                            Grid.Column="3"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="100" />
                 </Grid>
             </GroupBox>
             <!--EndRegion-->
@@ -213,10 +204,11 @@
             <!--Region Voice modification -->
             <TabControl Grid.Row="2" Margin="0,3,0,0">
                 <TabControl.Resources>
-                    <Style TargetType="TabControl">
+                    <Style TargetType="{x:Type TabControl}">
+                        <Setter Property="SelectedIndex" Value="0" />
                         <Style.Triggers>
                             <DataTrigger
-                                Binding="{Binding Path=GameMaster.Voices.Count, Converter={StaticResource CountGreaterThanZeroConverter}}"
+                                Binding="{Binding Path=GameMaster.Voices.Count, Mode=OneWay, Converter={StaticResource CountGreaterThanZeroConverter}}"
                                 Value="False">
                                 <Setter Property="SelectedIndex" Value="0" />
                             </DataTrigger>
@@ -224,7 +216,8 @@
                     </Style>
                 </TabControl.Resources>
 
-                <TabItem Header="Add new voice">
+                <TabItem Header="Add new voice"
+                         x:Name="AddVoiceTab">
                     <!--Region Add New Voice -->
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -329,10 +322,10 @@
                 </TabItem>
 
                 <TabItem Header="Edit Voices"
-                         Name="EditTab"
-                         IsEnabled="{Binding Path=GameMaster.Voices.Count, Converter={StaticResource CountGreaterThanZeroConverter}}">
+                         x:Name="EditTab"
+                         IsEnabled="{Binding Path=GameMaster.Voices.Count, Mode=OneWay, Converter={StaticResource CountGreaterThanZeroConverter}}">
 
-                    <!--Region Add New Voice -->
+                    <!--Region Edit Voice -->
                     <Grid
                         IsEnabled="{Binding Path=GameMaster.Voices.Count, Converter={StaticResource CountGreaterThanZeroConverter}}">
 
@@ -363,7 +356,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding EditableVoiceModel.Name}"
+                        <TextBox Text="{Binding Path=SelectedVoice.Name}"
                                  Grid.Row="1"
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
@@ -372,13 +365,25 @@
                                   Grid.Row="1"
                                   Grid.Column="3"
                                   Width="100"
+                                  SelectedIndex="{Binding SelectedVoiceIndex, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding GameMaster.Voices}">
+
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
+
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <!-- Remove voice -->
+                        <Button Content="Remove Voice"
+                                Command="{Binding CommandRemoveVoice}"
+                                Grid.Row="3"
+                                Grid.Column="3"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Width="100" />
 
                         <TextBlock Text="Initial Willpower:"
                                    Grid.Row="3"
@@ -386,7 +391,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding EditableVoiceModel.Willpower}"
+                        <TextBox Text="{Binding SelectedVoice.Willpower}"
                                  Grid.Row="3"
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
@@ -397,7 +402,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding EditableVoiceModel.Obsession.Name}" Grid.Row="5"
+                        <TextBox Text="{Binding SelectedVoice.Obsession.Name}" Grid.Row="5"
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
 
@@ -405,7 +410,7 @@
                                   Grid.Row="5"
                                   Grid.Column="3"
                                   Width="100"
-                                  SelectedIndex="{Binding ComboboxLevelBinding}">
+                                  SelectedIndex="{Binding SelectedVoice.Obsession.LevelIndex, UpdateSourceTrigger=PropertyChanged}">
                             <ComboBoxItem Content="Level 1" />
                             <ComboBoxItem Content="Level 2" />
                             <ComboBoxItem Content="Level 3" />
@@ -417,7 +422,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding EditableSkillModel.Name}" Grid.Row="7" Grid.Column="2"
+                        <TextBox Text="{Binding SelectedVoice.Name}" Grid.Row="7" Grid.Column="2"
                                  Margin="5,0,0,0" />
 
                         <Button Command="{Binding CommandAddSkill}"
@@ -426,7 +431,7 @@
                                 Grid.Column="3"
                                 Width="100" />
 
-                        <DataGrid ItemsSource="{Binding EditableVoiceModel.Skills}"
+                        <DataGrid ItemsSource="{Binding SelectedVoice.Skills}"
                                   Grid.Row="9"
                                   Grid.Column="1"
                                   Grid.ColumnSpan="3"

@@ -7,7 +7,7 @@
 // File Name: CountGreaterThanZeroConverter.cs
 // 
 // Current Data:
-// 2019-12-14 4:33 PM
+// 2019-12-14 7:32 PM
 // 
 // Creation Date:
 // 2019-12-14 4:28 PM
@@ -20,18 +20,18 @@ using System.Windows.Data;
 
 namespace EveryoneIsJohnTracker.Converters
 {
-internal class CountGreaterThanZeroConverter : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    internal class CountGreaterThanZeroConverter : IValueConverter
     {
-        var count = System.Convert.ToInt32(value);
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var count = System.Convert.ToInt32(value, CultureInfo.InvariantCulture);
 
-        return count > 0;
-    }
+            return count > 0;
+        }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
-}
 }

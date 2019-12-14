@@ -68,6 +68,11 @@ namespace EveryoneIsJohnTracker.Models
             Inventory.CollectionChanged += InventoryCollectionChanged;
         }
 
+        public void UpdateChart()
+        {
+            OnPropertyChanged(nameof(ChartModel));
+        }
+
         public void IncrementTurn(int turn)
         {
             var previousTurn = _turn;

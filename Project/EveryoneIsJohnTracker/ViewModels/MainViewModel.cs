@@ -7,10 +7,10 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-14 12:17 PM
+// 2019-12-14 9:53 PM
 // 
 // Creation Date:
-// 2019-12-13 3:01 PM
+// 2019-12-14 3:31 PM
 
 #endregion
 
@@ -34,10 +34,38 @@ namespace EveryoneIsJohnTracker.ViewModels
         private string _editableItemName;
         private SkillModel _editableSkillModel = new SkillModel(); // Used to bind to view
         private VoiceModel _editableVoiceModel = new VoiceModel(NullLogger); // Used to add to Voices Collection
-
-
         private int _listViewSelectedIndex;
+        private int _selectedVoiceIndex;
         private ICollectionView _voiceCollectionView;
+
+        public VoiceModel SelectedVoice
+        {
+            get => GameMaster.Voices.Count > SelectedVoiceIndex && SelectedVoiceIndex >= 0
+                ? GameMaster.Voices[SelectedVoiceIndex]
+                : null;
+            set
+            {
+                GameMaster.Voices[SelectedVoiceIndex] = value;
+                OnPropertyChanged(nameof(SelectedVoice));
+                GameMaster.UpdateChart();
+            }
+        }
+
+        public int SelectedVoiceIndex
+        {
+            get => _selectedVoiceIndex;
+            set
+            {
+                if (value < 0 && GameMaster.Voices.Count > 0)
+                {
+                    value = 0;
+                }
+
+                SetValue(ref _selectedVoiceIndex, value);
+
+                OnPropertyChanged(nameof(SelectedVoice));
+            }
+        }
 
         public ICollectionView VoiceCollectionView
         {
@@ -250,12 +278,17 @@ namespace EveryoneIsJohnTracker.ViewModels
                 EditableSkillModel.Name = "";
                 ComboboxLevelBinding = 0;
             }
+
+            // Check element in editing combobox is selected
+            SelectedVoiceIndex = SelectedVoiceIndex < 0 && GameMaster.Voices.Count > 0
+                ? 0
+                : SelectedVoiceIndex;
+            OnPropertyChanged(nameof(SelectedVoice));
         }
 
         private void RemoveVoice()
         {
-            GameMaster.RemoveVoiceAt(ListViewSelectedIndex);
-            ListViewSelectedIndex = 0;
+            GameMaster.RemoveVoiceAt(SelectedVoiceIndex);
         }
     }
 }
