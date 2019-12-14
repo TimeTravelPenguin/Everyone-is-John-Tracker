@@ -7,7 +7,7 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-14 12:06 PM
+// 2019-12-14 3:30 PM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
@@ -31,11 +31,19 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ILogger logger)
         {
-            gameMaster.Voices.Add(new VoiceModel(voice)
+            var newVoice = new VoiceModel(voice)
             {
                 Logger = logger,
-                ScoreHistory = new ChartValues<ObservablePoint> {new ObservablePoint(gameMaster.Turn, 0)}
-            });
+                ScoreHistory = new ChartValues<ObservablePoint>()
+            };
+
+            // Add zero points from turn 1 to current turn
+            for (var i = 0; i <= gameMaster.Turn; i++)
+            {
+                newVoice.ScoreHistory.Add(new ObservablePoint(i, 0));
+            }
+
+            gameMaster.Voices.Add(newVoice);
             gameMaster.ChartModel.UpdateChartValues();
         }
 
@@ -70,7 +78,7 @@ namespace EveryoneIsJohnTracker.Extensions
         internal static void AddObsessionPoint(this GameMasterModel gameMaster, int index, int value)
         {
             if (gameMaster.Voices.Count > 0 &&
-                gameMaster.Voices[index].ScoreHistory[gameMaster.Turn - 1].Y + value >= 0)
+                gameMaster.Voices[index].ScoreHistory[gameMaster.Turn].Y + value >= 0)
             {
                 gameMaster.Voices[index].AddObsessionPoint(gameMaster.Turn, value);
             }
