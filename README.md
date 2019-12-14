@@ -18,7 +18,8 @@ The game is played with a single die. You may use Willpoints to increase the odd
 - Can track Inventory to track items players may obtain throughout the campaign
 - A useful logger to track all changes throughout the campaign to aid the game master with a detailed history of events to prevent accidental miscalculations or user error
 
-![image of the application](/ReadmeImages/image01.png)
+![image of the application with logger](/ReadmeImages/image01.png)
+![image of the application with graph](/ReadmeImages/image02.png)
 
 ## Download
 To download the application, pop over to the [Releases Page](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/releases)
