@@ -205,110 +205,216 @@
             </GroupBox>
             <!--EndRegion-->
 
-            <!--Region Add New Voice -->
-            <GroupBox Header="Add Voice" Grid.Row="2">
+            <!--Region Voice modification -->
+            <TabControl Grid.Row="2" Margin="0,3,0,0">
+                <TabItem Header="Add new voice">
+                    <!--Region Add New Voice -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="5" />
+                        </Grid.RowDefinitions>
 
-                <!-- Add Voice -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="130" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="5" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="3" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="3" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="3" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="3" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="5" />
-                    </Grid.RowDefinitions>
+                        <TextBlock Text="Voice Name:"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
 
-                    <TextBlock Text="Voice Name:"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center" />
+                        <TextBox Text="{Binding EditableVoiceModel.Name}"
+                                 Grid.Row="1"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
 
-                    <TextBox Text="{Binding EditableVoiceModel.Name}"
-                             Grid.Row="1"
-                             Grid.Column="2"
-                             Margin="5,0,0,0" />
+                        <Button Command="{Binding CommandAddVoice}"
+                                Content="Add Voice"
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Width="100" />
 
-                    <Button Command="{Binding CommandAddVoice}"
-                            Content="Add Voice"
-                            Grid.Row="1"
-                            Grid.Column="3"
-                            Width="100" />
+                        <TextBlock Text="Initial Willpower:"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
 
-                    <TextBlock Text="Initial Willpower:"
-                               Grid.Row="3"
-                               Grid.Column="1"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center" />
+                        <TextBox Text="{Binding EditableVoiceModel.Willpower}"
+                                 Grid.Row="3"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
 
-                    <TextBox Text="{Binding EditableVoiceModel.Willpower}"
-                             Grid.Row="3"
-                             Grid.Column="2"
-                             Margin="5,0,0,0" />
+                        <TextBlock Text="Obsession:"
+                                   Grid.Row="5"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
 
-                    <TextBlock Text="Obsession:"
-                               Grid.Row="5"
-                               Grid.Column="1"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center" />
+                        <TextBox Text="{Binding EditableVoiceModel.Obsession.Name}" Grid.Row="5"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
 
-                    <TextBox Text="{Binding EditableVoiceModel.Obsession.Name}" Grid.Row="5"
-                             Grid.Column="2"
-                             Margin="5,0,0,0" />
+                        <ComboBox Text="Select Level"
+                                  Grid.Row="5"
+                                  Grid.Column="3"
+                                  Width="100"
+                                  SelectedIndex="{Binding ComboboxLevelBinding}">
+                            <ComboBoxItem Content="Level 1" />
+                            <ComboBoxItem Content="Level 2" />
+                            <ComboBoxItem Content="Level 3" />
+                        </ComboBox>
 
-                    <ComboBox Text="Select Level"
-                              Grid.Row="5"
-                              Grid.Column="3"
-                              Width="100"
-                              SelectedIndex="{Binding ComboboxLevelBinding}">
-                        <ComboBoxItem Content="Level 1" />
-                        <ComboBoxItem Content="Level 2" />
-                        <ComboBoxItem Content="Level 3" />
-                    </ComboBox>
+                        <TextBlock Text="Skill Name:"
+                                   Grid.Row="7"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
 
-                    <TextBlock Text="Skill Name:"
-                               Grid.Row="7"
-                               Grid.Column="1"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center" />
+                        <TextBox Text="{Binding EditableSkillModel.Name}" Grid.Row="7" Grid.Column="2"
+                                 Margin="5,0,0,0" />
 
-                    <TextBox Text="{Binding EditableSkillModel.Name}" Grid.Row="7" Grid.Column="2"
-                             Margin="5,0,0,0" />
+                        <Button Command="{Binding CommandAddSkill}"
+                                Content="Add Skill"
+                                Grid.Row="7"
+                                Grid.Column="3"
+                                Width="100" />
 
-                    <Button Command="{Binding CommandAddSkill}"
-                            Content="Add Skill"
-                            Grid.Row="7"
-                            Grid.Column="3"
-                            Width="100" />
+                        <DataGrid ItemsSource="{Binding EditableVoiceModel.Skills}"
+                                  Grid.Row="9"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="3"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Skill Name"
+                                                    Width="*"
+                                                    Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <!--EndRegion-->
+                </TabItem>
 
-                    <DataGrid ItemsSource="{Binding EditableVoiceModel.Skills}"
-                              Grid.Row="9"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="3"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Skill Name"
-                                                Width="*"
-                                                Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </GroupBox>
+                <TabItem Header="Edit Voices">
+                    <!--Region Add New Voice -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="3" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="5" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Voice Name:"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
+
+                        <TextBox Text="{Binding EditableVoiceModel.Name}"
+                                 Grid.Row="1"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <Button Command="{Binding CommandAddVoice}"
+                                Content="Add Voice"
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Width="100" />
+
+                        <TextBlock Text="Initial Willpower:"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
+
+                        <TextBox Text="{Binding EditableVoiceModel.Willpower}"
+                                 Grid.Row="3"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <TextBlock Text="Obsession:"
+                                   Grid.Row="5"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
+
+                        <TextBox Text="{Binding EditableVoiceModel.Obsession.Name}" Grid.Row="5"
+                                 Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <ComboBox Text="Select Level"
+                                  Grid.Row="5"
+                                  Grid.Column="3"
+                                  Width="100"
+                                  SelectedIndex="{Binding ComboboxLevelBinding}">
+                            <ComboBoxItem Content="Level 1" />
+                            <ComboBoxItem Content="Level 2" />
+                            <ComboBoxItem Content="Level 3" />
+                        </ComboBox>
+
+                        <TextBlock Text="Skill Name:"
+                                   Grid.Row="7"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center" />
+
+                        <TextBox Text="{Binding EditableSkillModel.Name}" Grid.Row="7" Grid.Column="2"
+                                 Margin="5,0,0,0" />
+
+                        <Button Command="{Binding CommandAddSkill}"
+                                Content="Add Skill"
+                                Grid.Row="7"
+                                Grid.Column="3"
+                                Width="100" />
+
+                        <DataGrid ItemsSource="{Binding EditableVoiceModel.Skills}"
+                                  Grid.Row="9"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="3"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Skill Name"
+                                                    Width="*"
+                                                    Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <!--EndRegion-->
+                </TabItem>
+            </TabControl>
             <!--EndRegion-->
 
         </Grid>
