@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Extensions\DoubleExtension.cs" />
     <Compile Include="Extensions\GameMasterExtension.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\AutoScrollHelper.cs" />
     <Compile Include="Extensions\FileIOExtension.cs" />
     <Compile Include="Models\ChartModel.cs" />
