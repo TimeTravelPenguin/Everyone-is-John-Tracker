@@ -7,7 +7,7 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-16 12:12 AM
+// 2019-12-16 8:39 AM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
@@ -31,46 +31,30 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void AddVoice(this GameMasterModel gameMaster, VoiceModel voice, ILogger logger)
         {
-            var newVoice = new VoiceModel(voice)
+            if (voice != null)
             {
-                Logger = logger,
-                ScoreHistory = new ChartValues<ObservablePoint>()
-            };
+                var newVoice = new VoiceModel(voice)
+                {
+                    Logger = logger,
+                    ScoreHistory = new ChartValues<ObservablePoint>()
+                };
 
-            // Add zero points from turn 1 to current turn
-            for (var i = 0; i <= gameMaster.Turn; i++)
-            {
-                newVoice.ScoreHistory.Add(new ObservablePoint(i, 0));
-            }
+                // Add zero points from turn 1 to current turn
+                for (var i = 0; i <= gameMaster.Turn; i++)
+                {
+                    newVoice.ScoreHistory.Add(new ObservablePoint(i, 0));
+                }
 
-            gameMaster.Voices.Add(newVoice);
-            gameMaster.ChartModel.UpdateChartValues();
-        }
-
-        public static void RemoveVoiceAt(this GameMasterModel gameMaster, int index)
-        {
-            if (index < 0 || index >= gameMaster.Voices.Count)
-            {
-                return;
-            }
-
-            if (gameMaster.Voices.Count > 0)
-            {
-                gameMaster.Voices.RemoveAt(index);
+                gameMaster.Voices.Add(newVoice);
                 gameMaster.ChartModel.UpdateChartValues();
             }
         }
 
-        public static void AddWillpower(this GameMasterModel gameMaster, int index, int value)
+        public static void AddWillpower(this GameMasterModel gameMaster, VoiceModel voice, int value)
         {
-            if (index < 0 || index >= gameMaster.Voices.Count)
+            if (voice != null && voice.Willpower + value >= 0)
             {
-                return;
-            }
-
-            if (gameMaster.Voices.Count > 0 && gameMaster.Voices[index].Willpower + value >= 0)
-            {
-                gameMaster.Voices[index].Willpower += value;
+                voice.Willpower += value;
             }
         }
 
@@ -85,17 +69,11 @@ namespace EveryoneIsJohnTracker.Extensions
             }
         }
 
-        internal static void AddObsessionPoint(this GameMasterModel gameMaster, int index, int value)
+        internal static void AddObsessionPoint(this GameMasterModel gameMaster, VoiceModel voice, int value)
         {
-            if (index < 0 || index >= gameMaster.Voices.Count)
+            if (voice != null && voice.ScoreHistory[gameMaster.Turn].Y + value >= 0)
             {
-                return;
-            }
-
-            if (gameMaster.Voices.Count > 0 &&
-                gameMaster.Voices[index].ScoreHistory[gameMaster.Turn].Y + value >= 0)
-            {
-                gameMaster.Voices[index].AddObsessionPoint(gameMaster.Turn, value);
+                voice.AddObsessionPoint(gameMaster.Turn, value);
             }
         }
 
