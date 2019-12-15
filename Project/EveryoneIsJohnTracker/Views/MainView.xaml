@@ -8,11 +8,11 @@
         xmlns:helpers="clr-namespace:EveryoneIsJohnTracker.Helpers"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:EveryoneIsJohnTracker.Models"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:converters="clr-namespace:EveryoneIsJohnTracker.Converters"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="{Binding GameMaster.Turn, StringFormat=Everyone is John Tracker (Turn: {0})}"
-        Height="600" Width="800" ResizeMode="NoResize"
+        Height="600" Width="815" ResizeMode="NoResize"
         Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico">
 
     <Window.DataContext>
@@ -181,23 +181,21 @@
                             Width="100" />
 
                     <!-- +- Obsession Points -->
-                    <Button Content="+ Obs"
+                    <Button Content="+ Obsession"
                             Command="{Binding CommandAddObsessionPoint}"
                             Grid.Row="1"
                             Grid.Column="3"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Width="48"
-                            Margin="0,0,52,0" />
+                            Width="100" />
 
-                    <Button Content="- Obs"
+                    <Button Content="- Obsession"
                             Command="{Binding CommandRemoveObsessionPoint}"
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.Column="3"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Width="48"
-                            Margin="52,0,0,0" />
+                            Width="100" />
                 </Grid>
             </GroupBox>
             <!--EndRegion-->
@@ -363,28 +361,19 @@
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
 
-                        <ComboBox Name="VoicesComboBox"
-                                  Text="Choose a Voice"
+                        <ComboBox x:Name="VoicesComboBox"
                                   Grid.Row="1"
                                   Grid.Column="3"
                                   Width="100"
-                                  SelectedIndex="{Binding SelectedVoiceIndex, Mode=TwoWay}"
-                                  ItemsSource="{Binding GameMaster.Voices}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding CommandSelectionChangedEvent}"
-                                                           CommandParameter="{Binding RelativeSource=
-                                        {RelativeSource FindAncestor, AncestorType=
-                                        {x:Type ComboBox}, AncestorLevel=1}}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
+                                  ItemsSource="{Binding GameMaster.Voices, Mode=OneWay}"
+                                  SelectedValue="{Binding SelectedVoiceModel}">
 
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
-
                             </ComboBox.ItemTemplate>
+
                         </ComboBox>
 
                         <!-- Remove voice -->
@@ -453,7 +442,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Skill Name"
                                                     Width="*"
-                                                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                    Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
@@ -492,10 +481,12 @@
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=LostFocus}"
-                                        Header="Item Name" />
+                                        Header="Item Name"
+                                        Width=".5*" />
 
                     <DataGridTextColumn Binding="{Binding Count, UpdateSourceTrigger=LostFocus}"
-                                        Header="Item Count" />
+                                        Header="Count"
+                                        Width=".35*" />
 
                     <DataGridTextColumn Binding="{Binding Description, UpdateSourceTrigger=LostFocus}"
                                         Header="Item Description">

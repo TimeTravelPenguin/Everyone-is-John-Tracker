@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-15 11:14 PM
+// 2019-12-16 2:49 AM
 // 
 // Creation Date:
 // 2019-12-14 3:31 PM
@@ -19,13 +19,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using Microsoft.Expression.Interactivity.Core;
+using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.ViewModels
 {
@@ -37,28 +37,17 @@ namespace EveryoneIsJohnTracker.ViewModels
         private VoiceModel _editableVoiceModel = new VoiceModel(NullLogger); // Used to add to Voices Collection
         private int _listViewSelectedIndex;
         private SkillModel _selectedSkillModel = new SkillModel(); // Used to bind to view
-        private int _selectedVoiceIndex;
+        private VoiceModel _selectedVoiceModel;
         private ICollectionView _voiceCollectionView;
 
+        [JsonIgnore]
         public VoiceModel SelectedVoiceModel
         {
-            get => GameMaster.Voices.Count > SelectedVoiceIndex && SelectedVoiceIndex >= 0
-                ? GameMaster.Voices[SelectedVoiceIndex]
-                : null;
+            get => _selectedVoiceModel;
             set
             {
-                GameMaster.Voices[SelectedVoiceIndex] = value;
+                SetValue(ref _selectedVoiceModel, value);
                 GameMaster.UpdateChart();
-            }
-        }
-
-        public int SelectedVoiceIndex
-        {
-            get => _selectedVoiceIndex;
-            set
-            {
-                SetValue(ref _selectedVoiceIndex, value);
-                OnPropertyChanged(nameof(SelectedVoiceModel));
             }
         }
 
@@ -107,7 +96,6 @@ namespace EveryoneIsJohnTracker.ViewModels
         public ActionCommand CommandLoadGame { get; }
         public ActionCommand CommandSaveGame { get; }
         public ActionCommand CommandNextTurn { get; }
-        public ActionCommand CommandSelectionChangedEvent { get; }
 
         public int ComboboxLevelBinding
         {
@@ -164,34 +152,22 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddItem = new ActionCommand(AddItem);
 
-            CommandLoadGame = new ActionCommand(() => GameMaster.FileInput(OutputLogger));
+            CommandLoadGame = new ActionCommand(() =>
+            {
+                var success = GameMaster.FileInput(OutputLogger);
+                if (success)
+                {
+                    SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
+                }
+            });
 
             CommandSaveGame = new ActionCommand(() => GameMaster.FileOutput(OutputLogger));
 
             CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
 
-            CommandSelectionChangedEvent =
-                new ActionCommand(VoicesComboBox_SelectionChanged);
+            SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
         }
 
-        private void VoicesComboBox_SelectionChanged(object sender)
-        {
-            if (!(sender is ComboBox combo))
-            {
-                throw new InvalidOperationException(nameof(sender));
-            }
-
-
-            if (SelectedVoiceIndex < 0 && GameMaster.Voices.Count > 0)
-            {
-                SelectedVoiceIndex = 0;
-                OnPropertyChanged(nameof(SelectedVoiceModel));
-            }
-            else
-            {
-                SelectedVoiceIndex = combo.SelectedIndex;
-            }
-        }
 
         private void AddItem()
         {
@@ -219,7 +195,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         {
             if (voice == null)
             {
-                throw new NullReferenceException(nameof(voice));
+                return;
             }
 
             if (!(obj is SkillModel skill))
@@ -258,16 +234,16 @@ namespace EveryoneIsJohnTracker.ViewModels
                 ComboboxLevelBinding = 0;
             }
 
-            // Check element in editing combobox is selected
-            SelectedVoiceIndex = SelectedVoiceIndex < 0 && GameMaster.Voices.Count > 0
-                ? 0
-                : SelectedVoiceIndex;
-            OnPropertyChanged(nameof(SelectedVoiceModel));
+            SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
         }
 
         private void RemoveVoice()
         {
-            GameMaster.RemoveVoiceAt(SelectedVoiceIndex);
+            //GameMaster.RemoveVoiceAt(SelectedVoiceIndex);
+
+            GameMaster.Voices.Remove(SelectedVoiceModel);
+            SelectedSkillModel.Name = "";
+            SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
         }
     }
 }
