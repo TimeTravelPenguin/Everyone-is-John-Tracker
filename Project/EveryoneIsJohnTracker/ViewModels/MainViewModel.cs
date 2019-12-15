@@ -7,18 +7,19 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-14 9:53 PM
+// 2019-12-15 11:14 PM
 // 
 // Creation Date:
 // 2019-12-14 3:31 PM
 
 #endregion
 
-using System.Collections.ObjectModel;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Extensions;
@@ -35,10 +36,11 @@ namespace EveryoneIsJohnTracker.ViewModels
         private SkillModel _editableSkillModel = new SkillModel(); // Used to bind to view
         private VoiceModel _editableVoiceModel = new VoiceModel(NullLogger); // Used to add to Voices Collection
         private int _listViewSelectedIndex;
+        private SkillModel _selectedSkillModel = new SkillModel(); // Used to bind to view
         private int _selectedVoiceIndex;
         private ICollectionView _voiceCollectionView;
 
-        public VoiceModel SelectedVoice
+        public VoiceModel SelectedVoiceModel
         {
             get => GameMaster.Voices.Count > SelectedVoiceIndex && SelectedVoiceIndex >= 0
                 ? GameMaster.Voices[SelectedVoiceIndex]
@@ -46,7 +48,6 @@ namespace EveryoneIsJohnTracker.ViewModels
             set
             {
                 GameMaster.Voices[SelectedVoiceIndex] = value;
-                OnPropertyChanged(nameof(SelectedVoice));
                 GameMaster.UpdateChart();
             }
         }
@@ -56,14 +57,8 @@ namespace EveryoneIsJohnTracker.ViewModels
             get => _selectedVoiceIndex;
             set
             {
-                if (value < 0 && GameMaster.Voices.Count > 0)
-                {
-                    value = 0;
-                }
-
                 SetValue(ref _selectedVoiceIndex, value);
-
-                OnPropertyChanged(nameof(SelectedVoice));
+                OnPropertyChanged(nameof(SelectedVoiceModel));
             }
         }
 
@@ -85,26 +80,34 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _editableSkillModel, value);
         }
 
+        public SkillModel SelectedSkillModel
+        {
+            get => _selectedSkillModel;
+            set => SetValue(ref _selectedSkillModel, value);
+        }
+
         public string EditableItemName
         {
             get => _editableItemName;
             set => SetValue(ref _editableItemName, value);
         }
 
-        public ActionCommand CommandOpenRules { get; set; }
-        public ActionCommand CommandAddSkill { get; set; }
-        public ActionCommand CommandAddVoice { get; set; }
-        public ActionCommand CommandAddWillpower { get; set; }
-        public ActionCommand CommandSubtractWillpower { get; set; }
-        public ActionCommand CommandAddWillpowerAll { get; set; }
-        public ActionCommand CommandSubtractWillpowerAll { get; set; }
-        public ActionCommand CommandRemoveVoice { get; set; }
-        public ActionCommand CommandAddObsessionPoint { get; set; }
-        public ActionCommand CommandRemoveObsessionPoint { get; set; }
-        public ActionCommand CommandAddItem { get; set; }
-        public ActionCommand CommandLoadGame { get; set; }
-        public ActionCommand CommandSaveGame { get; set; }
-        public ActionCommand CommandNextTurn { get; set; }
+        public ActionCommand CommandOpenRules { get; }
+        public ActionCommand CommandAddSelectableSkill { get; }
+        public ActionCommand CommandAddEditableSkill { get; }
+        public ActionCommand CommandAddVoice { get; }
+        public ActionCommand CommandAddWillpower { get; }
+        public ActionCommand CommandSubtractWillpower { get; }
+        public ActionCommand CommandAddWillpowerAll { get; }
+        public ActionCommand CommandSubtractWillpowerAll { get; }
+        public ActionCommand CommandRemoveVoice { get; }
+        public ActionCommand CommandAddObsessionPoint { get; }
+        public ActionCommand CommandRemoveObsessionPoint { get; }
+        public ActionCommand CommandAddItem { get; }
+        public ActionCommand CommandLoadGame { get; }
+        public ActionCommand CommandSaveGame { get; }
+        public ActionCommand CommandNextTurn { get; }
+        public ActionCommand CommandSelectionChangedEvent { get; }
 
         public int ComboboxLevelBinding
         {
@@ -115,14 +118,20 @@ namespace EveryoneIsJohnTracker.ViewModels
         public int ListViewSelectedIndex
         {
             get => _listViewSelectedIndex;
-            set => SetValue(ref _listViewSelectedIndex, value);
+            set
+            {
+                SetValue(ref _listViewSelectedIndex, value);
+                OnPropertyChanged(nameof(SelectedVoiceModel));
+            }
         }
 
         // GameMaster holds all the collections stored for the game
         public static GameMasterModel GameMaster { get; set; }
 
         public static ILogger OutputLogger { get; } = LogFactory.NewLogger(LoggerType.OutputLogger);
+
         private static ILogger NullLogger { get; } = LogFactory.NewLogger(LoggerType.NullLogger);
+
 
         public MainViewModel()
         {
@@ -132,7 +141,9 @@ namespace EveryoneIsJohnTracker.ViewModels
             CommandOpenRules =
                 new ActionCommand(() => Process.Start(@"https://rulebook.io/games/everyone-is-john/rules"));
 
-            CommandAddSkill = new ActionCommand(AddSkill);
+            CommandAddEditableSkill = new ActionCommand(obj => AddSkill(obj, EditableVoiceModel));
+
+            CommandAddSelectableSkill = new ActionCommand(obj => AddSkill(obj, SelectedVoiceModel));
 
             CommandAddVoice = new ActionCommand(AddVoice);
 
@@ -159,70 +170,27 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
 
-            // AddDemoData();
+            CommandSelectionChangedEvent =
+                new ActionCommand(VoicesComboBox_SelectionChanged);
         }
 
-        // This is strictly for debugging
-        private void AddDemoData()
+        private void VoicesComboBox_SelectionChanged(object sender)
         {
-            GameMaster.AddVoice(new VoiceModel(NullLogger)
-                {
-                    Name = "TimeTravelPenguin",
-                    Willpower = 7,
+            if (!(sender is ComboBox combo))
+            {
+                throw new InvalidOperationException(nameof(sender));
+            }
 
-                    Obsession = new ObsessionModel(NullLogger)
-                    {
-                        Name = "To become a Penguin",
-                        Level = 3,
-                        Points = 0
-                    },
-                    Skills = new ObservableCollection<SkillModel>
-                    {
-                        new SkillModel
-                        {
-                            Name = "Dancing"
-                        },
-                        new SkillModel
-                        {
-                            Name = "Cooking"
-                        },
-                        new SkillModel
-                        {
-                            Name = "Performing the dark arts"
-                        }
-                    }
-                },
-                OutputLogger);
 
-            GameMaster.AddVoice(new VoiceModel(NullLogger)
-                {
-                    Name = "Caitlin",
-                    Willpower = 7,
-
-                    Obsession = new ObsessionModel(NullLogger)
-                    {
-                        Name = "To make new friends",
-                        Level = 2,
-                        Points = 0
-                    },
-
-                    Skills = new ObservableCollection<SkillModel>
-                    {
-                        new SkillModel
-                        {
-                            Name = "Talking"
-                        },
-                        new SkillModel
-                        {
-                            Name = "Eating"
-                        },
-                        new SkillModel
-                        {
-                            Name = "Hugging"
-                        }
-                    }
-                },
-                OutputLogger);
+            if (SelectedVoiceIndex < 0 && GameMaster.Voices.Count > 0)
+            {
+                SelectedVoiceIndex = 0;
+                OnPropertyChanged(nameof(SelectedVoiceModel));
+            }
+            else
+            {
+                SelectedVoiceIndex = combo.SelectedIndex;
+            }
         }
 
         private void AddItem()
@@ -247,16 +215,27 @@ namespace EveryoneIsJohnTracker.ViewModels
             }
         }
 
-        private void AddSkill()
+        private void AddSkill(object obj, VoiceModel voice)
         {
-            if (!string.IsNullOrEmpty(EditableSkillModel.Name))
+            if (voice == null)
             {
-                EditableVoiceModel.Skills.Add(new SkillModel
+                throw new NullReferenceException(nameof(voice));
+            }
+
+            if (!(obj is SkillModel skill))
+            {
+                throw new InvalidOperationException(nameof(obj));
+            }
+
+            if (!string.IsNullOrEmpty(skill.Name))
+            {
+                voice.Skills.Add(new SkillModel(voice)
                 {
-                    Name = EditableSkillModel.Name
+                    Name = skill.Name
                 });
 
-                EditableSkillModel.Name = "";
+                skill.Name = "";
+                voice.UpdateSkillsAsString();
             }
         }
 
@@ -283,7 +262,7 @@ namespace EveryoneIsJohnTracker.ViewModels
             SelectedVoiceIndex = SelectedVoiceIndex < 0 && GameMaster.Voices.Count > 0
                 ? 0
                 : SelectedVoiceIndex;
-            OnPropertyChanged(nameof(SelectedVoice));
+            OnPropertyChanged(nameof(SelectedVoiceModel));
         }
 
         private void RemoveVoice()

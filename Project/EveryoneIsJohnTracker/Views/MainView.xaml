@@ -9,6 +9,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:EveryoneIsJohnTracker.Models"
         xmlns:converters="clr-namespace:EveryoneIsJohnTracker.Converters"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="{Binding GameMaster.Turn, StringFormat=Everyone is John Tracker (Turn: {0})}"
         Height="600" Width="800" ResizeMode="NoResize"
@@ -121,7 +122,7 @@
                                        Grid.Row="2"
                                        Grid.Column="0"
                                        Grid.ColumnSpan="3"
-                                       Text="{Binding SkillsAsString, StringFormat=Skills: {0}}" />
+                                       Text="{Binding SkillsAsString}" />
 
                         </Grid>
                     </DataTemplate>
@@ -298,7 +299,8 @@
                         <TextBox Text="{Binding EditableSkillModel.Name}" Grid.Row="7" Grid.Column="2"
                                  Margin="5,0,0,0" />
 
-                        <Button Command="{Binding CommandAddSkill}"
+                        <Button Command="{Binding CommandAddEditableSkill}"
+                                CommandParameter="{Binding EditableSkillModel}"
                                 Content="Add Skill"
                                 Grid.Row="7"
                                 Grid.Column="3"
@@ -356,17 +358,26 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding Path=SelectedVoice.Name}"
+                        <TextBox Text="{Binding Path=SelectedVoiceModel.Name}"
                                  Grid.Row="1"
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
 
                         <ComboBox Name="VoicesComboBox"
+                                  Text="Choose a Voice"
                                   Grid.Row="1"
                                   Grid.Column="3"
                                   Width="100"
-                                  SelectedIndex="{Binding SelectedVoiceIndex, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedIndex="{Binding SelectedVoiceIndex, Mode=TwoWay}"
                                   ItemsSource="{Binding GameMaster.Voices}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding CommandSelectionChangedEvent}"
+                                                           CommandParameter="{Binding RelativeSource=
+                                        {RelativeSource FindAncestor, AncestorType=
+                                        {x:Type ComboBox}, AncestorLevel=1}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
 
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -391,7 +402,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding SelectedVoice.Willpower}"
+                        <TextBox Text="{Binding SelectedVoiceModel.Willpower}"
                                  Grid.Row="3"
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
@@ -402,7 +413,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding SelectedVoice.Obsession.Name}" Grid.Row="5"
+                        <TextBox Text="{Binding SelectedVoiceModel.Obsession.Name}" Grid.Row="5"
                                  Grid.Column="2"
                                  Margin="5,0,0,0" />
 
@@ -410,7 +421,7 @@
                                   Grid.Row="5"
                                   Grid.Column="3"
                                   Width="100"
-                                  SelectedIndex="{Binding SelectedVoice.Obsession.LevelIndex, UpdateSourceTrigger=PropertyChanged}">
+                                  SelectedIndex="{Binding SelectedVoiceModel.Obsession.LevelIndex, UpdateSourceTrigger=PropertyChanged}">
                             <ComboBoxItem Content="Level 1" />
                             <ComboBoxItem Content="Level 2" />
                             <ComboBoxItem Content="Level 3" />
@@ -422,16 +433,17 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center" />
 
-                        <TextBox Text="{Binding SelectedVoice.Name}" Grid.Row="7" Grid.Column="2"
+                        <TextBox Text="{Binding SelectedSkillModel.Name}" Grid.Row="7" Grid.Column="2"
                                  Margin="5,0,0,0" />
 
-                        <Button Command="{Binding CommandAddSkill}"
+                        <Button Command="{Binding CommandAddSelectableSkill}"
+                                CommandParameter="{Binding SelectedSkillModel}"
                                 Content="Add Skill"
                                 Grid.Row="7"
                                 Grid.Column="3"
                                 Width="100" />
 
-                        <DataGrid ItemsSource="{Binding SelectedVoice.Skills}"
+                        <DataGrid ItemsSource="{Binding SelectedVoiceModel.Skills}"
                                   Grid.Row="9"
                                   Grid.Column="1"
                                   Grid.ColumnSpan="3"
@@ -441,7 +453,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Skill Name"
                                                     Width="*"
-                                                    Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" />
+                                                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

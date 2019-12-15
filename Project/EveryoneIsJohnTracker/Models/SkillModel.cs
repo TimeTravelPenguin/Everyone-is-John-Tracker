@@ -7,7 +7,7 @@
 // File Name: SkillModel.cs
 // 
 // Current Data:
-// 2019-12-14 11:55 AM
+// 2019-12-15 11:25 PM
 // 
 // Creation Date:
 // 2019-09-27 9:12 AM
@@ -24,6 +24,13 @@ namespace EveryoneIsJohnTracker.Models
     {
         private ILogger _logger;
         private string _name;
+        private VoiceModel _parentVoiceModel;
+
+        public VoiceModel ParentVoiceModel
+        {
+            get => _parentVoiceModel;
+            set => SetValue(ref _parentVoiceModel, value);
+        }
 
         [JsonIgnore]
         public ILogger Logger
@@ -35,7 +42,21 @@ namespace EveryoneIsJohnTracker.Models
         public string Name
         {
             get => _name;
-            set => SetValue(ref _name, value);
+            set
+            {
+                SetValue(ref _name, value);
+                ParentVoiceModel?.UpdateSkillsAsString();
+            }
+        }
+
+        public SkillModel()
+        {
+            ParentVoiceModel = null;
+        }
+
+        public SkillModel(VoiceModel parentVoice)
+        {
+            ParentVoiceModel = parentVoice;
         }
     }
 }

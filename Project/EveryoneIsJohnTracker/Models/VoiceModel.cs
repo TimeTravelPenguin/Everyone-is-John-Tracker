@@ -7,7 +7,7 @@
 // File Name: VoiceModel.cs
 // 
 // Current Data:
-// 2019-12-14 11:48 AM
+// 2019-12-15 11:12 PM
 // 
 // Creation Date:
 // 2019-09-27 9:09 AM
@@ -48,7 +48,7 @@ namespace EveryoneIsJohnTracker.Models
             set
             {
                 SetValue(ref _logger, value);
-                
+
                 Obsession.Logger = value;
                 foreach (var skillModel in Skills)
                 {
@@ -92,7 +92,11 @@ namespace EveryoneIsJohnTracker.Models
         public ObservableCollection<SkillModel> Skills
         {
             get => _skills;
-            set => SetValue(ref _skills, value);
+            set
+            {
+                SetValue(ref _skills, value);
+                OnPropertyChanged(nameof(SkillsAsString));
+            }
         }
 
         public string SkillsAsString => string.Join(", ", Skills.Select(x => x.Name).ToArray());
@@ -130,7 +134,7 @@ namespace EveryoneIsJohnTracker.Models
             Skills.Clear();
             foreach (var skill in voice.Skills)
             {
-                Skills.Add(new SkillModel
+                Skills.Add(new SkillModel(this)
                 {
                     Name = skill.Name
                 });
@@ -138,6 +142,11 @@ namespace EveryoneIsJohnTracker.Models
 
             Logger = voice.Logger;
             Obsession.Logger = voice.Logger;
+        }
+
+        public void UpdateSkillsAsString()
+        {
+            OnPropertyChanged(nameof(SkillsAsString));
         }
 
         public void UpdateScoreHistoryForNewTurn(int turn)
