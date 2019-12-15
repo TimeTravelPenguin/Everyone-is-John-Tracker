@@ -7,7 +7,7 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-14 3:30 PM
+// 2019-12-16 12:12 AM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
@@ -15,7 +15,7 @@
 #endregion
 
 using EveryoneIsJohnTracker.Models;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using LiveCharts;
 using LiveCharts.Defaults;
 
@@ -49,7 +49,12 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void RemoveVoiceAt(this GameMasterModel gameMaster, int index)
         {
-            if (gameMaster.Voices.Count > 0 && index >= 0 && index < gameMaster.Voices.Count)
+            if (index < 0 || index >= gameMaster.Voices.Count)
+            {
+                return;
+            }
+
+            if (gameMaster.Voices.Count > 0)
             {
                 gameMaster.Voices.RemoveAt(index);
                 gameMaster.ChartModel.UpdateChartValues();
@@ -58,6 +63,11 @@ namespace EveryoneIsJohnTracker.Extensions
 
         public static void AddWillpower(this GameMasterModel gameMaster, int index, int value)
         {
+            if (index < 0 || index >= gameMaster.Voices.Count)
+            {
+                return;
+            }
+
             if (gameMaster.Voices.Count > 0 && gameMaster.Voices[index].Willpower + value >= 0)
             {
                 gameMaster.Voices[index].Willpower += value;
@@ -77,6 +87,11 @@ namespace EveryoneIsJohnTracker.Extensions
 
         internal static void AddObsessionPoint(this GameMasterModel gameMaster, int index, int value)
         {
+            if (index < 0 || index >= gameMaster.Voices.Count)
+            {
+                return;
+            }
+
             if (gameMaster.Voices.Count > 0 &&
                 gameMaster.Voices[index].ScoreHistory[gameMaster.Turn].Y + value >= 0)
             {
