@@ -7,10 +7,10 @@
 // File Name: FileIOExtension.cs
 // 
 // Current Data:
-// 2019-12-13 2:34 PM
+// 2019-12-16 2:48 AM
 // 
 // Creation Date:
-// 2019-10-29 2:05 PM
+// 2019-12-14 3:31 PM
 
 #endregion
 
@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Windows;
 using EveryoneIsJohnTracker.Models;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
@@ -55,7 +55,7 @@ namespace EveryoneIsJohnTracker.Extensions
             }
         }
 
-        internal static void FileInput(this GameMasterModel gameMasterModel, ILogger logger)
+        internal static bool FileInput(this GameMasterModel gameMasterModel, ILogger logger)
         {
             var ofd = new OpenFileDialog
             {
@@ -78,17 +78,19 @@ namespace EveryoneIsJohnTracker.Extensions
 
                         gameMasterModel.ChartModel.PlayerData = gameMasterModel.Voices;
                         gameMasterModel.ChartModel.UpdateChartValues();
+
+                        return true;
                     }
-                    else
-                    {
-                        MessageBox.Show("Please open a valid .john file", "Error opening file...");
-                    }
+
+                    MessageBox.Show("Please open a valid .john file", "Error opening file...");
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error inputting file" + Environment.NewLine + ex.Message, "Error");
                 }
             }
+
+            return false;
         }
     }
 }
