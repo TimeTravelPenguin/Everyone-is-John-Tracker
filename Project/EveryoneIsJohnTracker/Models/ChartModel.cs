@@ -7,7 +7,7 @@
 // File Name: ChartModel.cs
 // 
 // Current Data:
-// 2019-12-13 2:34 PM
+// 2019-12-16 10:11 AM
 // 
 // Creation Date:
 // 2019-12-12 10:48 PM
@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using EveryoneIsJohnTracker.Base;
@@ -28,7 +28,7 @@ namespace EveryoneIsJohnTracker.Models
     {
         private SeriesCollection _playerSeriesCollection = new SeriesCollection();
         private Func<int, string> _yFormatter;
-        public IEnumerable<VoiceModel> PlayerData;
+        public ObservableCollection<VoiceModel> PlayerData;
 
         public SeriesCollection PlayerSeriesCollection
         {
@@ -42,7 +42,7 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _yFormatter, value);
         }
 
-        public ChartModel(IEnumerable<VoiceModel> voices)
+        public ChartModel(ObservableCollection<VoiceModel> voices)
         {
             PlayerData = voices;
             YFormatter = i => i.ToString(CultureInfo.InvariantCulture) + " pts";
