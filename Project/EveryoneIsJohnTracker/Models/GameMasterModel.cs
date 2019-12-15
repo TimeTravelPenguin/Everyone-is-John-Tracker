@@ -18,7 +18,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using EveryoneIsJohnTracker.Base;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using LiveCharts.Defaults;
 using Newtonsoft.Json;
 
