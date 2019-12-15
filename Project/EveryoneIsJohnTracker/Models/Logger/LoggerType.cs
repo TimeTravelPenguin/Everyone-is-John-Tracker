@@ -14,7 +14,7 @@
 
 #endregion
 
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal enum LoggerType
     {

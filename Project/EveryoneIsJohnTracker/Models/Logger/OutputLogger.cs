@@ -7,14 +7,14 @@
 // File Name: OutputLogger.cs
 // 
 // Current Data:
-// 2019-12-14 10:14 AM
+// 2019-12-16 2:33 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
 
 #endregion
 
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal class OutputLogger : LoggerBase, ILogger
     {
@@ -79,13 +79,18 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
 
         public void LogObsessionNameChanged(string name, string oldValue, string newValue)
         {
-            LogHistory.Add(new Log($"{name}'s Obsession , {oldValue}, has been renamed to {newValue}"));
+            LogHistory.Add(new Log($"{name}'s Obsession, {oldValue}, has been renamed to {newValue}"));
         }
 
-        public void LogObsessionLevelChanged(string name, string obsName, int oldValue, int newValue)
+        public void LogObsessionLevelChanged(string name, int oldValue, int newValue)
         {
             LogHistory.Add(
-                new Log($"{name}'s Obsession, {obsName}, has been changed from Lv. {oldValue} to Lv. {newValue}"));
+                new Log($"{name}'s Obsession has been changed from Lv. {oldValue} to Lv. {newValue}"));
+        }
+
+        public void LogSkillNameChanged(string name, string oldName, string playerName)
+        {
+            LogHistory.Add(new Log($"{name}'s Skill \"{oldName}\" has been changed to \"{name}\""));
         }
 
         public void LogObsessionPointsChanged(string name, int obsOldPts, int obsNewPts)

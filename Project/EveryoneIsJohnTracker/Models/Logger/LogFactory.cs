@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal static class LogFactory
     {

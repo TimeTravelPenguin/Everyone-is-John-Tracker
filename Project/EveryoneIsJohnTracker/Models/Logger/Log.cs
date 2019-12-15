@@ -16,7 +16,7 @@
 
 using System;
 
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal class Log
     {

@@ -7,16 +7,14 @@
 // File Name: NullLogger.cs
 // 
 // Current Data:
-// 2019-12-11 7:02 PM
+// 2019-12-16 2:33 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
 
 #endregion
 
-using System;
-
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal class NullLogger : LoggerBase, ILogger
     {
@@ -30,7 +28,6 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
 
         public void LogTurnChange(int newTurn, int previousTurn)
         {
-            throw new NotImplementedException();
         }
 
         public void LogRemoveVoice(VoiceModel voice)
@@ -57,11 +54,15 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
         {
         }
 
-        public void LogObsessionLevelChanged(string name, string name1, int oldValue, int value)
+        public void LogObsessionLevelChanged(string name, int oldValue, int value)
         {
         }
 
         public void LogObsessionNameChanged(string oldValue, string value, string value1)
+        {
+        }
+
+        public void LogSkillNameChanged(string name, string oldName, string playerName)
         {
         }
 

@@ -17,7 +17,7 @@
 using System.Collections.ObjectModel;
 using EveryoneIsJohnTracker.Base;
 
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal class LoggerBase : PropertyChangedBase
     {

@@ -16,7 +16,7 @@
 
 using System.Collections.ObjectModel;
 
-namespace EveryoneIsJohnTracker.Models.OutputLoggers
+namespace EveryoneIsJohnTracker.Models.Logger
 {
     internal interface ILogger
     {
@@ -27,13 +27,14 @@ namespace EveryoneIsJohnTracker.Models.OutputLoggers
         void LogRemoveVoice(VoiceModel voice);
         void LogClearedVoiceCollection();
         void LogRemoveInventoryItem(ItemModel item);
-        void LogObsessionLevelChanged(string name, string name1, int oldValue, int value);
         void LogItemNameChanged(string oldValue, string value);
         void LogClearInventory();
         void LogNameChanged(string oldName, string value);
         void LogWillPowerChanged(string name, int oldValue, int value);
-        void LogObsessionNameChanged(string oldValue, string value, string value1);
+        void LogObsessionNameChanged(string name, string oldValue, string newValue);
+        void LogObsessionLevelChanged(string name, int oldValue, int newValue);
         void LogItemCountChanged(string name, int oldValue, int value);
+        void LogSkillNameChanged(string name, string oldName, string playerName);
         void LogObsessionPointsChanged(string voiceName, int oldValue, int value);
         void LogItemDescriptionChanged(string name);
         void LogDataLoad(bool errorFlag);
