@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-16 2:49 AM
+// 2019-12-16 9:11 AM
 // 
 // Creation Date:
 // 2019-12-14 3:31 PM
@@ -35,9 +35,9 @@ namespace EveryoneIsJohnTracker.ViewModels
         private string _editableItemName;
         private SkillModel _editableSkillModel = new SkillModel(); // Used to bind to view
         private VoiceModel _editableVoiceModel = new VoiceModel(NullLogger); // Used to add to Voices Collection
-        private int _listViewSelectedIndex;
+        private VoiceModel _listViewSelectedVoice = new VoiceModel(NullLogger);
         private SkillModel _selectedSkillModel = new SkillModel(); // Used to bind to view
-        private VoiceModel _selectedVoiceModel;
+        private VoiceModel _selectedVoiceModel = new VoiceModel(NullLogger);
         private ICollectionView _voiceCollectionView;
 
         [JsonIgnore]
@@ -63,6 +63,13 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _editableVoiceModel, value);
         }
 
+        [JsonIgnore]
+        public VoiceModel ListViewSelectedVoice
+        {
+            get => _listViewSelectedVoice;
+            set => SetValue(ref _listViewSelectedVoice, value);
+        }
+
         public SkillModel EditableSkillModel
         {
             get => _editableSkillModel;
@@ -81,6 +88,7 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _editableItemName, value);
         }
 
+        public ActionCommand CommandAbout { get; }
         public ActionCommand CommandOpenRules { get; }
         public ActionCommand CommandAddSelectableSkill { get; }
         public ActionCommand CommandAddEditableSkill { get; }
@@ -103,16 +111,6 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _comboboxLevelBinding, value);
         }
 
-        public int ListViewSelectedIndex
-        {
-            get => _listViewSelectedIndex;
-            set
-            {
-                SetValue(ref _listViewSelectedIndex, value);
-                OnPropertyChanged(nameof(SelectedVoiceModel));
-            }
-        }
-
         // GameMaster holds all the collections stored for the game
         public static GameMasterModel GameMaster { get; set; }
 
@@ -126,6 +124,16 @@ namespace EveryoneIsJohnTracker.ViewModels
             GameMaster = new GameMasterModel(OutputLogger);
             VoiceCollectionView = CollectionViewSource.GetDefaultView(GameMaster.Voices);
 
+            CommandAbout = new ActionCommand(() =>
+            {
+                if (MessageBox.Show(
+                        $"This application was made by Phillip Smith.{Environment.NewLine}Would you like to visit the GitHub for this project?",
+                        "About", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Process.Start(@"https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker");
+                }
+            });
+
             CommandOpenRules =
                 new ActionCommand(() => Process.Start(@"https://rulebook.io/games/everyone-is-john/rules"));
 
@@ -135,9 +143,9 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandAddVoice = new ActionCommand(AddVoice);
 
-            CommandAddWillpower = new ActionCommand(() => GameMaster.AddWillpower(ListViewSelectedIndex, 1));
+            CommandAddWillpower = new ActionCommand(() => GameMaster.AddWillpower(ListViewSelectedVoice, 1));
 
-            CommandSubtractWillpower = new ActionCommand(() => GameMaster.AddWillpower(ListViewSelectedIndex, -1));
+            CommandSubtractWillpower = new ActionCommand(() => GameMaster.AddWillpower(ListViewSelectedVoice, -1));
 
             CommandAddWillpowerAll = new ActionCommand(() => GameMaster.AddWillpowerAll(1));
 
@@ -145,10 +153,10 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandRemoveVoice = new ActionCommand(RemoveVoice);
 
-            CommandAddObsessionPoint = new ActionCommand(() => GameMaster.AddObsessionPoint(ListViewSelectedIndex, 1));
+            CommandAddObsessionPoint = new ActionCommand(() => GameMaster.AddObsessionPoint(ListViewSelectedVoice, 1));
 
             CommandRemoveObsessionPoint =
-                new ActionCommand(() => GameMaster.AddObsessionPoint(ListViewSelectedIndex, -1));
+                new ActionCommand(() => GameMaster.AddObsessionPoint(ListViewSelectedVoice, -1));
 
             CommandAddItem = new ActionCommand(AddItem);
 
@@ -166,6 +174,7 @@ namespace EveryoneIsJohnTracker.ViewModels
             CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
 
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
+            ListViewSelectedVoice = GameMaster.Voices.FirstOrDefault();
         }
 
 
@@ -239,8 +248,6 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void RemoveVoice()
         {
-            //GameMaster.RemoveVoiceAt(SelectedVoiceIndex);
-
             GameMaster.Voices.Remove(SelectedVoiceModel);
             SelectedSkillModel.Name = "";
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();

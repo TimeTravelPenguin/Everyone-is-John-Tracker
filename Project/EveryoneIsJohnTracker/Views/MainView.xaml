@@ -57,6 +57,9 @@
 
                 <!-- Rules -->
                 <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
+                
+                <!-- About -->
+                <MenuItem Header="_About" Command="{Binding CommandAbout}" />
 
                 <!-- Turn Button -->
                 <MenuItem Header="_Next Turn" HorizontalAlignment="Right"
@@ -77,7 +80,8 @@
             <!--Region Voices ListView -->
             <ListView Grid.Row="0"
                       ItemsSource="{Binding GameMaster.Voices}"
-                      SelectedIndex="{Binding ListViewSelectedIndex}">
+                      SelectedIndex="{Binding ListViewSelectedIndex}"
+                      SelectedValue="{Binding ListViewSelectedVoice}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
