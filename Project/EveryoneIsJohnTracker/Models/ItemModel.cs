@@ -15,7 +15,7 @@
 #endregion
 
 using EveryoneIsJohnTracker.Base;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
