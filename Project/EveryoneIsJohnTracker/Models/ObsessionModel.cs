@@ -7,7 +7,7 @@
 // File Name: ObsessionModel.cs
 // 
 // Current Data:
-// 2019-12-14 9:21 PM
+// 2019-12-16 2:42 AM
 // 
 // Creation Date:
 // 2019-09-27 9:13 AM
@@ -16,7 +16,7 @@
 
 using System.Windows;
 using EveryoneIsJohnTracker.Base;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
@@ -45,11 +45,7 @@ namespace EveryoneIsJohnTracker.Models
         public int LevelIndex
         {
             get => _level - 1;
-            set
-            {
-                SetValue(ref _level, value + 1);
-                OnPropertyChanged(nameof(Level));
-            }
+            set => Level = value + 1;
         }
 
         public int Level
@@ -58,13 +54,14 @@ namespace EveryoneIsJohnTracker.Models
             set
             {
                 var oldValue = _level;
-                CheckLevelValue(ref value);
-                SetValue(ref _level, value);
-                OnPropertyChanged(nameof(LevelIndex));
 
                 if (oldValue != value)
                 {
-                    Logger.LogObsessionLevelChanged(VoiceName, Name, oldValue, value);
+                    CheckLevelValue(ref value);
+                    SetValue(ref _level, value);
+                    OnPropertyChanged(nameof(LevelIndex));
+
+                    Logger.LogObsessionLevelChanged(VoiceName, oldValue, value);
                 }
             }
         }
@@ -75,10 +72,11 @@ namespace EveryoneIsJohnTracker.Models
             set
             {
                 var oldValue = _name;
-                SetValue(ref _name, value);
 
                 if (oldValue != value)
                 {
+                    SetValue(ref _name, value);
+
                     Logger.LogObsessionNameChanged(VoiceName, oldValue, value);
                 }
             }
@@ -90,10 +88,11 @@ namespace EveryoneIsJohnTracker.Models
             set
             {
                 var oldValue = _points;
-                SetValue(ref _points, value);
 
                 if (oldValue != value)
                 {
+                    SetValue(ref _points, value);
+
                     Logger.LogObsessionPointsChanged(VoiceName, oldValue, value);
                 }
             }

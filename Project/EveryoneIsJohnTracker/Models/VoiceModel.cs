@@ -19,7 +19,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using EveryoneIsJohnTracker.Base;
 using EveryoneIsJohnTracker.Extensions;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using LiveCharts;
 using LiveCharts.Defaults;
 using Newtonsoft.Json;
@@ -136,7 +136,8 @@ namespace EveryoneIsJohnTracker.Models
             {
                 Skills.Add(new SkillModel(this)
                 {
-                    Name = skill.Name
+                    Name = skill.Name,
+                    Logger = voice.Logger
                 });
             }
 

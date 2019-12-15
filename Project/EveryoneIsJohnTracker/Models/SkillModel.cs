@@ -7,7 +7,7 @@
 // File Name: SkillModel.cs
 // 
 // Current Data:
-// 2019-12-15 11:25 PM
+// 2019-12-16 12:05 AM
 // 
 // Creation Date:
 // 2019-09-27 9:12 AM
@@ -15,17 +15,18 @@
 #endregion
 
 using EveryoneIsJohnTracker.Base;
-using EveryoneIsJohnTracker.Models.OutputLoggers;
+using EveryoneIsJohnTracker.Models.Logger;
 using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.Models
 {
     internal class SkillModel : PropertyChangedBase
     {
-        private ILogger _logger;
+        private ILogger _logger = LogFactory.NewLogger(LoggerType.NullLogger);
         private string _name;
         private VoiceModel _parentVoiceModel;
 
+        [JsonIgnore]
         public VoiceModel ParentVoiceModel
         {
             get => _parentVoiceModel;
@@ -44,8 +45,14 @@ namespace EveryoneIsJohnTracker.Models
             get => _name;
             set
             {
-                SetValue(ref _name, value);
-                ParentVoiceModel?.UpdateSkillsAsString();
+                var oldName = _name;
+
+                if (oldName != value)
+                {
+                    SetValue(ref _name, value);
+                    Logger.LogSkillNameChanged(_name, oldName, ParentVoiceModel==null ? "" : ParentVoiceModel.Name);
+                    ParentVoiceModel?.UpdateSkillsAsString();
+                }
             }
         }
 
