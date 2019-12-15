@@ -7,7 +7,7 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-16 8:39 AM
+// 2019-12-16 10:10 AM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
@@ -46,6 +46,15 @@ namespace EveryoneIsJohnTracker.Extensions
                 }
 
                 gameMaster.Voices.Add(newVoice);
+                gameMaster.ChartModel.UpdateChartValues();
+            }
+        }
+
+        public static void RemoveVoice(this GameMasterModel gameMaster, VoiceModel voice)
+        {
+            if (voice != null && gameMaster.Voices.Contains(voice))
+            {
+                gameMaster.Voices.Remove(voice);
                 gameMaster.ChartModel.UpdateChartValues();
             }
         }

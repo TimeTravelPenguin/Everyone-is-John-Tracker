@@ -7,10 +7,10 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-16 9:11 AM
+// 2019-12-16 10:10 AM
 // 
 // Creation Date:
-// 2019-12-14 3:31 PM
+// 2019-12-16 9:37 AM
 
 #endregion
 
@@ -248,7 +248,8 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         private void RemoveVoice()
         {
-            GameMaster.Voices.Remove(SelectedVoiceModel);
+            GameMaster.RemoveVoice(SelectedVoiceModel);
+
             SelectedSkillModel.Name = "";
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
         }
