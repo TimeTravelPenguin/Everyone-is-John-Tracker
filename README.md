@@ -4,7 +4,7 @@
 ## Game rules
 For an extensive list of game rules as well a more in-depth guide on how to play, [check out the rulebook here](https://rulebook.io/games/everyone-is-john/rules/).
 
-You play a man named John. On player is the Game Master and all else are voices in John's head.
+You play a man named John. One player is the Game Master and all else are voices in John's head.
 Each tern you bet "Willpoints" to take control. Each voice has multiple skills and one obsession.
 The aim is to complete your obsession as many times as you can. The harder your obsession, the higher its level (Level 1 to 3).
 Each time you achieve your obsession, you earn points equal to the level.
