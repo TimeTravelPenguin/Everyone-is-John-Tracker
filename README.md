@@ -1,6 +1,8 @@
 # Everyone is John
  A tracking tool for the "Everyone is John" roleplaying game
 
+[![Actions Status](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/workflows/Build/badge.svg)](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/actions)
+
 ## Game rules
 For an extensive list of game rules as well a more in-depth guide on how to play, [check out the rulebook here](https://rulebook.io/games/everyone-is-john/rules/).
 
