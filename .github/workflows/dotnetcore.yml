@@ -15,4 +15,4 @@ jobs:
         dotnet-version: 2.2.108
     - name: Build with dotnet
       working-directory: ./Everyone-is-John-Tracker/Project/EveryoneIsJohnTracker
-      run: dotnet build --configuration Debug
+      run: dotnet build
