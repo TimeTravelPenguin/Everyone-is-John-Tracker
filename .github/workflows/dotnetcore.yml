@@ -15,4 +15,6 @@ jobs:
         dotnet-version: 2.2.108
     - name: Build with dotnet
       working-directory: ./Project
-      run: dotnet build EveryoneIsJohnTracker.sln --no-dependencies
+      run: |
+        nuget restore
+        dotnet build EveryoneIsJohnTracker.sln
