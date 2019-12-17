@@ -79,7 +79,6 @@
             <!--Region Voices ListView -->
             <ListView Grid.Row="0"
                       ItemsSource="{Binding GameMaster.Voices}"
-                      SelectedIndex="{Binding ListViewSelectedIndex}"
                       SelectedValue="{Binding ListViewSelectedVoice}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
