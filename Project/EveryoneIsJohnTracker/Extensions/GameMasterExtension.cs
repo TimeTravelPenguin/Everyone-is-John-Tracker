@@ -7,7 +7,7 @@
 // File Name: GameMasterExtension.cs
 // 
 // Current Data:
-// 2019-12-16 10:10 AM
+// 2019-12-17 4:36 PM
 // 
 // Creation Date:
 // 2019-09-28 9:56 PM
@@ -65,16 +65,17 @@ namespace EveryoneIsJohnTracker.Extensions
             {
                 voice.Willpower += value;
             }
+            else if (voice != null && voice.Willpower + value < 0)
+            {
+                voice.Willpower = 0;
+            }
         }
 
         public static void AddWillpowerAll(this GameMasterModel gameMaster, int value)
         {
             foreach (var voiceModel in gameMaster.Voices)
             {
-                if (voiceModel.Willpower + value >= 0)
-                {
-                    voiceModel.Willpower += value;
-                }
+                gameMaster.AddWillpower(voiceModel, value);
             }
         }
 
@@ -83,6 +84,10 @@ namespace EveryoneIsJohnTracker.Extensions
             if (voice != null && voice.ScoreHistory[gameMaster.Turn].Y + value >= 0)
             {
                 voice.AddObsessionPoint(gameMaster.Turn, value);
+            }
+            else if (voice != null && voice.ScoreHistory[gameMaster.Turn].Y + value < 0)
+            {
+                voice.AddObsessionPoint(gameMaster.Turn, 0);
             }
         }
 
