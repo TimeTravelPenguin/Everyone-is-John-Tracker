@@ -23,6 +23,7 @@ The game is played with a single die. You may use Willpoints to increase the odd
 ![image of the application with logger](/ReadmeImages/image01.png)
 ![image of the application editing section](/ReadmeImages/image02.png)
 ![image of the application with graph](/ReadmeImages/image03.png)
+![image of the application dice roller](/ReadmeImages/image04.png)
 
 ## Download
 To download the application, pop over to the [Releases Page](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/releases)
