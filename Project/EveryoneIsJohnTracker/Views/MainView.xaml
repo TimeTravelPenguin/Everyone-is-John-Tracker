@@ -49,11 +49,17 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_Load" Command="{Binding CommandLoadGame}" />
                     <MenuItem Header="_Save" Command="{Binding CommandSaveGame}" />
+                    <MenuItem Header="_Exit" Command="{Binding CommandExitApplication}" />
                 </MenuItem>
 
                 <!-- Rules -->
                 <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
 
+                <!-- Tools -->
+                <MenuItem Header="_Tools">
+                    <MenuItem Header="_Export Live Chart" Command="{Binding CommandExportChart}" />
+                </MenuItem>
+                
                 <!-- About -->
                 <MenuItem Header="_About" Command="{Binding CommandAbout}" />
 
