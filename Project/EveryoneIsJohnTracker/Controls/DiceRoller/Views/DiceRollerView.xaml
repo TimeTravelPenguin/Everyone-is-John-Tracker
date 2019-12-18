@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="EveryoneIsJohnTracker.Controls.DiceRoller.Views.DiceRollerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EveryoneIsJohnTracker.Controls.DiceRoller.Views"
+             xmlns:viewModels="clr-namespace:EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels"
+             xmlns:types="clr-namespace:EveryoneIsJohnTracker.Types"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="170">
+
+    <UserControl.DataContext>
+        <viewModels:DiceRollerViewModel />
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Dice:"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,0,10,0" />
+
+        <ComboBox Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Grid.Row="0"
+                  Text="Select rolling option..."
+                  ItemsSource="{Binding ComboBoxCommonDice.Data}"
+                  SelectedIndex="{Binding ComboBoxCommonDice.SelectedIndex}"
+                  IsEnabled="{Binding CustomDiceRuleEnabled, Converter={StaticResource InverseBooleanConverter}}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DiceName}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <TextBox x:Name="TxtboxCustomRule"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 Grid.Row="2"
+                 IsEnabled="{Binding CustomDiceRuleEnabled}"
+                 ToolTip="Each numeric entry must be no more than two digits. E.g. 12d20+99">
+            <TextBox.Text>
+                <Binding Path="CustomDiceRule" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <types:RegexValidationRule Expression="^\b\d{1,2}[dD]\d{1,2}([+-]\d{1,2})?\b$" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <CheckBox x:Name="ChkboxCustomRule"
+                  Content="Custom?"
+                  Grid.Column="2"
+                  Grid.ColumnSpan="2"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  Margin="5,0,0,0"
+                  ToolTip="Enter a value in form &quot;[number]d[number]+[number]&quot;"
+                  IsChecked="{Binding CustomDiceRuleEnabled}" />
+
+        <Button Content="Roll Dice"
+                Command="{Binding CommandRollDice}"
+                Grid.Column="0"
+                Grid.Row="4"
+                Grid.ColumnSpan="2">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="IsEnabled" Value="False" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=TxtboxCustomRule}"
+                                     Value="False">
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CustomDiceRuleEnabled}"
+                                     Value="False">
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <TextBlock Text="{Binding RecentRoll, StringFormat=Result: {0}}"
+                   Grid.Column="2"
+                   Grid.Row="4"
+                   VerticalAlignment="Center"
+                   Margin="5,0,0,0" />
+    </Grid>
+</UserControl>
