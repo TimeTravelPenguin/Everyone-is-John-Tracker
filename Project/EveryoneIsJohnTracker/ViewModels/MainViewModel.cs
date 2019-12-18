@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-16 10:10 AM
+// 2019-12-18 12:35 PM
 // 
 // Creation Date:
 // 2019-12-16 9:37 AM
@@ -20,10 +20,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels;
+using EveryoneIsJohnTracker.Controls.DiceRoller.Views;
 using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.Logger;
+using EveryoneIsJohnTracker.Types;
 using Microsoft.Expression.Interactivity.Core;
 using Newtonsoft.Json;
 
@@ -32,6 +34,7 @@ namespace EveryoneIsJohnTracker.ViewModels
     internal class MainViewModel : PropertyChangedBase
     {
         private int _comboboxLevelBinding;
+        private DiceRollerViewModel _diceRollerViewModel;
         private string _editableItemName;
         private SkillModel _editableSkillModel = new SkillModel(); // Used to bind to view
         private VoiceModel _editableVoiceModel = new VoiceModel(NullLogger); // Used to add to Voices Collection
@@ -39,6 +42,12 @@ namespace EveryoneIsJohnTracker.ViewModels
         private SkillModel _selectedSkillModel = new SkillModel(); // Used to bind to view
         private VoiceModel _selectedVoiceModel = new VoiceModel(NullLogger);
         private ICollectionView _voiceCollectionView;
+
+        public DiceRollerViewModel DiceRollerViewModel
+        {
+            get => _diceRollerViewModel;
+            set => SetValue(ref _diceRollerViewModel, value);
+        }
 
         [JsonIgnore]
         public VoiceModel SelectedVoiceModel
@@ -116,13 +125,16 @@ namespace EveryoneIsJohnTracker.ViewModels
 
         public static ILogger OutputLogger { get; } = LogFactory.NewLogger(LoggerType.OutputLogger);
 
-        private static ILogger NullLogger { get; } = LogFactory.NewLogger(LoggerType.NullLogger);
+        public static ILogger NullLogger { get; } = LogFactory.NewLogger(LoggerType.NullLogger);
+
+        public static ILogger DiceLogger { get; } = LogFactory.NewLogger(LoggerType.OutputLogger);
 
 
         public MainViewModel()
         {
             GameMaster = new GameMasterModel(OutputLogger);
             VoiceCollectionView = CollectionViewSource.GetDefaultView(GameMaster.Voices);
+            DiceRollerViewModel = new DiceRollerViewModel(DiceLogger);
 
             CommandAbout = new ActionCommand(() =>
             {
@@ -176,7 +188,6 @@ namespace EveryoneIsJohnTracker.ViewModels
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
             ListViewSelectedVoice = GameMaster.Voices.FirstOrDefault();
         }
-
 
         private void AddItem()
         {

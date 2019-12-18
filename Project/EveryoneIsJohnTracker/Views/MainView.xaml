@@ -8,27 +8,24 @@
         xmlns:helpers="clr-namespace:EveryoneIsJohnTracker.Helpers"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:EveryoneIsJohnTracker.Models"
-        xmlns:converters="clr-namespace:EveryoneIsJohnTracker.Converters"
+        xmlns:converters="clr-namespace:EveryoneIsJohnTracker.Types.Converters"
+        xmlns:views="clr-namespace:EveryoneIsJohnTracker.Controls.DiceRoller.Views"
         mc:Ignorable="d"
         Title="{Binding GameMaster.Turn, StringFormat=Everyone is John Tracker (Turn: {0})}"
-        Height="600" Width="815" ResizeMode="NoResize"
+        Height="630" Width="815" ResizeMode="NoResize"
         Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico">
 
     <Window.DataContext>
         <viewmodels:MainViewModel />
     </Window.DataContext>
 
-    <Window.Resources>
-        <converters:CountGreaterThanZeroConverter x:Key="CountGreaterThanZeroConverter" />
-    </Window.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="295*" />
-            <ColumnDefinition Width="94*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="390*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -39,7 +36,7 @@
         </Grid.RowDefinitions>
 
         <!--Region Menu bar -->
-        <DockPanel Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0">
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
 
                 <Menu.ItemsPanel>
@@ -56,7 +53,7 @@
 
                 <!-- Rules -->
                 <MenuItem Header="_Rules" Command="{Binding CommandOpenRules}" />
-                
+
                 <!-- About -->
                 <MenuItem Header="_About" Command="{Binding CommandAbout}" />
 
@@ -606,6 +603,94 @@
                 </TabItem>
                 <!--EndRegion-->
 
+                <!--Region DiceRoller -->
+                <TabItem Header="Adventure Log">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Roller -->
+                        <views:DiceRollerView DataContext="{Binding DiceRollerViewModel}" Grid.Row="0" Grid.Column="0"
+                                              Margin="5,5,0,0" />
+
+                        <!-- Text -->
+                        <Border BorderThickness="1"
+                                BorderBrush="Gray"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="5,5,0,0">
+                            <TextBlock HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Text="Note: Although not all dice are necessary to play the game, they have been added in the event the user wishes to introduce new rules."
+                                       TextWrapping="WrapWithOverflow"
+                                       Margin="5,5,5,5" />
+                        </Border>
+
+                        <!-- Roller Log -->
+                        <GroupBox Grid.Row="1"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2"
+                                  Header="Dice Roller Log">
+
+                            <ScrollViewer helpers:AutoScrollHelper.AutoScroll="True"
+                                          BorderBrush="LightGray"
+                                          BorderThickness="1">
+                                <ItemsControl ItemsSource="{Binding DiceLogger.LogHistory}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <DataTemplate.Triggers>
+                                                <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="0:0:0.3"
+                                                                             From="0.0"
+                                                                             To="1.0"
+                                                                             Storyboard.TargetProperty="Opacity"
+                                                                             Storyboard.TargetName="logField" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </DataTemplate.Triggers>
+
+                                            <Grid Name="logField">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="3" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock
+                                                    Text="{Binding TimeStamp,
+                                                    StringFormat=ddd HH:mm, 
+                                                    NotifyOnTargetUpdated=True,
+                                                    Mode=OneWay}"
+                                                    Grid.Column="1" />
+
+                                                <TextBlock
+                                                    Text="{Binding Message,
+                                                    NotifyOnTargetUpdated=True,
+                                                    Mode=OneWay}"
+                                                    TextWrapping="WrapWithOverflow"
+                                                    Grid.Column="3" />
+                                            </Grid>
+
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+                <!--EndRegion-->
             </TabControl>
             <!--EndRegion-->
 
