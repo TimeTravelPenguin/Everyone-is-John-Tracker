@@ -7,10 +7,10 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-18 7:51 PM
+// 2019-12-19 2:45 AM
 // 
 // Creation Date:
-// 2019-12-16 9:37 AM
+// 2019-12-18 7:53 PM
 
 #endregion
 
@@ -20,14 +20,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Interactivity;
 using EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels;
 using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.Logger;
 using EveryoneIsJohnTracker.Types;
 using EveryoneIsJohnTracker.Views;
-using Microsoft.Expression.Interactivity.Core;
+using Microsoft.Xaml.Behaviors.Core;
 using Newtonsoft.Json;
 
 namespace EveryoneIsJohnTracker.ViewModels
@@ -206,7 +205,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         private static void ExportChart()
         {
             //GameMaster.ChartModel.ExportLiveChart();
-            var exportChartView = new ExportChartView()
+            var exportChartView = new ExportChartView
             {
                 DataContext = new ExportChartViewModel(GameMaster.ChartModel)
             };

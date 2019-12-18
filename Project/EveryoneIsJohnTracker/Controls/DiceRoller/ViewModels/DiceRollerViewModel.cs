@@ -7,10 +7,10 @@
 // File Name: DiceRollerViewModel.cs
 // 
 // Current Data:
-// 2019-12-18 11:23 AM
+// 2019-12-19 2:47 AM
 // 
 // Creation Date:
-// 2019-12-18 11:21 AM
+// 2019-12-18 7:53 PM
 
 #endregion
 
@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 using EveryoneIsJohnTracker.Controls.DiceRoller.Models;
 using EveryoneIsJohnTracker.Models.Logger;
 using EveryoneIsJohnTracker.Types;
-using Microsoft.Expression.Interactivity.Core;
+using Microsoft.Xaml.Behaviors.Core;
 
 namespace EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels
 {
@@ -43,10 +43,11 @@ namespace EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels
             new DiceModel(1, 20, 0)
         };
 
+        private readonly ILogger _logger = LogFactory.NewLogger(LoggerType.NullLogger);
+
         private string _customDiceRule = "2d6+3";
         private bool _customDiceRuleEnabled;
         private int _recentRoll;
-        private readonly ILogger _logger = LogFactory.NewLogger(LoggerType.NullLogger);
 
         public SelectedItemDataModel<DiceModel> ComboBoxCommonDice { get; set; }
 
@@ -81,7 +82,7 @@ namespace EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels
             CommandRollDice = new ActionCommand(RollDice);
         }
 
-        public DiceRollerViewModel(ILogger logger) :this()
+        public DiceRollerViewModel(ILogger logger) : this()
         {
             _logger = logger;
         }

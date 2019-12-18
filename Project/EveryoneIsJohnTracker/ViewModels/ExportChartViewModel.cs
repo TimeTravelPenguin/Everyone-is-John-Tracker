@@ -7,7 +7,7 @@
 // File Name: ExportChartViewModel.cs
 // 
 // Current Data:
-// 2019-12-19 2:14 AM
+// 2019-12-19 2:46 AM
 // 
 // Creation Date:
 // 2019-12-18 9:01 PM
@@ -26,7 +26,7 @@ using EveryoneIsJohnTracker.Types;
 using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Wpf.Charts.Base;
-using Microsoft.Expression.Interactivity.Core;
+using Microsoft.Xaml.Behaviors.Core;
 
 namespace EveryoneIsJohnTracker.ViewModels
 {
