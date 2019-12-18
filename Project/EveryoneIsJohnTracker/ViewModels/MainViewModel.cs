@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-18 5:07 PM
+// 2019-12-18 7:51 PM
 // 
 // Creation Date:
 // 2019-12-16 9:37 AM
@@ -113,6 +113,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         public ActionCommand CommandSaveGame { get; }
         public ActionCommand CommandNextTurn { get; }
         public ActionCommand CommandExportChart { get; }
+        public ActionCommand CommandExitApplication { get; }
 
         public int ComboboxLevelBinding
         {
@@ -185,7 +186,16 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
 
-            CommandExportChart = new ActionCommand(() => GameMaster.ChartModel.ExportLiveChart());
+            CommandExportChart = new ActionCommand(GameMaster.ChartModel.ExportLiveChart);
+
+            CommandExitApplication = new ActionCommand(() =>
+            {
+                if (MessageBox.Show("Are you sure you wish to quit?", "Close application?",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Application.Current.Shutdown();
+                }
+            });
 
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
             ListViewSelectedVoice = GameMaster.Voices.FirstOrDefault();
