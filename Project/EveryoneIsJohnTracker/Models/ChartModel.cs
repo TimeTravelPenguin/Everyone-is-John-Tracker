@@ -18,7 +18,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Types;
 using LiveCharts;
 using LiveCharts.Wpf;
 
