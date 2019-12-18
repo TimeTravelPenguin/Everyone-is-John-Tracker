@@ -15,7 +15,7 @@
 #endregion
 
 using System.Collections.ObjectModel;
-using EveryoneIsJohnTracker.Base;
+using EveryoneIsJohnTracker.Types;
 
 namespace EveryoneIsJohnTracker.Models.Logger
 {
