@@ -36,7 +36,7 @@
         </Grid.RowDefinitions>
 
         <!--Region Menu bar -->
-        <DockPanel Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0">
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
 
                 <Menu.ItemsPanel>
