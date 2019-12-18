@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EveryoneIsJohnTracker.Base
+namespace EveryoneIsJohnTracker.Types
 {
     public abstract class PropertyChangedBase : INotifyPropertyChanged
     {
