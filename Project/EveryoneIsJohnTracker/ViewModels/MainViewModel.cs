@@ -7,7 +7,7 @@
 // File Name: MainViewModel.cs
 // 
 // Current Data:
-// 2019-12-18 12:35 PM
+// 2019-12-18 5:07 PM
 // 
 // Creation Date:
 // 2019-12-16 9:37 AM
@@ -21,7 +21,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels;
-using EveryoneIsJohnTracker.Controls.DiceRoller.Views;
 using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.Logger;
@@ -113,6 +112,7 @@ namespace EveryoneIsJohnTracker.ViewModels
         public ActionCommand CommandLoadGame { get; }
         public ActionCommand CommandSaveGame { get; }
         public ActionCommand CommandNextTurn { get; }
+        public ActionCommand CommandExportChart { get; }
 
         public int ComboboxLevelBinding
         {
@@ -184,6 +184,8 @@ namespace EveryoneIsJohnTracker.ViewModels
             CommandSaveGame = new ActionCommand(() => GameMaster.FileOutput(OutputLogger));
 
             CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
+
+            CommandExportChart = new ActionCommand(() => GameMaster.ChartModel.ExportLiveChart());
 
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
             ListViewSelectedVoice = GameMaster.Voices.FirstOrDefault();
