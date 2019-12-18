@@ -7,10 +7,10 @@
 // File Name: ChartModel.cs
 // 
 // Current Data:
-// 2019-12-16 10:11 AM
+// 2019-12-18 11:23 PM
 // 
 // Creation Date:
-// 2019-12-12 10:48 PM
+// 2019-12-18 7:53 PM
 
 #endregion
 
@@ -42,9 +42,21 @@ namespace EveryoneIsJohnTracker.Models
             set => SetValue(ref _yFormatter, value);
         }
 
+        public ChartModel() : this(new ObservableCollection<VoiceModel>())
+        {
+        }
+
         public ChartModel(ObservableCollection<VoiceModel> voices)
         {
             PlayerData = voices;
+            YFormatter = i => i.ToString(CultureInfo.InvariantCulture) + " pts";
+            UpdateChartValues();
+        }
+
+        public ChartModel(ChartModel model)
+        {
+            PlayerData = new ObservableCollection<VoiceModel>(model.PlayerData);
+            PlayerSeriesCollection = new SeriesCollection(model.PlayerSeriesCollection);
             YFormatter = i => i.ToString(CultureInfo.InvariantCulture) + " pts";
             UpdateChartValues();
         }
