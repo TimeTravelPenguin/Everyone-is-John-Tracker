@@ -22,6 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.Logger;
+using LiveCharts;
 using LiveCharts.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -103,6 +104,7 @@ namespace EveryoneIsJohnTracker.Extensions
             {
                 DataContext = chart,
                 Series = chart.PlayerSeriesCollection,
+                LegendLocation = LegendLocation.Top,
                 DisableAnimations = true,
                 Width = 1920,
                 Height = 1080,
