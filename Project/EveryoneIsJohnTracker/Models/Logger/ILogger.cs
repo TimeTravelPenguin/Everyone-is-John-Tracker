@@ -7,7 +7,7 @@
 // File Name: ILogger.cs
 // 
 // Current Data:
-// 2019-12-14 10:15 AM
+// 2019-12-18 11:45 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
@@ -39,5 +39,6 @@ namespace EveryoneIsJohnTracker.Models.Logger
         void LogItemDescriptionChanged(string name);
         void LogDataLoad(bool errorFlag);
         void LogDataSave(string fileName, bool errorFlag);
+        void LogDiceRoll(int[] rolls, int modifier);
     }
 }

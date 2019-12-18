@@ -7,7 +7,7 @@
 // File Name: NullLogger.cs
 // 
 // Current Data:
-// 2019-12-16 2:33 AM
+// 2019-12-18 11:45 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
@@ -87,6 +87,10 @@ namespace EveryoneIsJohnTracker.Models.Logger
         }
 
         public void LogDataSave(string fileName, bool errorFlag)
+        {
+        }
+
+        public void LogDiceRoll(int[] rolls, int modifier)
         {
         }
     }

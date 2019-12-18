@@ -7,12 +7,15 @@
 // File Name: OutputLogger.cs
 // 
 // Current Data:
-// 2019-12-16 2:33 AM
+// 2019-12-18 11:45 AM
 // 
 // Creation Date:
 // 2019-09-28 10:29 PM
 
 #endregion
+
+using System;
+using System.Linq;
 
 namespace EveryoneIsJohnTracker.Models.Logger
 {
@@ -134,6 +137,23 @@ namespace EveryoneIsJohnTracker.Models.Logger
             LogHistory.Add(new Log(errorFlag
                 ? "There was an error saving the file. File was not saved..."
                 : $"File {fileName} has been successfully saved"));
+        }
+
+        public void LogDiceRoll(int[] rolls, int modifier)
+        {
+            var output = rolls.Length switch
+            {
+                0 => throw new NotImplementedException(),
+                1 => $"{rolls.Length} dice rolled: {rolls.Sum() + modifier}",
+                _ => $"{rolls.Length} dice rolled: {string.Join(", ", rolls)} for a total of {rolls.Sum() + modifier}"
+            };
+
+            if (modifier != 0)
+            {
+                output += $" ({modifier:+#;-#} modifier)";
+            }
+
+            LogHistory.Add(new Log(output));
         }
 
         public OutputLogger()
