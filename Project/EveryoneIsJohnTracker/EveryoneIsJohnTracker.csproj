@@ -46,6 +46,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,6 +56,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -187,6 +189,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\DiceRoller\Views\DiceRollerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\StylesAndTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,7 +209,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\CountGreaterThanZeroConverter.cs" />
+    <Compile Include="Controls\DiceRoller\Models\DiceModel.cs" />
+    <Compile Include="Controls\DiceRoller\Models\SelectedItemDataModel.cs" />
+    <Compile Include="Controls\DiceRoller\ViewModels\DiceRollerViewModel.cs" />
+    <Compile Include="Controls\DiceRoller\Views\DiceRollerView.xaml.cs">
+      <DependentUpon>DiceRollerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Types\Converters\CountGreaterThanZeroConverter.cs" />
     <Compile Include="Extensions\DoubleExtension.cs" />
     <Compile Include="Extensions\GameMasterExtension.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -216,9 +232,11 @@
     <Compile Include="Models\Logger\LoggerType.cs" />
     <Compile Include="Models\Logger\OutputLogger.cs" />
     <Compile Include="Models\Logger\NullLogger.cs" />
-    <Compile Include="Base\PropertyChangedBase.cs" />
+    <Compile Include="Types\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Types\PropertyChangedBase.cs" />
     <Compile Include="Models\SkillModel.cs" />
     <Compile Include="Models\VoiceModel.cs" />
+    <Compile Include="Types\RegexValidationRule.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
