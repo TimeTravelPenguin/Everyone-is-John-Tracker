@@ -7,10 +7,10 @@
 // File Name: CountGreaterThanZeroConverter.cs
 // 
 // Current Data:
-// 2019-12-14 7:32 PM
+// 2019-12-18 11:52 AM
 // 
 // Creation Date:
-// 2019-12-14 4:28 PM
+// 2019-12-18 11:49 AM
 
 #endregion
 
@@ -18,9 +18,9 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace EveryoneIsJohnTracker.Converters
+namespace EveryoneIsJohnTracker.Types.Converters
 {
-    internal class CountGreaterThanZeroConverter : IValueConverter
+    public class CountGreaterThanZeroConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
