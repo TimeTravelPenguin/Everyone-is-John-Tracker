@@ -20,11 +20,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Interactivity;
 using EveryoneIsJohnTracker.Controls.DiceRoller.ViewModels;
 using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.Logger;
 using EveryoneIsJohnTracker.Types;
+using EveryoneIsJohnTracker.Views;
 using Microsoft.Expression.Interactivity.Core;
 using Newtonsoft.Json;
 
@@ -186,7 +188,7 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             CommandNextTurn = new ActionCommand(() => GameMaster.IncrementTurn(1));
 
-            CommandExportChart = new ActionCommand(GameMaster.ChartModel.ExportLiveChart);
+            CommandExportChart = new ActionCommand(ExportChart);
 
             CommandExitApplication = new ActionCommand(() =>
             {
@@ -199,6 +201,17 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             SelectedVoiceModel = GameMaster.Voices.FirstOrDefault();
             ListViewSelectedVoice = GameMaster.Voices.FirstOrDefault();
+        }
+
+        private static void ExportChart()
+        {
+            //GameMaster.ChartModel.ExportLiveChart();
+            var exportChartView = new ExportChartView()
+            {
+                DataContext = new ExportChartViewModel(GameMaster.ChartModel)
+            };
+
+            exportChartView.Show();
         }
 
         private void AddItem()
