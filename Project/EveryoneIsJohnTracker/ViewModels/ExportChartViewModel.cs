@@ -207,8 +207,6 @@ namespace EveryoneIsJohnTracker.ViewModels
             chart.AxisX.Add(new Axis {MinValue = 0});
             chart.AxisY.Add(new Axis {MinValue = 0});
 
-            chart.Margin = new Thickness(10);
-
             return chart;
         }
 
