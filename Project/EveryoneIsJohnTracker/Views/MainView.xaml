@@ -12,7 +12,7 @@
         xmlns:views="clr-namespace:EveryoneIsJohnTracker.Controls.DiceRoller.Views"
         mc:Ignorable="d"
         Title="{Binding GameMaster.Turn, StringFormat=Everyone is John Tracker (Turn: {0})}"
-        Height="630" Width="815" ResizeMode="NoResize"
+        Height="630" Width="815" ResizeMode="CanMinimize"
         Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico">
 
     <Window.DataContext>
