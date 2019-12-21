@@ -7,10 +7,10 @@
 // File Name: InverseBooleanConverter.cs
 // 
 // Current Data:
-// 2019-12-18 11:53 AM
+// 2019-12-22 10:55 AM
 // 
 // Creation Date:
-// 2019-12-18 11:53 AM
+// 2019-12-18 7:53 PM
 
 #endregion
 
@@ -26,7 +26,7 @@ namespace EveryoneIsJohnTracker.Types.Converters
     public class InverseBooleanConverter : IValueConverter
     {
         private readonly ResourceManager _resourceManager =
-            new ResourceManager("DnDTracker.Resources.Exceptions.ExceptionMessages", Assembly.GetExecutingAssembly());
+            new ResourceManager("EveryoneIsJohnTracker.Resources.Exceptions.ExceptionMessages", Assembly.GetExecutingAssembly());
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -38,7 +38,7 @@ namespace EveryoneIsJohnTracker.Types.Converters
 
             if (value == null)
             {
-                throw new InvalidOperationException(_resourceManager.GetString("CannotBeNull",
+                throw new ArgumentNullException(nameof(value), _resourceManager.GetString("CannotBeNull",
                     CultureInfo.InvariantCulture));
             }
 
