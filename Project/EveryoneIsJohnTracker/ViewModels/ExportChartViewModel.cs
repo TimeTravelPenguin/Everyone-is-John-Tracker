@@ -7,10 +7,10 @@
 // File Name: ExportChartViewModel.cs
 // 
 // Current Data:
-// 2019-12-19 2:46 AM
+// 2019-12-21 5:39 PM
 // 
 // Creation Date:
-// 2019-12-18 9:01 PM
+// 2019-12-19 2:50 AM
 
 #endregion
 
@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -27,23 +28,60 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Wpf.Charts.Base;
 using Microsoft.Xaml.Behaviors.Core;
+using MessageBox = System.Windows.MessageBox;
 
 namespace EveryoneIsJohnTracker.ViewModels
 {
     internal class ExportChartViewModel : PropertyChangedBase
     {
+        private BitmapImage _bitmapImage = new BitmapImage();
         private ChartModel _chartModel = new ChartModel();
+        private double _defaultHeight = 419;
+        private double _defaultWidth = 448;
         private string _hexColourValue = "#FFFFFF";
-        private Image _imageRender = new Image();
-
         private double _imageZoom = 1;
+
+        private string _outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+            "Export.png");
+
         private int _renderHeight = 720;
         private int _renderWidth = 1080;
+        private bool _saveEnabled;
+        private double _windowHeight = 419;
+        private double _windowWidth = 448;
 
-        public Image ImageRender
+        public bool SaveEnabled
         {
-            get => _imageRender;
-            set => SetValue(ref _imageRender, value);
+            get => _saveEnabled;
+            set => SetValue(ref _saveEnabled, value);
+        }
+
+        public double WindowHeight
+        {
+            get => _windowHeight;
+            set => SetValue(ref _windowHeight, value);
+        }
+
+        public double WindowWidth
+        {
+            get => _windowWidth;
+            set => SetValue(ref _windowWidth, value);
+        }
+
+        public double ImageZoom
+        {
+            get => _imageZoom;
+            set => SetValue(ref _imageZoom, value);
+        }
+
+        public BitmapImage BitmapImage
+        {
+            get => _bitmapImage;
+            set
+            {
+                ImageZoom = 1;
+                SetValue(ref _bitmapImage, value);
+            }
         }
 
         public ChartModel ChartModel
@@ -72,10 +110,28 @@ namespace EveryoneIsJohnTracker.ViewModels
             set => SetValue(ref _renderWidth, value);
         }
 
+        public string OutputPath
+        {
+            get => _outputPath;
+            set => SetValue(ref _outputPath, value);
+        }
+
         public ActionCommand CommandChangeOutputPath { get; }
         public ActionCommand CommandRenderImage { get; }
         public ActionCommand CommandSaveImage { get; }
         public ActionCommand CommandMouseWheel { get; }
+
+        public double DefaultWidth
+        {
+            get => _defaultWidth;
+            set => SetValue(ref _defaultWidth, value);
+        }
+
+        public double DefaultHeight
+        {
+            get => _defaultHeight;
+            set => SetValue(ref _defaultHeight, value);
+        }
 
         public ExportChartViewModel()
         {
@@ -100,30 +156,38 @@ namespace EveryoneIsJohnTracker.ViewModels
             {
                 if (e.Delta > 0)
                 {
-                    _imageZoom += 0.1;
+                    ImageZoom += 0.1;
                 }
                 else
                 {
-                    _imageZoom -= 0.1;
+                    ImageZoom -= 0.1;
                 }
 
-                var scale = new ScaleTransform(_imageZoom, _imageZoom);
-                ImageRender.LayoutTransform = scale;
+                if (_imageZoom < 0.1)
+                {
+                    ImageZoom = 0.1;
+                }
+
                 e.Handled = true;
             }
             else
             {
-                throw new ArgumentException("The passed parameter is not of type MouseWheelEventArgs", nameof(obj));
+                throw new ArgumentException(@"The passed parameter is not of type MouseWheelEventArgs", nameof(obj));
             }
         }
 
         private Chart GenerateChart()
         {
-            var color = IsBackgroundTransparent
-                ? Colors.Transparent
-                : (Color) ColorConverter.ConvertFromString(HexColourValue);
+            if (string.IsNullOrEmpty(HexColourValue))
+            {
+                throw new NullReferenceException(nameof(HexColourValue));
+            }
 
-            return new CartesianChart
+            var color = IsBackgroundTransparent
+                ? new SolidColorBrush(Colors.Transparent)
+                : new SolidColorBrush((Color) ColorConverter.ConvertFromString(HexColourValue));
+
+            var chart = new CartesianChart
             {
                 DataContext = ChartModel,
                 Series = ChartModel.PlayerSeriesCollection,
@@ -131,17 +195,29 @@ namespace EveryoneIsJohnTracker.ViewModels
                 DisableAnimations = true,
                 Width = RenderWidth,
                 Height = RenderHeight,
-                Background = Brushes.White // new SolidColorBrush(color)
+                Background = color,
+                ChartLegend =
+                {
+                    Background = color
+                }
             };
+
+            chart.AxisX.Clear();
+            chart.AxisY.Clear();
+            chart.AxisX.Add(new Axis {MinValue = 0});
+            chart.AxisY.Add(new Axis {MinValue = 0});
+
+            chart.Margin = new Thickness(10);
+
+            return chart;
         }
 
-        private void SaveImage()
-        {
-            throw new NotImplementedException();
-        }
 
+        // TODO: Make process run on own thread
         private void RenderImage()
         {
+            ResetWindowSize();
+
             // Creates a new chart
             var newChart = GenerateChart();
 
@@ -174,13 +250,50 @@ namespace EveryoneIsJohnTracker.ViewModels
                 image.EndInit();
             }
 
-            ImageRender.Source = image;
-            OnPropertyChanged(nameof(ImageRender));
+            BitmapImage = image;
+            SaveEnabled = true;
+        }
+
+        private void ResetWindowSize()
+        {
+            WindowWidth = DefaultWidth;
+            WindowHeight = DefaultHeight;
         }
 
         private void ChangeOutput()
         {
-            throw new NotImplementedException();
+            if (BitmapImage is null)
+            {
+                throw new NullReferenceException(nameof(BitmapImage));
+            }
+
+            using var sfd = new SaveFileDialog
+            {
+                Filter = @"png files (*.png)|*.png",
+                RestoreDirectory = true
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                OutputPath = Path.GetFullPath(sfd.FileName ?? throw new InvalidOperationException());
+            }
+        }
+
+        private void SaveImage()
+        {
+            if (BitmapImage is null)
+            {
+                MessageBox.Show("You must render an image before saving", "No image rendered");
+                return;
+            }
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(BitmapImage));
+
+            using var stream = new FileStream(OutputPath, FileMode.Create);
+            encoder.Save(stream);
+
+            MessageBox.Show("File saved", "Save successful");
         }
     }
 }

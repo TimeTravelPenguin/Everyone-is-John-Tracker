@@ -8,8 +8,13 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
-        x:Name="ExportChartWindow"
-        Title="Export Chart" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        x:Name="Window"
+        Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico"
+        Title="Export Chart"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="CanResize"
+        MinWidth="{Binding DefaultWidth}"
+        MinHeight="{Binding DefaultHeight}">
 
     <Window.DataContext>
         <viewModels:ExportChartViewModel />
@@ -20,144 +25,162 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <!--#region Change directory -->
+        <!--#region Upper Controls -->
+        <Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Text="Save directory:"
-                   Grid.Column="1"
-                   Grid.Row="1"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right" />
+            <!--#region Change directory -->
 
-        <TextBox Text="{Binding OutputPath, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Column="3"
-                 Grid.Row="1"
-                 Grid.ColumnSpan="5" />
+            <TextBlock Text="Save directory:"
+                       Grid.Column="1"
+                       Grid.Row="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right" />
 
+            <TextBox Text="{Binding OutputPath, UpdateSourceTrigger=PropertyChanged}"
+                     IsReadOnly="True"
+                     Grid.Column="3"
+                     Grid.Row="1"
+                     Grid.ColumnSpan="5" />
+
+            <!--#endregion-->
+
+            <!--#region Image width & height -->
+
+            <TextBlock Text="Image width:"
+                       Grid.Column="1"
+                       Grid.Row="3"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right" />
+
+            <TextBox Text="{Binding RenderWidth}"
+                     Grid.Column="3"
+                     Grid.Row="3"
+                     Width="90"
+                     HorizontalAlignment="Left" />
+
+            <TextBlock Text="Image height:"
+                       Grid.Column="5"
+                       Grid.Row="3"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left" />
+
+            <TextBox Text="{Binding RenderHeight}"
+                     Grid.Column="7"
+                     Grid.Row="3"
+                     Width="90"
+                     HorizontalAlignment="Left" />
+
+            <!--#endregion-->
+
+            <!--#region Image background colour -->
+
+            <TextBlock Text="Background:"
+                       Grid.Column="1"
+                       Grid.Row="5"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center" />
+
+            <CheckBox Content="Transparent"
+                      IsChecked="{Binding IsBackgroundTransparent}"
+                      Grid.Column="3"
+                      Grid.Row="5"
+                      VerticalAlignment="Center" />
+
+            <TextBlock Text="Custom Hex:"
+                       Grid.Column="5"
+                       Grid.Row="5"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right" />
+
+            <TextBox Text="{Binding HexColourValue}"
+                     Grid.Column="7"
+                     Grid.Row="5"
+                     HorizontalAlignment="Right"
+                     Width="90" />
+
+            <!--#endregion-->
+
+            <!--#region Buttons -->
+
+            <Button Content="Change path"
+                    Command="{Binding CommandChangeOutputPath}"
+                    Grid.Column="9"
+                    Grid.Row="1" />
+
+            <Button Content="Render"
+                    Command="{Binding CommandRenderImage}"
+                    Grid.Column="9"
+                    Grid.Row="3" />
+
+            <Button Content="Save"
+                    Command="{Binding CommandSaveImage}"
+                    IsEnabled="{Binding SaveEnabled}"
+                    Grid.Column="9"
+                    Grid.Row="5" />
+
+            <!--#endregion-->
+
+        </Grid>
         <!--#endregion-->
 
-        <!--#region Image width & height -->
+        <Grid x:Name="ScrollViewerGrid"
+              Grid.Column="1"
+              Grid.Row="2">
 
-        <TextBlock Text="Image width:"
-                   Grid.Column="1"
-                   Grid.Row="3"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right" />
+            <ScrollViewer
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
 
-        <TextBox Text="{Binding RenderWidth}"
-                 Grid.Column="3"
-                 Grid.Row="3"
-                 Width="90"
-                 HorizontalAlignment="Left" />
+                <Image x:Name="Image"
+                       Source="{Binding BitmapImage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseWheel">
+                            <i:InvokeCommandAction Command="{Binding CommandMouseWheel}"
+                                                   PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
-        <TextBlock Text="Image height:"
-                   Grid.Column="5"
-                   Grid.Row="3"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Left" />
+                    <Image.LayoutTransform>
+                        <ScaleTransform ScaleX="{Binding ImageZoom, Mode=OneWay}"
+                                        ScaleY="{Binding ImageZoom, Mode=OneWay}" />
+                    </Image.LayoutTransform>
 
-        <TextBox Text="{Binding RenderHeight}"
-                 Grid.Column="7"
-                 Grid.Row="3"
-                 Width="90"
-                 HorizontalAlignment="Left" />
+                </Image>
 
-        <!--#endregion-->
+            </ScrollViewer>
 
-        <!--#region Image background colour -->
-
-        <TextBlock Text="Background:"
-                   Grid.Column="1"
-                   Grid.Row="5"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center" />
-
-        <CheckBox Content="Transparent"
-                  IsChecked="{Binding IsBackgroundTransparent}"
-                  Grid.Column="3"
-                  Grid.Row="5"
-                  VerticalAlignment="Center" />
-
-        <TextBlock Text="Custom Hex:"
-                   Grid.Column="5"
-                   Grid.Row="5"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right" />
-
-        <TextBox Text="{Binding HexColourValue}"
-                 Grid.Column="7"
-                 Grid.Row="5"
-                 HorizontalAlignment="Right"
-                 Width="90" />
-
-        <!--#endregion-->
-
-        <!--#region Buttons -->
-
-        <Button Content="Change path"
-                Command="{Binding CommandChangeOutputPath}"
-                Grid.Column="9"
-                Grid.Row="1" />
-
-        <Button Content="Render"
-                Command="{Binding CommandRenderImage}"
-                Grid.Column="9"
-                Grid.Row="3" />
-
-        <Button Content="Save"
-                Command="{Binding CommandSaveImage}"
-                Grid.Column="9"
-                Grid.Row="5" />
-
-        <!--#endregion-->
-
-        <ScrollViewer
-            Grid.Column="1"
-            Grid.ColumnSpan="9"
-            Grid.Row="7"
-            MaxHeight="700"
-            MaxWidth="1000"
-            HorizontalScrollBarVisibility="Auto"
-            VerticalScrollBarVisibility="Auto">
-            <Canvas Width="{Binding ElementName=Image, Path=ActualWidth }"
-                    Height="{Binding  ElementName=Image, Path=ActualHeight}">
-                <Canvas.Background>
-                    <VisualBrush>
-                        <VisualBrush.Visual>
-                            <Image x:Name="Image"
-                                   Source="{Binding ImageRender.Source, UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseWheel">
-                                        <i:InvokeCommandAction Command="{Binding CommandMouseWheel}"
-                                                               PassEventArgsToCommand="True" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Image>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </Canvas.Background>
-            </Canvas>
-            
-        </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
