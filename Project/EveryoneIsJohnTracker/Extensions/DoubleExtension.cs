@@ -7,7 +7,7 @@
 // File Name: DoubleExtension.cs
 // 
 // Current Data:
-// 2019-12-14 10:48 AM
+// 2019-12-21 1:10 PM
 // 
 // Creation Date:
 // 2019-09-28 4:35 PM
@@ -38,6 +38,11 @@ namespace EveryoneIsJohnTracker.Extensions
         public static bool NotEqual(this double lhs, double rhs)
         {
             return Math.Abs(lhs - rhs) > double.Epsilon;
+        }
+
+        public static bool IsInfinity(this double value)
+        {
+            return double.IsInfinity(value);
         }
     }
 }
