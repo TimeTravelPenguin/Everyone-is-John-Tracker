@@ -7,23 +7,18 @@
 // File Name: FileIOExtension.cs
 // 
 // Current Data:
-// 2019-12-18 7:43 PM
+// 2019-12-21 5:56 PM
 // 
 // Creation Date:
-// 2019-12-14 3:31 PM
+// 2019-12-18 8:21 PM
 
 #endregion
 
 using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Models.Logger;
-using LiveCharts;
-using LiveCharts.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
@@ -96,86 +91,6 @@ namespace EveryoneIsJohnTracker.Extensions
             }
 
             return false;
-        }
-
-        internal static void ExportLiveChart(this ChartModel chart)
-        {
-            var newChart = new CartesianChart
-            {
-                DataContext = chart,
-                Series = chart.PlayerSeriesCollection,
-                LegendLocation = LegendLocation.Top,
-                DisableAnimations = true,
-                Width = 1920,
-                Height = 1080,
-                Background = Brushes.White
-            };
-
-            var viewBox = new Viewbox
-            {
-                Child = newChart
-            };
-            viewBox.Measure(newChart.RenderSize);
-            viewBox.Arrange(new Rect(new Point(0, 0), newChart.RenderSize));
-
-            newChart.Update(true, true);
-            viewBox.UpdateLayout();
-
-            SaveToPng(newChart, "Chart.png");
-        }
-
-        private static void SaveToPng(FrameworkElement visual, string fileName)
-        {
-            var encoder = new PngBitmapEncoder();
-            var output = EncodeVisual(visual, fileName, encoder);
-
-            MessageBox.Show($"Image saved to:{Environment.NewLine}{output}", "Saved!");
-        }
-
-        private static string EncodeVisual(FrameworkElement visual, string fileName, BitmapEncoder encoder)
-        {
-            var bitmap = new RenderTargetBitmap((int) visual.ActualWidth, (int) visual.ActualHeight, 96, 96,
-                PixelFormats.Pbgra32);
-            bitmap.Render(visual);
-
-            var frame = BitmapFrame.Create(bitmap);
-            encoder.Frames.Add(frame);
-
-            var newDir = Path.Combine(Environment.CurrentDirectory, "ChartExports");
-            Directory.CreateDirectory(newDir);
-            var filePath = Path.Combine(newDir, fileName);
-            var output = CreateUniqueFilename(filePath);
-
-            using var stream = File.Create(output);
-            encoder.Save(stream);
-
-            return output;
-        }
-
-        // Ensures a filename is unique by generating a unique filename if the specified file already exists.
-        // If the provided filename exists this method generates a new name that contains a numerical suffix (starting at 1)
-        // while ensuring the new filename also does not exist. This method does not create the file so applications should
-        // take extra measures to ensure the returned filename is still unique before using it (the file may have since been created
-        // by another process.
-        private static string CreateUniqueFilename(string baseFilename)
-        {
-            if (!File.Exists(baseFilename))
-            {
-                return baseFilename;
-            }
-
-            string destFileName;
-            var counter = 1;
-            var dirPart = Path.GetDirectoryName(baseFilename);
-            var filePart = Path.GetFileNameWithoutExtension(baseFilename);
-            var extPart = Path.HasExtension(baseFilename) ? Path.GetExtension(baseFilename) : "";
-
-            do
-            {
-                destFileName = Path.Combine(dirPart ?? "", $"{filePart}.{counter++}{extPart}");
-            } while (File.Exists(destFileName));
-
-            return destFileName;
         }
     }
 }
