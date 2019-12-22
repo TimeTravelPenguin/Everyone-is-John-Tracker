@@ -7,10 +7,10 @@
 // File Name: DoubleExtension.cs
 // 
 // Current Data:
-// 2019-12-21 1:10 PM
+// 2019-12-22 12:15 AM
 // 
 // Creation Date:
-// 2019-09-28 4:35 PM
+// 2019-12-21 6:02 PM
 
 #endregion
 
@@ -43,6 +43,13 @@ namespace EveryoneIsJohnTracker.Extensions
         public static bool IsInfinity(this double value)
         {
             return double.IsInfinity(value);
+        }
+
+        public static double LimitToRange(this double value, double inclusiveMinimum, double inclusiveMaximum)
+        {
+            var min = Math.Min(value, inclusiveMaximum);
+
+            return Math.Max(min, inclusiveMinimum);
         }
     }
 }
