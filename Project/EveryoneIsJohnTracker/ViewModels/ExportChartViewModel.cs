@@ -7,14 +7,15 @@
 // File Name: ExportChartViewModel.cs
 // 
 // Current Data:
-// 2019-12-21 5:39 PM
+// 2019-12-22 11:03 AM
 // 
 // Creation Date:
-// 2019-12-19 2:50 AM
+// 2019-12-21 6:08 PM
 
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +23,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using EveryoneIsJohnTracker.Extensions;
 using EveryoneIsJohnTracker.Models;
 using EveryoneIsJohnTracker.Types;
 using LiveCharts;
@@ -154,19 +156,21 @@ namespace EveryoneIsJohnTracker.ViewModels
         {
             if (obj is MouseWheelEventArgs e)
             {
-                if (e.Delta > 0)
+                var zoom = e.Delta > 0
+                    ? Math.Min(ImageZoom + 0.05, 4)
+                    : Math.Max(ImageZoom - 0.05, 0.01);
+
+                ImageZoom = (_imageZoom + zoom).LimitToRange(0.01, 4);
+
+                if (_imageZoom.IsInfinity())
                 {
-                    ImageZoom += 0.1;
-                }
-                else
-                {
-                    ImageZoom -= 0.1;
+                    ImageZoom = 1;
+                    MessageBox.Show(
+                        "An error occured and the zoom somehow became infinity, so it has been reset to 1x zoom.",
+                        "Error");
                 }
 
-                if (_imageZoom < 0.1)
-                {
-                    ImageZoom = 0.1;
-                }
+                Debug.WriteLine(ImageZoom);
 
                 e.Handled = true;
             }
