@@ -7,10 +7,10 @@
 // File Name: ExportChartViewModel.cs
 // 
 // Current Data:
-// 2019-12-22 11:03 AM
+// 2019-12-22 11:16 AM
 // 
 // Creation Date:
-// 2019-12-21 6:08 PM
+// 2019-12-22 11:05 AM
 
 #endregion
 
@@ -157,10 +157,10 @@ namespace EveryoneIsJohnTracker.ViewModels
             if (obj is MouseWheelEventArgs e)
             {
                 var zoom = e.Delta > 0
-                    ? Math.Min(ImageZoom + 0.05, 4)
-                    : Math.Max(ImageZoom - 0.05, 0.01);
+                    ? Math.Min(_imageZoom + 0.1, 4)
+                    : Math.Max(_imageZoom - 0.1, 0.01);
 
-                ImageZoom = (_imageZoom + zoom).LimitToRange(0.01, 4);
+                ImageZoom = zoom.LimitToRange(0.01, 4);
 
                 if (_imageZoom.IsInfinity())
                 {
