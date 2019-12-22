@@ -7,7 +7,7 @@
 // File Name: ExportChartViewModel.cs
 // 
 // Current Data:
-// 2019-12-22 11:16 AM
+// 2019-12-22 12:05 PM
 // 
 // Creation Date:
 // 2019-12-22 11:05 AM
@@ -38,8 +38,6 @@ namespace EveryoneIsJohnTracker.ViewModels
     {
         private BitmapImage _bitmapImage = new BitmapImage();
         private ChartModel _chartModel = new ChartModel();
-        private double _defaultHeight = 419;
-        private double _defaultWidth = 448;
         private string _hexColourValue = "#FFFFFF";
         private double _imageZoom = 1;
 
@@ -50,6 +48,8 @@ namespace EveryoneIsJohnTracker.ViewModels
         private int _renderWidth = 1080;
         private bool _saveEnabled;
         private double _windowHeight = 419;
+        private double _windowMinHeight = 419;
+        private double _windowMinWidth = 448;
         private double _windowWidth = 448;
 
         public bool SaveEnabled
@@ -73,20 +73,20 @@ namespace EveryoneIsJohnTracker.ViewModels
         public double ImageZoom
         {
             get => _imageZoom;
-            set => SetValue(ref _imageZoom, value);
+            private set => SetValue(ref _imageZoom, value);
         }
 
         public BitmapImage BitmapImage
         {
             get => _bitmapImage;
-            set
+            private set
             {
                 ImageZoom = 1;
                 SetValue(ref _bitmapImage, value);
             }
         }
 
-        public ChartModel ChartModel
+        private ChartModel ChartModel
         {
             get => _chartModel;
             set => SetValue(ref _chartModel, value);
@@ -123,16 +123,16 @@ namespace EveryoneIsJohnTracker.ViewModels
         public ActionCommand CommandSaveImage { get; }
         public ActionCommand CommandMouseWheel { get; }
 
-        public double DefaultWidth
+        public double WindowMinWidth
         {
-            get => _defaultWidth;
-            set => SetValue(ref _defaultWidth, value);
+            get => _windowMinWidth;
+            set => SetValue(ref _windowMinWidth, value);
         }
 
-        public double DefaultHeight
+        public double WindowMinHeight
         {
-            get => _defaultHeight;
-            set => SetValue(ref _defaultHeight, value);
+            get => _windowMinHeight;
+            set => SetValue(ref _windowMinHeight, value);
         }
 
         public ExportChartViewModel()
@@ -160,7 +160,7 @@ namespace EveryoneIsJohnTracker.ViewModels
                     ? Math.Min(_imageZoom + 0.1, 4)
                     : Math.Max(_imageZoom - 0.1, 0.01);
 
-                ImageZoom = zoom.LimitToRange(0.01, 4);
+                ImageZoom = zoom.LimitToRange(0.1, 4);
 
                 if (_imageZoom.IsInfinity())
                 {
@@ -218,8 +218,6 @@ namespace EveryoneIsJohnTracker.ViewModels
         // TODO: Make process run on own thread
         private void RenderImage()
         {
-            ResetWindowSize();
-
             // Creates a new chart
             var newChart = GenerateChart();
 
@@ -254,12 +252,6 @@ namespace EveryoneIsJohnTracker.ViewModels
 
             BitmapImage = image;
             SaveEnabled = true;
-        }
-
-        private void ResetWindowSize()
-        {
-            WindowWidth = DefaultWidth;
-            WindowHeight = DefaultHeight;
         }
 
         private void ChangeOutput()

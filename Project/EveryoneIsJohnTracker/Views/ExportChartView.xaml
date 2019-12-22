@@ -12,9 +12,13 @@
         Icon="/EveryoneIsJohnTracker;component/Images/Icon.ico"
         Title="Export Chart"
         SizeToContent="WidthAndHeight"
-        ResizeMode="CanResize"
-        MinWidth="{Binding DefaultWidth}"
-        MinHeight="{Binding DefaultHeight}">
+        ResizeMode="NoResize"
+        Width="{Binding WindowWidth}"
+        Height="{Binding WindowHeight}"
+        MinWidth="{Binding WindowMinWidth}"
+        MinHeight="{Binding WindowMinHeight}"
+        MaxWidth="1280"
+        MaxHeight="720">
 
     <Window.DataContext>
         <viewModels:ExportChartViewModel />
@@ -173,14 +177,13 @@
                     </i:Interaction.Triggers>
 
                     <Image.LayoutTransform>
-                        <ScaleTransform ScaleX="{Binding ImageZoom, Mode=OneWay}"
-                                        ScaleY="{Binding ImageZoom, Mode=OneWay}" />
+                        <ScaleTransform ScaleX="{Binding ImageZoom}"
+                                        ScaleY="{Binding ImageZoom}" />
                     </Image.LayoutTransform>
 
                 </Image>
 
             </ScrollViewer>
-
         </Grid>
     </Grid>
 </Window>
