@@ -17,4 +17,5 @@ The game is played with a single die. You may use Willpoints to increase the odd
 
 # VERSION 2 WORK IN PROGRESS
 
-![Logger Image](./ReadMeImages/DebugLogging.png)
+Timestamped grouping in logger:
+![Logger Image](ReadmeImages/DebugLogging.png)
