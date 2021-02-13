@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="LoggerDateShape" TargetType="{x:Type Path}">
+        <Setter Property="Data" Value="M 0,0 H 65 L 75,10 L 65,20 H 0 V 0" />
+        <Setter Property="Stroke" Value="{DynamicResource BrushLightBorder}" />
+        <Setter Property="Fill" Value="{DynamicResource BrushMenuBar}" />
+        <Setter Property="StrokeThickness" Value="1px" />
+    </Style>
+
+</ResourceDictionary>
