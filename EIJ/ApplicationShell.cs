@@ -7,17 +7,13 @@
 // File Name: ApplicationShell.cs
 // 
 // Current Data:
-// 2021-02-13 8:22 PM
+// 2021-02-13 8:38 PM
 // 
 // Creation Date:
 // 2021-02-13 7:42 PM
 
 #endregion
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Windows;
 using EIJ.Debug;

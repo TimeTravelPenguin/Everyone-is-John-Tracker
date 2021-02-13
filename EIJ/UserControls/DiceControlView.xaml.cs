@@ -21,9 +21,9 @@ namespace EIJ.UserControls
   /// <summary>
   ///   Interaction logic for DiceControl.xaml
   /// </summary>
-  public partial class DiceControl : UserControl
+  public partial class DiceControlView : UserControl
   {
-    public DiceControl()
+    public DiceControlView()
     {
       InitializeComponent();
     }

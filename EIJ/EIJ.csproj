@@ -128,8 +128,8 @@
     <Compile Include="Resources\ApplicationSecrets.cs" />
     <Compile Include="Resources\Font\MaterialIcons.cs" />
     <Compile Include="Resources\Font\WebdingsIcons.cs" />
-    <Compile Include="UserControls\DiceControl.xaml.cs">
-      <DependentUpon>DiceControl.xaml</DependentUpon>
+    <Compile Include="UserControls\DiceControlView.xaml.cs">
+      <DependentUpon>DiceControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LoggerControlView.xaml.cs">
       <DependentUpon>LoggerControlView.xaml</DependentUpon>
@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="ViewModels\Pages\HorizontalSplitPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\ToolbarPageViewModel.cs" />
+    <Compile Include="ViewModels\UserControls\DiceControlViewModel.cs" />
     <Compile Include="ViewModels\UserControls\LoggerControlViewModel.cs" />
     <Compile Include="ViewModels\UserControls\ToolbarControlViewModel.cs" />
     <Compile Include="ViewModels\Windows\ViewModelBase.cs" />
@@ -182,7 +183,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\DiceControl.xaml">
+    <Page Include="UserControls\DiceControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
