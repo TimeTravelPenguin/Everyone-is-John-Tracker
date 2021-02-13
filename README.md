@@ -1,9 +1,3 @@
----
-title: README
-created: '2021-02-13T02:06:40.255Z'
-modified: '2021-02-13T02:08:18.412Z'
----
-
 # Everyone is John
  A tracking tool for the "Everyone is John" roleplaying game
 
@@ -23,4 +17,5 @@ The game is played with a single die. You may use Willpoints to increase the odd
 
 # VERSION 2 WORK IN PROGRESS
 
-![Logger Image](./ReadMeImages/DebugLogging.png)
+Timestamped grouping in logger:
+![Logger Image](ReadmeImages/DebugLogging.png)
