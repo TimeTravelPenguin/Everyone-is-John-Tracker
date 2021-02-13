@@ -1,9 +1,3 @@
----
-title: README
-created: '2021-02-13T02:06:40.255Z'
-modified: '2021-02-13T02:08:18.412Z'
----
-
 # Everyone is John
  A tracking tool for the "Everyone is John" roleplaying game
 
