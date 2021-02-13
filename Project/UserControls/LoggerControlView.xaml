@@ -1,0 +1,100 @@
+﻿<UserControl
+    x:Class="EveryoneIsJohn.UserControls.LoggerControlView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:EveryoneIsJohn.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EveryoneIsJohn.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControls="clr-namespace:EveryoneIsJohn.ViewModels.UserControls"
+    d:DesignHeight="229"
+    d:DesignWidth="549"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <userControls:LoggerControlViewModel />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="LogsCollectionSource" Source="{Binding Path=Logger.LogHistory, Mode=OneWay}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="LogTimeStamp" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+
+    <Grid>
+        <ScrollViewer
+            Margin="0,0,-5,0"
+            behaviors:AutoScrollHelper.AutoScroll="True"
+            Foreground="{StaticResource BrushLightBorder}"
+            Template="{DynamicResource DarkScrollViewerTemplate}"
+            VerticalScrollBarVisibility="Visible">
+
+            <ItemsControl ItemsSource="{Binding Source={StaticResource LogsCollectionSource}}">
+                <ItemsControl.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <GroupBox BorderThickness="0">
+                                                <GroupBox.Header>
+                                                    <Grid>
+                                                        <Border HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Path Style="{StaticResource LoggerDateShape}" />
+                                                        </Border>
+
+                                                        <Label
+                                                            Margin="1,0,0,0"
+                                                            VerticalAlignment="Center"
+                                                            Content="{Binding}"
+                                                            FontFamily="Tahoma"
+                                                            FontSize="10"
+                                                            Foreground="{StaticResource BrushText}" />
+                                                    </Grid>
+                                                </GroupBox.Header>
+                                                <ItemsPresenter />
+                                            </GroupBox>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ItemsControl.GroupStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DataTemplate.Triggers>
+                            <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="LogMessageLabel"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0"
+                                            To="1"
+                                            Duration="0:0:0.35" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </DataTemplate.Triggers>
+
+                        <Label
+                            Name="LogMessageLabel"
+                            VerticalAlignment="Center"
+                            Content="{Binding LogMessage, NotifyOnTargetUpdated=True}"
+                            FontSize="14"
+                            Foreground="{StaticResource BrushText}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Margin="15,0" Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
