@@ -1,3 +1,9 @@
+---
+title: README
+created: '2021-02-13T02:06:40.255Z'
+modified: '2021-02-13T02:08:18.412Z'
+---
+
 # Everyone is John
  A tracking tool for the "Everyone is John" roleplaying game
 
@@ -15,20 +21,6 @@ As you play, you can use your skills to aid in the narrative of your actions. Sk
 
 The game is played with a single die. You may use Willpoints to increase the odds in your favour, should you need to.
 
-## Features
-- Can track Voices (Players) with the ability to track Willpower, Skills, and Obsession Points.
-- Can track Inventory to track items players may obtain throughout the campaign.
-- A useful logger to track all changes throughout the campaign to aid the game master with a detailed history of events to prevent accidental miscalculations or user error.
+# VERSION 2 WORK IN PROGRESS
 
-### Aplication Images:
-![image of the application with logger](/ReadmeImages/image01.png)
-![image of the application editing section](/ReadmeImages/image02.png)
-![image of the application with graph](/ReadmeImages/image03.png)
-![image of the application dice roller](/ReadmeImages/image04.png)
-![image of the application dice roller](/ReadmeImages/image04.png)
-
-### Example Chart Export:
-![example chart export](/ReadmeImages/ExampleChartOutput.png)
-
-## Download
-To download the application, pop over to the [Releases Page](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/releases)
+![Logger Image](./ReadMeImages/DebugLogging.png)
