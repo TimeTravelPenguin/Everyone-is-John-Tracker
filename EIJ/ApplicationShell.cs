@@ -36,12 +36,12 @@ namespace EIJ
 
     public static void Start()
     {
-      InitApplication();
+      InitApplicationLicences();
       var mainWindow = NewMainWindow();
       mainWindow.Show();
     }
 
-    private static void InitApplication()
+    private static void InitApplicationLicences()
     {
       var secretsResource = Encoding.UTF8.GetString(Properties.Resources.ApplicationSecrets);
       var appSecrets = JsonConvert.DeserializeObject<ApplicationSecrets>(secretsResource);

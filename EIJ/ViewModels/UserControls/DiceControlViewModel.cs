@@ -7,7 +7,7 @@
 // File Name: DiceControlViewModel.cs
 // 
 // Current Data:
-// 2021-02-13 9:00 PM
+// 2021-02-14 10:41 AM
 // 
 // Creation Date:
 // 2021-02-13 8:51 PM
@@ -22,19 +22,14 @@ namespace EIJ.ViewModels.UserControls
 {
   public class DiceControlViewModel : PropertyChangedBase
   {
-    private XyDataSeries<double, double> _lineData = new XyDataSeries<double, double>();
-    private XyDataSeries<double, double> _scatterData = new XyDataSeries<double, double>();
+    private int _diceRollOutcome;
+    public XyDataSeries<double, double> LineData { get; } = new XyDataSeries<double, double>();
+    public XyDataSeries<double, double> ScatterData { get; } = new XyDataSeries<double, double>();
 
-    public XyDataSeries<double, double> LineData
+    public int DiceRollOutcome
     {
-      get => _lineData;
-      set => SetValue(ref _lineData, value);
-    }
-
-    public XyDataSeries<double, double> ScatterData
-    {
-      get => _scatterData;
-      set => SetValue(ref _scatterData, value);
+      get => _diceRollOutcome;
+      set => SetValue(ref _diceRollOutcome, value);
     }
 
     public DiceControlViewModel()
@@ -44,7 +39,6 @@ namespace EIJ.ViewModels.UserControls
 
     private void GenerateData()
     {
-      // Create XyDataSeries to host data for our charts
       ScatterData.Clear();
       LineData.Clear();
 
@@ -53,9 +47,6 @@ namespace EIJ.ViewModels.UserControls
         LineData.Append(i, Math.Sin(i));
         ScatterData.Append(i, Math.Cos(i));
       }
-
-      //OnPropertyChanged(nameof(ScatterData));
-      //OnPropertyChanged(nameof(LineData));
     }
   }
 }

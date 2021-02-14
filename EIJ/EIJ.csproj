@@ -107,6 +107,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Extensions\TextExtension.cs" />
+    <Compile Include="Models\DiceRoller\DiceRoller.cs" />
     <Compile Include="Models\Logging\GameLogger.cs" />
     <Compile Include="Models\Logging\ILog.cs" />
     <Compile Include="Models\Logging\ILogger.cs" />
@@ -131,6 +132,8 @@
     <Compile Include="UserControls\DiceControlView.xaml.cs">
       <DependentUpon>DiceControlView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\HintTextBox\WatermarkAdorner.cs" />
+    <Compile Include="UserControls\HintTextBox\WatermarkService.cs" />
     <Compile Include="UserControls\LoggerControlView.xaml.cs">
       <DependentUpon>LoggerControlView.xaml</DependentUpon>
     </Compile>
