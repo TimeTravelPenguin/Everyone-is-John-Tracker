@@ -7,24 +7,30 @@
 // File Name: DiceControlViewModel.cs
 // 
 // Current Data:
-// 2021-02-14 10:41 AM
+// 2021-02-14 10:22 PM
 // 
 // Creation Date:
 // 2021-02-13 8:51 PM
 
 #endregion
 
-using System;
 using EIJ.BaseTypes;
-using SciChart.Charting.Model.DataSeries;
+using EIJ.Models.DiceRoller;
+using Microsoft.Expression.Interactivity.Core;
 
 namespace EIJ.ViewModels.UserControls
 {
   public class DiceControlViewModel : PropertyChangedBase
   {
+    private static readonly DiceRoller DiceRoller = new DiceRoller();
+    private string _diceRoleRule = "1d6";
     private int _diceRollOutcome;
-    public XyDataSeries<double, double> LineData { get; } = new XyDataSeries<double, double>();
-    public XyDataSeries<double, double> ScatterData { get; } = new XyDataSeries<double, double>();
+
+    public string DiceRoleRule
+    {
+      get => _diceRoleRule;
+      set => SetValue(ref _diceRoleRule, value);
+    }
 
     public int DiceRollOutcome
     {
@@ -32,21 +38,16 @@ namespace EIJ.ViewModels.UserControls
       set => SetValue(ref _diceRollOutcome, value);
     }
 
+    public ActionCommand CommandRollDice { get; }
+
     public DiceControlViewModel()
     {
-      GenerateData();
+      CommandRollDice = new ActionCommand(RollDice);
     }
 
-    private void GenerateData()
+    private void RollDice()
     {
-      ScatterData.Clear();
-      LineData.Clear();
-
-      for (double i = -1; i < 2 * Math.PI + 1; i += 0.1)
-      {
-        LineData.Append(i, Math.Sin(i));
-        ScatterData.Append(i, Math.Cos(i));
-      }
+      DiceRollOutcome = DiceRoller.Roll(new DiceRollPattern(DiceRoleRule));
     }
   }
 }

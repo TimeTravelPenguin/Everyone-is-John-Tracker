@@ -16,7 +16,7 @@
 
 using System.Windows.Controls;
 
-namespace EIJ.UserControls
+namespace EIJ.Views.UserControls
 {
   /// <summary>
   ///   Interaction logic for ToolbarControlView.xaml

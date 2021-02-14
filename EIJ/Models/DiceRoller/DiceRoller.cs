@@ -40,5 +40,15 @@ namespace EIJ.Models.DiceRoller
                .Sum(x => Random.Next(min, sides + 1))
              + additionMod;
     }
+
+    public static int Roll(DiceRollPattern pattern, int minValue = 1)
+    {
+      if (pattern is null)
+      {
+        throw new ArgumentNullException(nameof(pattern));
+      }
+
+      return RollDie(pattern.SideCount, pattern.DiceCount, pattern.ModValue, minValue);
+    }
   }
 }

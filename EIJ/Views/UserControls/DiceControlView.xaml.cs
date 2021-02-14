@@ -4,7 +4,7 @@
 // 
 // Solution: EIJ
 // Project: EIJ
-// File Name: LoggerControlView.xaml.cs
+// File Name: DiceControl.xaml.cs
 // 
 // Current Data:
 // 2021-02-13 7:50 PM
@@ -16,14 +16,14 @@
 
 using System.Windows.Controls;
 
-namespace EIJ.UserControls
+namespace EIJ.Views.UserControls
 {
   /// <summary>
-  ///   Interaction logic for LoggerControlView.xaml
+  ///   Interaction logic for DiceControl.xaml
   /// </summary>
-  public partial class LoggerControlView : UserControl
+  public partial class DiceControlView : UserControl
   {
-    public LoggerControlView()
+    public DiceControlView()
     {
       InitializeComponent();
     }

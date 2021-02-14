@@ -24,6 +24,7 @@ using EIJ.ViewModels.Pages;
 using EIJ.ViewModels.UserControls;
 using EIJ.ViewModels.Windows;
 using EIJ.Views.Pages;
+using EIJ.Views.UserControls;
 using EIJ.Views.Windows;
 using Newtonsoft.Json;
 using SciChart.Charting.Visuals;

@@ -1,0 +1,103 @@
+﻿<UserControl
+    x:Class="EIJ.Views.UserControls.DiceControlView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hintTextBox="clr-namespace:EIJ.UserControls.HintTextBox"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
+    xmlns:userControls="clr-namespace:EIJ.ViewModels.UserControls"
+    xmlns:validation="clr-namespace:EIJ.Validation"
+    d:DesignHeight="265.384"
+    d:DesignWidth="398.77"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <userControls:DiceControlViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <AdornerDecorator Grid.Row="0" Grid.Column="0">
+                <TextBox
+                    Name="DiceRuleInputTxtBox"
+                    Width="150"
+                    Height="20">
+                    <hintTextBox:WatermarkService.Watermark>
+                        <TextBlock
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            Text="Use dice format: #d#+#" />
+                    </hintTextBox:WatermarkService.Watermark>
+                    <TextBox.Text>
+                        <Binding
+                            Mode="TwoWay"
+                            NotifyOnValidationError="True"
+                            Path="DiceRoleRule"
+                            UpdateSourceTrigger="PropertyChanged"
+                            ValidatesOnDataErrors="True"
+                            ValidatesOnNotifyDataErrors="True">
+                            <Binding.ValidationRules>
+                                <validation:DiceRoleRuleValidationRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </AdornerDecorator>
+
+            <Button
+                Grid.Row="0"
+                Grid.Column="2"
+                Width="70"
+                Height="20"
+                Command="{Binding CommandRollDice}"
+                Content="Roll">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=DiceRuleInputTxtBox}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Content="{Binding DiceRollOutcome}"
+                ContentStringFormat="Roll outcome: {0}"
+                Foreground="{StaticResource BrushText}" />
+        </Grid>
+
+        <Grid Row="1">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Charting WIP"
+                Foreground="{StaticResource BrushText}" />
+        </Grid>
+    </Grid>
+</UserControl>

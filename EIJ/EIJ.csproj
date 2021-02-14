@@ -103,11 +103,15 @@
     </Compile>
     <Compile Include="Debug\DebugPageViewModel.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DoubleExtension.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TextExtension.cs" />
+    <Compile Include="Helpers\DiceRollValidator.cs" />
     <Compile Include="Models\DiceRoller\DiceRoller.cs" />
+    <Compile Include="Models\DiceRoller\DiceRollPattern.cs" />
     <Compile Include="Models\Logging\GameLogger.cs" />
     <Compile Include="Models\Logging\ILog.cs" />
     <Compile Include="Models\Logging\ILogger.cs" />
@@ -129,15 +133,16 @@
     <Compile Include="Resources\ApplicationSecrets.cs" />
     <Compile Include="Resources\Font\MaterialIcons.cs" />
     <Compile Include="Resources\Font\WebdingsIcons.cs" />
-    <Compile Include="UserControls\DiceControlView.xaml.cs">
+    <Compile Include="Validation\DiceRoleRuleValidationRule.cs" />
+    <Compile Include="Views\UserControls\DiceControlView.xaml.cs">
       <DependentUpon>DiceControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\HintTextBox\WatermarkAdorner.cs" />
-    <Compile Include="UserControls\HintTextBox\WatermarkService.cs" />
-    <Compile Include="UserControls\LoggerControlView.xaml.cs">
+    <Compile Include="ControlsExtensions\HintTextBox\WatermarkAdorner.cs" />
+    <Compile Include="ControlsExtensions\HintTextBox\WatermarkService.cs" />
+    <Compile Include="Views\UserControls\LoggerControlView.xaml.cs">
       <DependentUpon>LoggerControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ToolbarControlView.xaml.cs">
+    <Compile Include="Views\UserControls\ToolbarControlView.xaml.cs">
       <DependentUpon>ToolbarControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Pages\HorizontalSplitPageViewModel.cs" />
@@ -186,15 +191,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\DiceControlView.xaml">
+    <Page Include="Views\UserControls\DiceControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\LoggerControlView.xaml">
+    <Page Include="Views\UserControls\LoggerControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\ToolbarControlView.xaml">
+    <Page Include="Views\UserControls\ToolbarControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

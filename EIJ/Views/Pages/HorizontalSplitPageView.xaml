@@ -23,6 +23,7 @@
 
         <Frame
             Grid.Row="0"
+            Margin="5"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
             Content="{Binding PageUpper}" />
