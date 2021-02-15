@@ -59,15 +59,5 @@ namespace EIJ.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] ApplicationSecrets {
-            get {
-                object obj = ResourceManager.GetObject("ApplicationSecrets", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

@@ -9,6 +9,7 @@
     xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
     xmlns:userControls="clr-namespace:EIJ.ViewModels.UserControls"
     xmlns:validation="clr-namespace:EIJ.Validation"
+    xmlns:chartViews="clr-namespace:EIJ.Views.ChartViews"
     d:DesignHeight="265.384"
     d:DesignWidth="398.77"
     mc:Ignorable="d">
@@ -93,11 +94,7 @@
         </Grid>
 
         <Grid Row="1">
-            <Label
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="Charting WIP"
-                Foreground="{StaticResource BrushText}" />
+            <chartViews:AreaChartView/>
         </Grid>
     </Grid>
 </UserControl>

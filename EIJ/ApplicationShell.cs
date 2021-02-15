@@ -7,27 +7,22 @@
 // File Name: ApplicationShell.cs
 // 
 // Current Data:
-// 2021-02-13 8:38 PM
+// 2021-02-15 10:58 PM
 // 
 // Creation Date:
 // 2021-02-13 7:42 PM
 
 #endregion
 
-using System.Text;
 using System.Windows;
 using EIJ.Debug;
 using EIJ.Models.Logging;
-using EIJ.Resources;
-using EIJ.UserControls;
 using EIJ.ViewModels.Pages;
 using EIJ.ViewModels.UserControls;
 using EIJ.ViewModels.Windows;
 using EIJ.Views.Pages;
 using EIJ.Views.UserControls;
 using EIJ.Views.Windows;
-using Newtonsoft.Json;
-using SciChart.Charting.Visuals;
 
 namespace EIJ
 {
@@ -37,16 +32,8 @@ namespace EIJ
 
     public static void Start()
     {
-      InitApplicationLicences();
       var mainWindow = NewMainWindow();
       mainWindow.Show();
-    }
-
-    private static void InitApplicationLicences()
-    {
-      var secretsResource = Encoding.UTF8.GetString(Properties.Resources.ApplicationSecrets);
-      var appSecrets = JsonConvert.DeserializeObject<ApplicationSecrets>(secretsResource);
-      SciChartSurface.SetRuntimeLicenseKey(appSecrets.SciChartWPFKey);
     }
 
     private static Window NewMainWindow()
