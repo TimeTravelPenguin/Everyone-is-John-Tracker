@@ -7,7 +7,7 @@
 // File Name: DiceRollPattern.cs
 // 
 // Current Data:
-// 2021-02-14 10:40 PM
+// 2021-02-19 7:53 PM
 // 
 // Creation Date:
 // 2021-02-14 8:34 PM
@@ -17,29 +17,61 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using EIJ.BaseTypes;
 using EIJ.Helpers;
 
 namespace EIJ.Models.DiceRoller
 {
-  public class DiceRollPattern
+  public class DiceRollPattern : PropertyChangedBase
   {
-    public int DiceCount { get; set; }
-    public int SideCount { get; set; }
-    public int ModValue { get; set; }
+    private ulong _diceCount;
+    private long _modValue;
+    private ulong _sideCount;
+
+    public ulong DiceCount
+    {
+      get => _diceCount;
+      set => SetValue(ref _diceCount, value);
+    }
+
+    public ulong SideCount
+    {
+      get => _sideCount;
+      set => SetValue(ref _sideCount, value);
+    }
+
+    public long ModValue
+    {
+      get => _modValue;
+      set => SetValue(ref _modValue, value);
+    }
+
+    public DiceRollPattern()
+    {
+      DiceCount = 1;
+      SideCount = 1;
+      ModValue = 0;
+    }
 
     public DiceRollPattern(string pattern)
     {
+      UpdateValues(pattern);
+    }
+
+    public void UpdateValues(string pattern)
+    {
       var processed = pattern.ProcessDice();
 
-      DiceCount = AssignIntFromDictionary(processed, nameof(DiceCount));
-      SideCount = AssignIntFromDictionary(processed, nameof(SideCount));
+      DiceCount = AssignULongFromDictionary(processed, nameof(DiceCount));
+      SideCount = AssignULongFromDictionary(processed, nameof(SideCount));
 
       if (!processed.ContainsKey("ModGroup"))
       {
+        ModValue = 0;
         return;
       }
 
-      ModValue = AssignIntFromDictionary(processed, nameof(ModValue), 0);
+      ModValue = (long) AssignULongFromDictionary(processed, nameof(ModValue), 0);
 
       if (processed.TryGetValue("ModSign", out var sign) && sign == "-")
       {
@@ -51,30 +83,30 @@ namespace EIJ.Models.DiceRoller
       }
     }
 
-    private static int AssignIntFromDictionary(IDictionary<string, string> dictionary, string key,
+    private static ulong AssignULongFromDictionary(IDictionary<string, string> dictionary, string key,
       int? defaultValue = null)
     {
       if (dictionary.TryGetValue(key, out var k))
       {
-        return ParseInt(k);
+        return ParseULong(k);
       }
 
       if (defaultValue is not null)
       {
-        return (int) defaultValue;
+        return (ulong) defaultValue;
       }
 
       throw new InvalidOperationException();
     }
 
-    private static int ParseInt(string input)
+    private static ulong ParseULong(string input)
     {
       if (string.IsNullOrWhiteSpace(input))
       {
         throw new ArgumentException(nameof(input));
       }
 
-      if (int.TryParse(input, NumberStyles.None, CultureInfo.InvariantCulture, out var result))
+      if (ulong.TryParse(input, NumberStyles.None, CultureInfo.InvariantCulture, out var result))
       {
         return result;
       }

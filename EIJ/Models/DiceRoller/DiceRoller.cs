@@ -7,7 +7,7 @@
 // File Name: DiceRoller.cs
 // 
 // Current Data:
-// 2021-02-13 11:25 PM
+// 2021-02-19 8:13 PM
 // 
 // Creation Date:
 // 2021-02-13 11:16 PM
@@ -16,15 +16,16 @@
 
 using System;
 using System.Linq;
-using EIJ.BaseTypes;
+using EIJ.Extensions;
+using EIJ.Helpers;
 
 namespace EIJ.Models.DiceRoller
 {
-  public class DiceRoller : PropertyChangedBase
+  public static class DiceRoller
   {
     private static readonly Random Random = new Random();
 
-    private static int RollDie(int sides, int count = 1, int additionMod = 0, int min = 1)
+    private static long RollDie(ulong sides, ulong count = 1, long additionMod = 0, ulong min = 1)
     {
       if (count <= 0)
       {
@@ -36,12 +37,16 @@ namespace EIJ.Models.DiceRoller
         throw new ArgumentException($"{nameof(count)} must be a positive integer");
       }
 
-      return Enumerable.Range(0, count)
-               .Sum(x => Random.Next(min, sides + 1))
-             + additionMod;
+      ulong sum = 0;
+      for (ulong i = 0; i < count; i++)
+      {
+        sum += Random.RandomULong(min, sides + 1);
+      }
+
+      return (long) sum + additionMod;
     }
 
-    public static int Roll(DiceRollPattern pattern, int minValue = 1)
+    public static long Roll(DiceRollPattern pattern, ulong minValue = 1)
     {
       if (pattern is null)
       {

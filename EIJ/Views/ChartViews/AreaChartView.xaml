@@ -16,13 +16,27 @@
     </UserControl.DataContext>
 
     <Grid>
-        <wpf:CartesianChart LegendLocation="None" Series="{Binding ChartDataSeries}">
+        <wpf:CartesianChart
+            AxisX="{Binding XAxesCollection}"
+            IsEnabled="{Binding DataTooLarge, Converter={StaticResource BoolInverterConverter}}"
+            LegendLocation="None"
+            Series="{Binding ChartDataSeries}">
             <wpf:CartesianChart.AxisY>
-                <wpf:Axis Title="Probability" MinValue="0" />
+                <wpf:Axis
+                    Title="Probability"
+                    LabelFormatter="{Binding YLabelFormatter}"
+                    MaxRange="1"
+                    MinValue="0" />
             </wpf:CartesianChart.AxisY>
-            <wpf:CartesianChart.AxisX>
-                <wpf:Axis Title="Number of rolls" MinValue="0" />
-            </wpf:CartesianChart.AxisX>
         </wpf:CartesianChart>
+
+        <Viewbox Visibility="{Binding DataTooLarge, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Label
+                Margin="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Nope, those numbers are too big!!!"
+                Foreground="#2195F2" />
+        </Viewbox>
     </Grid>
 </UserControl>

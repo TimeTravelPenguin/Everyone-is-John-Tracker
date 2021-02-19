@@ -4,13 +4,13 @@
 // 
 // Solution: EIJ
 // Project: EIJ
-// File Name: RandomExtensions.cs
+// File Name: RandomHelpers.cs
 // 
 // Current Data:
-// 2021-02-13 7:50 PM
+// 2021-02-19 8:18 PM
 // 
 // Creation Date:
-// 2021-02-13 7:42 PM
+// 2021-02-19 8:18 PM
 
 #endregion
 
@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EIJ.Extensions
+namespace EIJ.Helpers
 {
   internal static class RandomExtensions
   {
@@ -34,6 +34,20 @@ namespace EIJ.Extensions
       {
         return enumerable[Random.Next(length)];
       }
+    }
+
+    public static ulong RandomULong(this Random random, ulong min, ulong max)
+    {
+      if (min > max)
+      {
+        throw new ArgumentNullException();
+      }
+
+      var buf = new byte[8];
+      random.NextBytes(buf);
+      var longRand = BitConverter.ToUInt64(buf, 0);
+
+      return longRand % (max - min) + min;
     }
   }
 }

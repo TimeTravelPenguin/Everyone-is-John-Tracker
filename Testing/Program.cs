@@ -7,7 +7,7 @@
 // File Name: Program.cs
 // 
 // Current Data:
-// 2021-02-14 8:56 PM
+// 2021-02-19 7:54 PM
 // 
 // Creation Date:
 // 2021-02-14 8:56 PM
@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using EIJ.Models.DiceRoller;
 
 namespace Testing
 {
@@ -23,8 +22,8 @@ namespace Testing
   {
     public static void Main(string[] args)
     {
-      var dr = new DiceRollPattern("2d  6+1 1");
-      Console.WriteLine();
+      Console.WriteLine("Done");
+      Console.ReadKey(true);
     }
   }
 }

@@ -7,7 +7,7 @@
 // File Name: DiceControlViewModel.cs
 // 
 // Current Data:
-// 2021-02-14 10:22 PM
+// 2021-02-19 8:18 PM
 // 
 // Creation Date:
 // 2021-02-13 8:51 PM
@@ -16,23 +16,31 @@
 
 using EIJ.BaseTypes;
 using EIJ.Models.DiceRoller;
+using EIJ.ViewModels.ChartViewModels;
 using Microsoft.Expression.Interactivity.Core;
 
 namespace EIJ.ViewModels.UserControls
 {
   public class DiceControlViewModel : PropertyChangedBase
   {
-    private static readonly DiceRoller DiceRoller = new DiceRoller();
+    private DiceRollPattern _currentDiceRollPattern;
     private string _diceRoleRule = "1d6";
-    private int _diceRollOutcome;
+    private long _diceRollOutcome;
+    public AreaChartViewModel AreaChartViewModel { get; }
 
     public string DiceRoleRule
     {
       get => _diceRoleRule;
-      set => SetValue(ref _diceRoleRule, value);
+      set
+      {
+        SetValue(ref _diceRoleRule, value);
+
+        CurrentDiceRollPattern.UpdateValues(value);
+        AreaChartViewModel.RefreshChart();
+      }
     }
 
-    public int DiceRollOutcome
+    public long DiceRollOutcome
     {
       get => _diceRollOutcome;
       set => SetValue(ref _diceRollOutcome, value);
@@ -40,14 +48,24 @@ namespace EIJ.ViewModels.UserControls
 
     public ActionCommand CommandRollDice { get; }
 
+    public DiceRollPattern CurrentDiceRollPattern
+    {
+      get => _currentDiceRollPattern;
+      set => SetValue(ref _currentDiceRollPattern, value);
+    }
+
     public DiceControlViewModel()
     {
       CommandRollDice = new ActionCommand(RollDice);
+
+      CurrentDiceRollPattern = new DiceRollPattern(DiceRoleRule);
+      AreaChartViewModel = new AreaChartViewModel(CurrentDiceRollPattern);
     }
 
     private void RollDice()
     {
-      DiceRollOutcome = DiceRoller.Roll(new DiceRollPattern(DiceRoleRule));
+      CurrentDiceRollPattern.UpdateValues(DiceRoleRule);
+      DiceRollOutcome = DiceRoller.Roll(CurrentDiceRollPattern);
     }
   }
 }

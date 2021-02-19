@@ -65,6 +65,11 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -101,11 +106,14 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DoubleExtension.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\RandomExtensions.cs" />
+    <Compile Include="Helpers\RandomHelpers.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TextExtension.cs" />
     <Compile Include="Helpers\DiceRollValidator.cs" />
     <Compile Include="Helpers\DistributionFunctions.cs" />
+    <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="IValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="IValueConverters\BoolInverterConverter.cs" />
     <Compile Include="Models\DiceRoller\DiceRoller.cs" />
     <Compile Include="Models\DiceRoller\DiceRollPattern.cs" />
     <Compile Include="Models\Logging\GameLogger.cs" />
@@ -183,6 +191,10 @@
     <Page Include="Debug\DebugPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="IValueConverters\IValueConverterResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ControlStyles\DarkControls.xaml">
       <Generator>MSBuild:Compile</Generator>

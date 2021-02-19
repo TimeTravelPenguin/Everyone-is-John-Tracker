@@ -7,7 +7,7 @@
 // File Name: DistributionFunctions.cs
 // 
 // Current Data:
-// 2021-02-16 12:46 AM
+// 2021-02-19 7:49 PM
 // 
 // Creation Date:
 // 2021-02-15 11:09 PM
@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using MathNet.Numerics;
 
 namespace EIJ.Helpers
 {
@@ -34,13 +33,28 @@ namespace EIJ.Helpers
           nameof(successProbability));
       }
 
-      return nChoosek(maxTries, successes) * Math.Pow(successProbability, successes) *
+      return MathHelper.NChooseK(maxTries, successes) * Math.Pow(successProbability, successes) *
              Math.Pow(1 - successProbability, maxTries - successes);
     }
 
-    public static double nChoosek(double n, double k)
+    public static double SingularUniform(double maxOutComes)
     {
-      return SpecialFunctions.Gamma(n + 1) / (SpecialFunctions.Gamma(k + 1) * SpecialFunctions.Gamma(n - k + 1));
+      return Math.Pow(maxOutComes, -1);
+    }
+
+    /// <summary>
+    ///   Dice mathematics source: <a href="https://mathworld.wolfram.com/Dice.html">Dice</a>.
+    /// </summary>
+    public static double DiceSumProbability(ulong x, ulong diceCount, ulong diceSides)
+    {
+      ulong sum = 0;
+      for (ulong k = 0; k <= Math.Floor((double) (x - diceCount) / diceSides); ++k)
+      {
+        sum += (ulong) Math.Pow(-1, k) * MathHelper.NChooseK(diceCount, k) *
+               MathHelper.NChooseK(x - diceSides * k - 1, diceCount - 1);
+      }
+
+      return Math.Pow(diceSides, -(long) diceCount) * sum;
     }
   }
 }
