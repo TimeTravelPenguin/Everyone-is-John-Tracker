@@ -4,7 +4,7 @@
 [![Actions Status](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/workflows/Build/badge.svg)](https://github.com/TimeTravelPenguin/Everyone-is-John-Tracker/actions)
 
 ## Game rules
-For an extensive list of game rules as well a more in-depth guide on how to play, [check out the rulebook here](https://rulebook.io/games/everyone-is-john/rules/).
+For an extensive list of game rules as well a more in-depth guide on how to play, [check out the rulebook here](https://imgur.com/a/l51P3).
 
 You play a man named John. One player is the Game Master and all else are voices in John's head.
 Each turn you wager "Willpoints" to take control of John. Each voice has multiple skills and one obsession.
